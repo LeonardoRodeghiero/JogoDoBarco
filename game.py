@@ -166,8 +166,10 @@ moeda_group = pygame.sprite.Group()
 
 
 
+tempo_colisao_Porto = 0
 
 
+    
 
 
 
@@ -206,11 +208,33 @@ while True:
 
     screen.blit(porto_surf, porto_rect)
 
-    if player.sprite.rect.colliderect(porto_rect):
-        score += player.sprite.pontos
-        player.sprite.pontos = 0
-        player.sprite.peso = 0
+
     
+    tempo_necessario_Porto = int(player.sprite.peso) * 1000 / 2
+
+
+
+
+    if player.sprite.rect.colliderect(porto_rect):
+
+        if tempo_colisao_Porto == 0:  
+            tempo_colisao_Porto = pygame.time.get_ticks()
+        elif pygame.time.get_ticks() - tempo_colisao_Porto >= tempo_necessario_Porto:
+            score += player.sprite.pontos
+            player.sprite.pontos = 0
+            player.sprite.peso = 0
+        else:
+            tempo_restante = tempo_necessario_Porto - (pygame.time.get_ticks() - tempo_colisao_Porto)
+
+            timer_Porto = test_font.render(f'{int(tempo_restante // 1000 + 1)}', False, (64,64,64))
+            timer_Porto_rect = score_text.get_rect(bottomright=(800, 320))
+            screen.blit(timer_Porto,timer_Porto_rect)
+
+        
+    else:
+        tempo_colisao_Porto = 0          
+
+
 
     if player.sprite.peso >= 8:
         screen.blit(mensagem_text,mensagem_text_rect)
