@@ -1,5 +1,6 @@
 import pygame
 from sys import exit
+from random import randint, choice
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -17,6 +18,10 @@ class Player(pygame.sprite.Sprite):
         self.frames = [player1, player2, player3, player4, player5, player6, player7, player8, player9]
         self.player_index = 0
 
+        self.peso = 0
+        self.pontuacao = 0
+        self.pontos = 0
+        self.velocidade = 0
 
         self.image = self.frames[self.player_index]
         self.rect = self.image.get_rect(midbottom=(largura/2, 400))
@@ -24,38 +29,127 @@ class Player(pygame.sprite.Sprite):
 
     def player_input(self):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT] and self.rect.left >= 0:
-            self.player_index -= 0.1
-            if self.player_index < 0:
-                self.player_index = 8
-            self.image = self.frames[int(self.player_index)]
+        self.velocidade = 10 - self.peso
 
-            self.rect.x -= 3
-        elif keys[pygame.K_RIGHT] and self.rect.right <= largura:
-            self.player_index += 0.1
-            if self.player_index >= 9:
-                self.player_index = 0
-            self.image = self.frames[int(self.player_index)]
+        lentidao_animacao = int(self.peso) / 100
 
-            self.rect.x += 3
+
+
+
+
+        if keys[pygame.K_LEFT] and keys[pygame.K_RIGHT]:
+            pass
         else:
-            self.player_index = int(self.player_index)
+            if keys[pygame.K_RIGHT] and self.rect.right <= largura:
+                self.player_index += 0.15 - lentidao_animacao
+                if self.player_index >= 9:
+                    self.player_index = 0
+                self.image = self.frames[int(self.player_index)]
+
+                self.rect.x += self.velocidade
+            elif keys[pygame.K_LEFT] and self.rect.left >= 0:
+                self.player_index -= 0.15 - lentidao_animacao
+                if self.player_index < 0:
+                    self.player_index = 8
+                self.image = self.frames[int(self.player_index)]
+
+                self.rect.x -= self.velocidade
+        
+            else:
+                self.player_index = int(self.player_index)
+        
+    def colisaoMoeda(self):
+
+        if self.peso < 8:
+
+            moeda_colidida = pygame.sprite.spritecollide(player.sprite, moeda_group, True)
+            for moeda in moeda_colidida:
+                if moeda.tipo == 'ouro':
+                    self.peso += 0.5
+                    self.pontos += 3
+
+                if moeda.tipo == 'prata':
+                    self.peso += 0.3
+                    self.pontos += 2
+
+
+                if moeda.tipo == 'bronze':
+                    self.peso += 0.1
+                    self.pontos += 1
         
 
 
 
-    def animation(self):
-        self.player_index += 0.1
-        if self.player_index >= len(self.frames): self.player_index = 0
-        self.image = self.frames[int(self.player_index)]
-
-
     def update(self):
         self.player_input()
+        self.colisaoMoeda()
+
+
+
+
+
+
+
+class Moeda(pygame.sprite.Sprite):
+    def __init__(self, tipo):
+        super().__init__()
+
+        if tipo == 'ouro':
+            ouro_1 = pygame.image.load('moeda/moedaourofrente.png').convert_alpha()
+            ouro_2 = pygame.image.load('moeda/moedaourolado.png').convert_alpha()
+            self.frames = [ouro_1, ouro_2]
+            self.gravidade = randint(5, 7)
+            self.tipo = 'ouro'
+        elif tipo == 'prata':
+            prata_1 = pygame.image.load('moeda/moedapratafrente.png').convert_alpha()
+            prata_2 = pygame.image.load('moeda/moedapratalado.png').convert_alpha()
+            self.frames = [prata_1, prata_2]
+            self.gravidade = randint(3, 5)
+            self.tipo = 'prata'
+
+        elif tipo == 'bronze':
+            bronze_1 = pygame.image.load('moeda/moedabronzefrente.png').convert_alpha()
+            bronze_2 = pygame.image.load('moeda/moedabronzelado.png').convert_alpha()
+            self.frames = [bronze_1, bronze_2]
+            self.gravidade = randint(2, 4)
+            self.tipo = 'bronze'
+
+        self.animacao_index = 0
+        self.image = self.frames[self.animacao_index]
+        self.rect = self.image.get_rect(midbottom=(randint(9, largura-200), randint(-100, 0))) # Pode colocar um numero aleatorio para randomizar a queda das moedas
+
+
+
+
+    def queda(self):
+        self.rect.y += self.gravidade
+
+
+    def destruir(self):
+        if self.rect.y >= altura + 50:
+            self.kill()
+
+
+
+    def animacao(self):
+        self.animacao_index += 0.1
+        if self.animacao_index >= len(self.frames): self.animacao_index = 0
+        self.image = self.frames[int(self.animacao_index)]
+
+    def update(self):
+        self.animacao()
+        self.queda()
+        self.destruir()
+
+
+
+   
 
 
 
 pygame.init()
+test_font = pygame.font.Font('fonte/Pixeltype.ttf', 50)
+mensagem_test_font = pygame.font.Font('fonte/Pixeltype.ttf', 15)
 
 largura = 800
 altura = 400
@@ -68,6 +162,7 @@ clock = pygame.time.Clock()
 player = pygame.sprite.GroupSingle()
 player.add(Player())
 
+moeda_group = pygame.sprite.Group()
 
 
 
@@ -76,6 +171,13 @@ player.add(Player())
 
 
 
+# Timers
+
+moeda_timer = pygame.USEREVENT + 1
+pygame.time.set_timer(moeda_timer, 1000)
+
+
+score = 0
 
 while True:
     for event in pygame.event.get():
@@ -83,11 +185,47 @@ while True:
             pygame.quit()
             exit()
 
+
+        if event.type == moeda_timer:
+            moeda_group.add(Moeda(choice(['ouro', 'prata', 'prata', 'bronze', 'bronze', 'bronze'])))
+
+
     screen.fill('white')
+    score_text = test_font.render(f'Score: {score}', False, (64,64,64))
+    score_text_rect = score_text.get_rect(topright=(780, 20))
+    screen.blit(score_text,score_text_rect)
+
+    mensagem_text = mensagem_test_font.render('Barco cheio. Descarregue no porto', False, (64,64,64))
+    mensagem_text_rect = mensagem_text.get_rect(midbottom=(player.sprite.rect.x+55, 350))
     
+
+
+
+    porto_surf = pygame.image.load('porto/porto.png')
+    porto_rect = porto_surf.get_rect(bottomright=(largura, altura+38))
+
+    screen.blit(porto_surf, porto_rect)
+
+    if player.sprite.rect.colliderect(porto_rect):
+        score += player.sprite.pontos
+        player.sprite.pontos = 0
+        player.sprite.peso = 0
+    
+
+    if player.sprite.peso >= 8:
+        screen.blit(mensagem_text,mensagem_text_rect)
+
+
+
+
+
+
+    moeda_group.draw(screen)
+    moeda_group.update()
+    moeda_group.copy()
+
     player.draw(screen)
     player.update()
-
 
 
 
