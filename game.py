@@ -179,6 +179,27 @@ moeda_timer = pygame.USEREVENT + 1
 pygame.time.set_timer(moeda_timer, 1000)
 
 
+tempo_total = 10 * 60  
+tempo_inicio = pygame.time.get_ticks()
+
+def verificar_timer():
+    tempo_decorrido = (pygame.time.get_ticks() - tempo_inicio) // 1000
+    tempo_restante = max(0, tempo_total - tempo_decorrido)  # Impede valores negativos
+
+    minutos = tempo_restante // 60
+    segundos = tempo_restante % 60
+    minutos = int(minutos)
+    segundos = int(segundos)
+
+    timer_surf = test_font.render(f'{minutos:02}:{segundos:02}', False, (64,64,64))
+    timer_rect = timer_surf.get_rect(midtop=(largura/2, 0))
+    screen.blit(timer_surf, timer_rect)
+
+    if tempo_restante == 0:
+        pygame.quit() # Melhorar a lógica de parada por tempo
+        exit()
+
+
 score = 0
 
 while True:
@@ -210,10 +231,13 @@ while True:
 
 
     
+    verificar_timer()
+
+
+
+
+
     tempo_necessario_Porto = int(player.sprite.peso) * 1000 / 2
-
-
-
 
     if player.sprite.rect.colliderect(porto_rect):
 
