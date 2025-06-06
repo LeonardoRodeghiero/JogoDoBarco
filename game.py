@@ -24,7 +24,7 @@ class Player(pygame.sprite.Sprite):
         self.velocidade = 0
 
         self.image = self.frames[self.player_index]
-        self.rect = self.image.get_rect(midbottom=(largura/2, 400))
+        self.rect = self.image.get_rect(midbottom=(largura/2, altura))
 
 
     def player_input(self):
@@ -37,17 +37,17 @@ class Player(pygame.sprite.Sprite):
 
 
 
-        if keys[pygame.K_LEFT] and keys[pygame.K_RIGHT]:
+        if (keys[pygame.K_LEFT] or keys[pygame.K_a]) and (keys[pygame.K_RIGHT] or keys[pygame.K_d]):
             pass
         else:
-            if keys[pygame.K_RIGHT] and self.rect.right <= largura:
+            if (keys[pygame.K_RIGHT] or keys[pygame.K_d]) and self.rect.right <= largura:
                 self.player_index += 0.15 - lentidao_animacao
                 if self.player_index >= 9:
                     self.player_index = 0
                 self.image = self.frames[int(self.player_index)]
 
                 self.rect.x += self.velocidade
-            elif keys[pygame.K_LEFT] and self.rect.left >= 0:
+            elif (keys[pygame.K_LEFT] or keys[pygame.K_a]) and self.rect.left >= 0:
                 self.player_index -= 0.15 - lentidao_animacao
                 if self.player_index < 0:
                     self.player_index = 8
@@ -201,8 +201,8 @@ pygame.init()
 test_font = pygame.font.Font('fonte/Pixeltype.ttf', 50)
 mensagem_test_font = pygame.font.Font('fonte/Pixeltype.ttf', 15)
 
-largura = 800
-altura = 400
+largura = 1000
+altura = 600
 screen = pygame.display.set_mode((largura, altura))
 pygame.display.set_caption("Catch The Coin")
 
@@ -274,11 +274,11 @@ while True:
 
     screen.fill('white')
     score_text = test_font.render(f'Score: {score}', False, (64,64,64))
-    score_text_rect = score_text.get_rect(topright=(780, 20))
+    score_text_rect = score_text.get_rect(topright=(largura-20, 20))
     screen.blit(score_text,score_text_rect)
 
     mensagem_text = mensagem_test_font.render('Barco cheio. Descarregue no porto', False, (64,64,64))
-    mensagem_text_rect = mensagem_text.get_rect(midbottom=(player.sprite.rect.x+55, 350))
+    mensagem_text_rect = mensagem_text.get_rect(midbottom=(player.sprite.rect.x + 55, altura-50))
     
 
 
@@ -310,7 +310,7 @@ while True:
             tempo_restante = tempo_necessario_Porto - (pygame.time.get_ticks() - tempo_colisao_Porto)
 
             timer_Porto = test_font.render(f'{int(tempo_restante // 1000 + 1)}', False, (64,64,64))
-            timer_Porto_rect = score_text.get_rect(bottomright=(800, 320))
+            timer_Porto_rect = score_text.get_rect(bottomright=(largura, altura-80))
             screen.blit(timer_Porto,timer_Porto_rect)
 
         
