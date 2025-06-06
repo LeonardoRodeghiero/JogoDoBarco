@@ -189,7 +189,7 @@ class Bomba(pygame.sprite.Sprite):
         distanciaApercorrer = inicioPositivo + altura - 250
         self.distanciaDeTroca = distanciaApercorrer // 6
         self.rect = self.image.get_rect(midbottom=((randint(9, largura-9), inicio)))
-        self.gravidade = randint(1, 7)
+        self.gravidade = randint(1, 12)
 
 
     def queda(self):
