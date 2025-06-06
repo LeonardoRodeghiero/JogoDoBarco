@@ -77,13 +77,19 @@ class Player(pygame.sprite.Sprite):
                     self.peso += 0.1
                     self.pontos += 1
         
+    def colisaoBomba(self):
+        if pygame.sprite.spritecollide(player.sprite, bomba_group, False):
+            pygame.quit()
+            exit()
+
+
 
 
 
     def update(self):
         self.player_input()
         self.colisaoMoeda()
-
+        self.colisaoBomba()
 
 
 
@@ -116,7 +122,7 @@ class Moeda(pygame.sprite.Sprite):
 
         self.animacao_index = 0
         self.image = self.frames[self.animacao_index]
-        self.rect = self.image.get_rect(midbottom=(randint(9, largura-200), randint(-100, 0))) # Pode colocar um numero aleatorio para randomizar a queda das moedas
+        self.rect = self.image.get_rect(midbottom=(randint(9, largura-9), randint(-100, 0))) # Pode colocar um numero aleatorio para randomizar a queda das moedas
 
 
 
@@ -142,8 +148,52 @@ class Moeda(pygame.sprite.Sprite):
         self.destruir()
 
 
+class Bomba(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
 
-   
+        bomb_1 = pygame.image.load('bomba/bomb1.png').convert_alpha()
+        bomb_2 = pygame.image.load('bomba/bomb2.png').convert_alpha()
+        bomb_3 = pygame.image.load('bomba/bomb3.png').convert_alpha()
+        bomb_4 = pygame.image.load('bomba/bomb4.png').convert_alpha()
+        bomb_5 = pygame.image.load('bomba/bomb5.png').convert_alpha()
+        bomb_6 = pygame.image.load('bomba/bomb6.png').convert_alpha()
+
+        self.frames = [bomb_1, bomb_2, bomb_3, bomb_4, bomb_5, bomb_6]
+
+        self.bomb_index = 0
+
+        self.image = self.frames[self.bomb_index]
+
+        inicio = randint(-100, 0)
+        inicioPositivo = inicio * -1
+        distanciaApercorrer = inicioPositivo + altura - 250
+        self.distanciaDeTroca = distanciaApercorrer // 6
+        self.rect = self.image.get_rect(midbottom=((randint(9, largura-9), inicio)))
+        self.gravidade = randint(1, 7)
+
+
+    def queda(self):
+        self.rect.y += self.gravidade
+
+    def destruir(self):
+        if self.rect.y >= altura + 50:
+            self.kill()
+
+
+
+    def animacao(self):
+        if self.rect.y >= self.distanciaDeTroca:
+            self.bomb_index += 1
+            self.distanciaDeTroca += self.distanciaDeTroca
+        self.image = self.frames[int(self.bomb_index)]
+
+
+
+    def update(self):
+        self.animacao()
+        self.queda()
+        self.destruir()
 
 
 
@@ -164,6 +214,8 @@ player.add(Player())
 
 moeda_group = pygame.sprite.Group()
 
+bomba_group = pygame.sprite.Group()
+
 
 
 tempo_colisao_Porto = 0
@@ -176,10 +228,14 @@ tempo_colisao_Porto = 0
 # Timers
 
 moeda_timer = pygame.USEREVENT + 1
-pygame.time.set_timer(moeda_timer, 1000)
+pygame.time.set_timer(moeda_timer, 400)
+
+bomba_timer = pygame.USEREVENT + 2
+pygame.time.set_timer(bomba_timer, 1000)
 
 
-tempo_total = 10 * 60  
+
+tempo_total = 2 * 60  
 tempo_inicio = pygame.time.get_ticks()
 
 def verificar_timer():
@@ -211,6 +267,9 @@ while True:
 
         if event.type == moeda_timer:
             moeda_group.add(Moeda(choice(['ouro', 'prata', 'prata', 'bronze', 'bronze', 'bronze'])))
+
+        if event.type == bomba_timer:
+            bomba_group.add(Bomba())
 
 
     screen.fill('white')
@@ -270,7 +329,9 @@ while True:
 
     moeda_group.draw(screen)
     moeda_group.update()
-    moeda_group.copy()
+
+    bomba_group.draw(screen)
+    bomba_group.update()
 
     player.draw(screen)
     player.update()
