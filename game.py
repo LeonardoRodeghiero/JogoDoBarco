@@ -64,8 +64,8 @@ class Player(pygame.sprite.Sprite):
         coracaoCheio = pygame.image.load('coracao/coracaoCheio.png')
         coracaoVazio = pygame.image.load('coracao/coracaoVazio.png')
 
-        coracaoCheio = pygame.transform.scale(coracaoCheio, (72,80))
-        coracaoVazio = pygame.transform.scale(coracaoVazio, (72,80))
+        coracaoCheio = pygame.transform.scale(coracaoCheio, (45,50))
+        coracaoVazio = pygame.transform.scale(coracaoVazio, (45,50))
 
 
         
@@ -73,41 +73,41 @@ class Player(pygame.sprite.Sprite):
 
         pos_x_coracao = 5
         if self.vidaAtual == 3:
-            coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,0))
+            coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,7))
             screen.blit(coracaoCheio, coracaoCheio_rect)
 
-            pos_x_coracao += 78
-            coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,0))
+            pos_x_coracao += 45 + 8
+            coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,7))
             screen.blit(coracaoCheio, coracaoCheio_rect)
-            pos_x_coracao += 78
+            pos_x_coracao += 45 + 8
 
-            coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,0))
+            coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,7))
             screen.blit(coracaoCheio, coracaoCheio_rect)
         elif self.vidaAtual == 2:
             pos_x_coracao = 0
-            coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,0))
+            coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,7))
             screen.blit(coracaoCheio, coracaoCheio_rect)
-            pos_x_coracao += 78
+            pos_x_coracao += 45 + 8
 
-            coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,0))
+            coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,7))
             screen.blit(coracaoCheio, coracaoCheio_rect)
 
-            pos_x_coracao += 78
+            pos_x_coracao += 45 + 8
 
-            coracaoVazio_rect = coracaoVazio.get_rect(topleft=(pos_x_coracao,0))
+            coracaoVazio_rect = coracaoVazio.get_rect(topleft=(pos_x_coracao,7))
             screen.blit(coracaoVazio, coracaoVazio_rect)
         elif self.vidaAtual == 1:
             pos_x_coracao = 0
-            coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,0))
+            coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,7))
             screen.blit(coracaoCheio, coracaoCheio_rect)
-            pos_x_coracao += 78
+            pos_x_coracao += 45 + 8
 
-            coracaoVazio_rect = coracaoVazio.get_rect(topleft=(pos_x_coracao,0))
+            coracaoVazio_rect = coracaoVazio.get_rect(topleft=(pos_x_coracao,7))
             screen.blit(coracaoVazio, coracaoVazio_rect)
 
-            pos_x_coracao += 78
+            pos_x_coracao += 45 + 8
 
-            coracaoVazio_rect = coracaoVazio.get_rect(topleft=(pos_x_coracao,0))
+            coracaoVazio_rect = coracaoVazio.get_rect(topleft=(pos_x_coracao,7))
             screen.blit(coracaoVazio, coracaoVazio_rect)
 
 
