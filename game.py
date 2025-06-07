@@ -138,12 +138,22 @@ class Player(pygame.sprite.Sprite):
                     self.pontos += 1
         
     def colisaoBomba(self):
-        if pygame.sprite.spritecollide(player.sprite, bomba_group, True):
+        if pygame.sprite.spritecollide(player.sprite, inimigo_group, True):
             self.vidaAtual -= 1
 
         if self.vidaAtual <= 0:
             pygame.quit()
             exit()
+
+
+    def colisaoPowerUp(self):
+        
+        power_up_colidido = pygame.sprite.spritecollide(player.sprite, powerup_group, True)
+
+        for powerUp in power_up_colidido:
+            if powerUp.tipo == 'vida':
+                if self.vidaAtual < 3:
+                    self.vidaAtual += 1
 
 
 
@@ -153,6 +163,7 @@ class Player(pygame.sprite.Sprite):
         self.player_input()
         self.colisaoMoeda()
         self.colisaoBomba()
+        self.colisaoPowerUp()
         self.mostrarVida()
 
 
@@ -313,6 +324,73 @@ class Inimigo(pygame.sprite.Sprite):
         self.destruir()
 
 
+class PowerUp(pygame.sprite.Sprite):
+    def __init__(self, tipo):
+        super().__init__()
+
+        self.tipo = tipo
+
+        if tipo == 'vida':
+            vida_1 = pygame.image.load('powerups/vida/vida1.png')
+            vida_2 = pygame.image.load('powerups/vida/vida2.png')
+            vida_3 = pygame.image.load('powerups/vida/vida3.png')
+            vida_4 = pygame.image.load('powerups/vida/vida4.png')
+            vida_5 = pygame.image.load('powerups/vida/vida5.png')
+            vida_6 = pygame.image.load('powerups/vida/vida6.png')
+            vida_7 = pygame.image.load('powerups/vida/vida7.png')
+            vida_8 = pygame.image.load('powerups/vida/vida8.png')
+            vida_9 = pygame.image.load('powerups/vida/vida9.png')
+            vida_10 = pygame.image.load('powerups/vida/vida10.png')
+            vida_11 = pygame.image.load('powerups/vida/vida11.png')
+            vida_12 = pygame.image.load('powerups/vida/vida12.png')
+
+            vida_1 = pygame.transform.scale2x(vida_1)
+            vida_2 = pygame.transform.scale2x(vida_2)
+            vida_3 = pygame.transform.scale2x(vida_3)
+            vida_4 = pygame.transform.scale2x(vida_4)
+            vida_5 = pygame.transform.scale2x(vida_5)
+            vida_6 = pygame.transform.scale2x(vida_6)
+            vida_7 = pygame.transform.scale2x(vida_7)
+            vida_8 = pygame.transform.scale2x(vida_8)
+            vida_9 = pygame.transform.scale2x(vida_9)
+            vida_10 = pygame.transform.scale2x(vida_10)
+            vida_11 = pygame.transform.scale2x(vida_11)
+            vida_12 = pygame.transform.scale2x(vida_12)
+
+
+
+
+
+
+
+            self.frames = [vida_1,vida_2,vida_3,vida_4,vida_5,vida_6,vida_7,vida_8,vida_9,vida_10,vida_11,vida_12]
+
+            self.gravidade = randint(1, 12)
+
+            self.powerup_index = 0
+
+            self.image = self.frames[self.powerup_index]
+            self.rect = self.image.get_rect(midbottom=(randint(9, largura-9), randint(-100, -1)))
+
+
+    def queda(self):
+        self.rect.y += self.gravidade
+
+    def animacao(self):
+        self.powerup_index += 0.1
+        if self.powerup_index >= len(self.frames): self.powerup_index = 0
+        self.image = self.frames[int(self.powerup_index)]
+
+    def destruir(self):
+        if self.rect.y >= altura + 50:
+            self.kill()
+
+
+    def update(self):
+        self.animacao()
+        self.queda()
+        self.destruir
+
 
 pygame.init()
 test_font = pygame.font.Font('fonte/Pixeltype.ttf', 50)
@@ -332,8 +410,9 @@ player.add(Player())
 
 moeda_group = pygame.sprite.Group()
 
-bomba_group = pygame.sprite.Group()
+inimigo_group = pygame.sprite.Group()
 
+powerup_group = pygame.sprite.Group()
 
 
 tempo_colisao_Porto = 0
@@ -350,6 +429,10 @@ pygame.time.set_timer(moeda_timer, 400)
 
 inimigo_timer = pygame.USEREVENT + 2
 pygame.time.set_timer(inimigo_timer, 1000)
+
+powerup_timer = pygame.USEREVENT + 3
+pygame.time.set_timer(powerup_timer, 5000)
+
 
 
 
@@ -444,7 +527,13 @@ while True:
             moeda_group.add(Moeda(choice(['ouro', 'prata', 'prata', 'bronze', 'bronze', 'bronze'])))
 
         if event.type == inimigo_timer:
-            bomba_group.add(Inimigo(choice(['bomba','flecha'])))
+            inimigo_group.add(Inimigo(choice(['bomba','flecha'])))
+
+        if event.type == powerup_timer:
+            powerup_group.add(PowerUp('vida'))
+
+
+
 
     if cont_fundo == 0:
         cont_fundo = 1
@@ -513,8 +602,12 @@ while True:
     moeda_group.draw(screen)
     moeda_group.update()
 
-    bomba_group.draw(screen)
-    bomba_group.update()
+    inimigo_group.draw(screen)
+    inimigo_group.update()
+
+    powerup_group.draw(screen)
+    powerup_group.update()
+
 
     player.draw(screen)
     player.update()
