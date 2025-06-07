@@ -225,8 +225,6 @@ altura = 600
 screen = pygame.display.set_mode((largura, altura))
 pygame.display.set_caption("Catch The Coin")
 
-fundo_surf = pygame.image.load('fundo/fundo1.png').convert()
-fundo_surf = pygame.transform.scale(fundo_surf, (largura, altura))
 
 clock = pygame.time.Clock()
 
@@ -260,7 +258,7 @@ pygame.time.set_timer(bomba_timer, 1000)
 tempo_total = 2 * 60  
 tempo_inicio = pygame.time.get_ticks()
 
-def verificar_timer():
+def verificar_timer(cor_score):
     tempo_decorrido = (pygame.time.get_ticks() - tempo_inicio) // 1000
     tempo_restante = max(0, tempo_total - tempo_decorrido)  # Impede valores negativos
 
@@ -269,8 +267,8 @@ def verificar_timer():
     minutos = int(minutos)
     segundos = int(segundos)
 
-    timer_surf = test_font.render(f'{minutos:02}:{segundos:02}', False, (64,64,64))
-    timer_rect = timer_surf.get_rect(midtop=(largura/2, 0))
+    timer_surf = test_font.render(f'{minutos:02}:{segundos:02}', False, cor_score)
+    timer_rect = timer_surf.get_rect(midtop=(largura/2, 20))
     screen.blit(timer_surf, timer_rect)
 
     if tempo_restante == 0:
@@ -280,6 +278,63 @@ def verificar_timer():
 
 score = 0
 
+
+
+def escolher_fundo(fundoSorteado):
+    cor_score = ()
+    if fundoSorteado == 1:
+        fundo_surf = pygame.image.load('fundo/fundo1.png').convert()
+        fundo_surf = pygame.transform.scale(fundo_surf, (largura, altura))
+
+        cor_score =  (64,64,64)
+    if fundoSorteado == 2:
+        fundo_surf = pygame.image.load('fundo/fundo2.png').convert()
+        fundo_surf = pygame.transform.scale(fundo_surf, (largura, altura))
+
+        cor_score =  (64,64,64)
+
+
+    if fundoSorteado == 3:
+        fundo_surf = pygame.image.load('fundo/fundo3.png').convert()
+        fundo_surf = pygame.transform.scale(fundo_surf, (largura, altura))
+
+        cor_score =  'white'
+
+    if fundoSorteado == 4:
+        fundo_surf = pygame.image.load('fundo/fundo4.png').convert()
+        fundo_surf = pygame.transform.scale(fundo_surf, (largura, altura)) 
+
+        cor_score =  (64,64,64)
+
+
+    if fundoSorteado == 5:
+        fundo_surf = pygame.image.load('fundo/fundo5.png').convert()
+        fundo_surf = pygame.transform.scale(fundo_surf, (largura, altura)) 
+
+        cor_score =  (64,64,64)
+
+
+    if fundoSorteado == 6:
+        fundo_surf = pygame.image.load('fundo/fundo6.png').convert()
+        fundo_surf = pygame.transform.scale(fundo_surf, (largura, altura))  
+
+        cor_score =  'white'
+
+
+    if fundoSorteado == 7:
+        fundo_surf = pygame.image.load('fundo/fundo7.png').convert()
+        fundo_surf = pygame.transform.scale(fundo_surf, (largura, altura))
+
+        cor_score =  (64,64,64)
+
+
+    return fundo_surf, cor_score
+
+def mostrar_fundo(fundo):
+
+    screen.blit(fundo, (0, 0))
+
+cont_fundo = 0
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -293,13 +348,21 @@ while True:
         if event.type == bomba_timer:
             bomba_group.add(Bomba())
 
+    if cont_fundo == 0:
+        cont_fundo = 1
+        if cont_fundo == 1:
+            fundoSorteado = randint(1, 8)
+            fundo_surf, cor_score = escolher_fundo(fundoSorteado=3)
 
-    screen.blit(fundo_surf, (0, 0))
-    score_text = test_font.render(f'Score: {score}', False, (64,64,64))
+    mostrar_fundo(fundo_surf)
+
+
+
+    score_text = test_font.render(f'Score: {score}', False, cor_score)
     score_text_rect = score_text.get_rect(topright=(largura-20, 20))
     screen.blit(score_text,score_text_rect)
 
-    mensagem_text = mensagem_test_font.render('Barco cheio. Descarregue no porto', False, (64,64,64))
+    mensagem_text = mensagem_test_font.render('Barco cheio. Descarregue no porto', False, cor_score)
     mensagem_text_rect = mensagem_text.get_rect(midbottom=(player.sprite.rect.x + 55, altura-50))
     
 
@@ -312,7 +375,7 @@ while True:
 
 
     
-    verificar_timer()
+    verificar_timer(cor_score)
 
 
 
@@ -331,7 +394,7 @@ while True:
         else:
             tempo_restante = tempo_necessario_Porto - (pygame.time.get_ticks() - tempo_colisao_Porto)
 
-            timer_Porto = test_font.render(f'{int(tempo_restante // 1000 + 1)}', False, (64,64,64))
+            timer_Porto = test_font.render(f'{int(tempo_restante // 1000 + 1)}', False, cor_score)
             timer_Porto_rect = score_text.get_rect(bottomright=(largura, altura-80))
             screen.blit(timer_Porto,timer_Porto_rect)
 
