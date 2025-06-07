@@ -1,10 +1,7 @@
 import pygame
 from sys import exit
 from random import randint, choice
-#teste  
 
-
-# AAAAAAAAAAAAAAA
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -25,6 +22,7 @@ class Player(pygame.sprite.Sprite):
         self.pontuacao = 0
         self.pontos = 0
         self.velocidade = 0
+        self.vidaAtual = 3
 
         self.image = self.frames[self.player_index]
         self.rect = self.image.get_rect(midbottom=(largura/2, altura))
@@ -61,6 +59,65 @@ class Player(pygame.sprite.Sprite):
             else:
                 self.player_index = int(self.player_index)
         
+
+    def mostrarVida(self):
+        coracaoCheio = pygame.image.load('coracao/coracaoCheio.png')
+        coracaoVazio = pygame.image.load('coracao/coracaoVazio.png')
+
+        coracaoCheio = pygame.transform.scale(coracaoCheio, (72,80))
+        coracaoVazio = pygame.transform.scale(coracaoVazio, (72,80))
+
+
+        
+
+
+        pos_x_coracao = 5
+        if self.vidaAtual == 3:
+            coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,0))
+            screen.blit(coracaoCheio, coracaoCheio_rect)
+
+            pos_x_coracao += 78
+            coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,0))
+            screen.blit(coracaoCheio, coracaoCheio_rect)
+            pos_x_coracao += 78
+
+            coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,0))
+            screen.blit(coracaoCheio, coracaoCheio_rect)
+        elif self.vidaAtual == 2:
+            pos_x_coracao = 0
+            coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,0))
+            screen.blit(coracaoCheio, coracaoCheio_rect)
+            pos_x_coracao += 78
+
+            coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,0))
+            screen.blit(coracaoCheio, coracaoCheio_rect)
+
+            pos_x_coracao += 78
+
+            coracaoVazio_rect = coracaoVazio.get_rect(topleft=(pos_x_coracao,0))
+            screen.blit(coracaoVazio, coracaoVazio_rect)
+        elif self.vidaAtual == 1:
+            pos_x_coracao = 0
+            coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,0))
+            screen.blit(coracaoCheio, coracaoCheio_rect)
+            pos_x_coracao += 78
+
+            coracaoVazio_rect = coracaoVazio.get_rect(topleft=(pos_x_coracao,0))
+            screen.blit(coracaoVazio, coracaoVazio_rect)
+
+            pos_x_coracao += 78
+
+            coracaoVazio_rect = coracaoVazio.get_rect(topleft=(pos_x_coracao,0))
+            screen.blit(coracaoVazio, coracaoVazio_rect)
+
+
+
+
+
+
+
+
+
     def colisaoMoeda(self):
 
         if self.peso < 8:
@@ -81,7 +138,10 @@ class Player(pygame.sprite.Sprite):
                     self.pontos += 1
         
     def colisaoBomba(self):
-        if pygame.sprite.spritecollide(player.sprite, bomba_group, False):
+        if pygame.sprite.spritecollide(player.sprite, bomba_group, True):
+            self.vidaAtual -= 1
+
+        if self.vidaAtual <= 0:
             pygame.quit()
             exit()
 
@@ -93,7 +153,7 @@ class Player(pygame.sprite.Sprite):
         self.player_input()
         self.colisaoMoeda()
         self.colisaoBomba()
-
+        self.mostrarVida()
 
 
 
@@ -354,7 +414,7 @@ while True:
     if cont_fundo == 0:
         cont_fundo = 1
         if cont_fundo == 1:
-            fundoSorteado = randint(1, 8)
+            fundoSorteado = randint(1, 7)
             fundo_surf, cor_score = escolher_fundo(fundoSorteado)
 
     mostrar_fundo(fundo_surf)
