@@ -278,12 +278,12 @@ class Inimigo(pygame.sprite.Sprite):
             inicio = randint(-100, 0)
             self.rect = self.image.get_rect(midbottom=((randint(9, largura-9), inicio)))
             self.gravidade = randint(1, 4)
-
+            self.velocidadeFlecha = choice([0.1, 0.2, 0.3, 0.4, 0.5])
 
 
     def queda(self):
         if self.tipo == 'flecha':
-            self.gravidade += 0.2
+            self.gravidade += self.velocidadeFlecha
             self.rect.y += self.gravidade
         if self.tipo == 'bomba':
             self.rect.y += self.gravidade
