@@ -225,6 +225,9 @@ altura = 600
 screen = pygame.display.set_mode((largura, altura))
 pygame.display.set_caption("Catch The Coin")
 
+fundo_surf = pygame.image.load('fundo/fundo1.png').convert()
+fundo_surf = pygame.transform.scale(fundo_surf, (largura, altura))
+
 clock = pygame.time.Clock()
 
 #Grupos
@@ -291,7 +294,7 @@ while True:
             bomba_group.add(Bomba())
 
 
-    screen.fill('white')
+    screen.blit(fundo_surf, (0, 0))
     score_text = test_font.render(f'Score: {score}', False, (64,64,64))
     score_text_rect = score_text.get_rect(topright=(largura-20, 20))
     screen.blit(score_text,score_text_rect)
