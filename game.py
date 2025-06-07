@@ -1,7 +1,7 @@
 import pygame
 from sys import exit
 from random import randint, choice
-#teste
+#testeS
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -278,7 +278,7 @@ def verificar_timer(cor_score):
 
 score = 0
 
-
+#vms la
 
 def escolher_fundo(fundoSorteado):
     cor_score = ()
