@@ -352,7 +352,7 @@ while True:
         cont_fundo = 1
         if cont_fundo == 1:
             fundoSorteado = randint(1, 8)
-            fundo_surf, cor_score = escolher_fundo(fundoSorteado=3)
+            fundo_surf, cor_score = escolher_fundo(fundoSorteado)
 
     mostrar_fundo(fundo_surf)
 
