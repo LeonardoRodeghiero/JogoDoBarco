@@ -230,33 +230,63 @@ class Moeda(pygame.sprite.Sprite):
         self.destruir()
 
 
-class Bomba(pygame.sprite.Sprite):
-    def __init__(self):
+class Inimigo(pygame.sprite.Sprite):
+    def __init__(self, tipo):
         super().__init__()
 
-        bomb_1 = pygame.image.load('bomba/bomb1.png').convert_alpha()
-        bomb_2 = pygame.image.load('bomba/bomb2.png').convert_alpha()
-        bomb_3 = pygame.image.load('bomba/bomb3.png').convert_alpha()
-        bomb_4 = pygame.image.load('bomba/bomb4.png').convert_alpha()
-        bomb_5 = pygame.image.load('bomba/bomb5.png').convert_alpha()
-        bomb_6 = pygame.image.load('bomba/bomb6.png').convert_alpha()
+        self.tipo = tipo
 
-        self.frames = [bomb_1, bomb_2, bomb_3, bomb_4, bomb_5, bomb_6]
+        if tipo == 'bomba':
+            bomb_1 = pygame.image.load('bomba/bomb1.png').convert_alpha()
+            bomb_2 = pygame.image.load('bomba/bomb2.png').convert_alpha()
+            bomb_3 = pygame.image.load('bomba/bomb3.png').convert_alpha()
+            bomb_4 = pygame.image.load('bomba/bomb4.png').convert_alpha()
+            bomb_5 = pygame.image.load('bomba/bomb5.png').convert_alpha()
+            bomb_6 = pygame.image.load('bomba/bomb6.png').convert_alpha()
 
-        self.bomb_index = 0
+            self.frames = [bomb_1, bomb_2, bomb_3, bomb_4, bomb_5, bomb_6]
 
-        self.image = self.frames[self.bomb_index]
+            self.bomb_index = 0
 
-        inicio = randint(-100, 0)
-        inicioPositivo = inicio * -1
-        distanciaApercorrer = inicioPositivo + altura - 250
-        self.distanciaDeTroca = distanciaApercorrer // 6
-        self.rect = self.image.get_rect(midbottom=((randint(9, largura-9), inicio)))
-        self.gravidade = randint(1, 12)
+            self.image = self.frames[self.bomb_index]
+
+            inicio = randint(-100, 0)
+            inicioPositivo = inicio * -1
+            distanciaApercorrer = inicioPositivo + altura - 250
+            self.distanciaDeTroca = distanciaApercorrer // 6
+            self.rect = self.image.get_rect(midbottom=((randint(9, largura-9), inicio)))
+            self.gravidade = randint(1, 12)
+
+        elif tipo == 'flecha':
+            flecha_1 = pygame.image.load('flecha/flecha1.png')
+            flecha_2 = pygame.image.load('flecha/flecha2.png')
+            flecha_3 = pygame.image.load('flecha/flecha3.png')
+            flecha_4 = pygame.image.load('flecha/flecha4.png')
+            
+            flecha_1 = pygame.transform.scale2x(flecha_1)
+            flecha_2 = pygame.transform.scale2x(flecha_2)
+            flecha_3 = pygame.transform.scale2x(flecha_3)
+            flecha_4 = pygame.transform.scale2x(flecha_4)
+
+
+            self.frames = [flecha_1,flecha_2,flecha_3,flecha_4]
+
+
+            self.flecha_index = 0
+            self.image = self.frames[self.flecha_index]
+
+            inicio = randint(-100, 0)
+            self.rect = self.image.get_rect(midbottom=((randint(9, largura-9), inicio)))
+            self.gravidade = randint(1, 4)
+
 
 
     def queda(self):
-        self.rect.y += self.gravidade
+        if self.tipo == 'flecha':
+            self.gravidade += 0.2
+            self.rect.y += self.gravidade
+        if self.tipo == 'bomba':
+            self.rect.y += self.gravidade
 
     def destruir(self):
         if self.rect.y >= altura + 50:
@@ -265,10 +295,15 @@ class Bomba(pygame.sprite.Sprite):
 
 
     def animacao(self):
-        if self.rect.y >= self.distanciaDeTroca:
+        if self.tipo == 'bomba' and self.rect.y >= self.distanciaDeTroca:
             self.bomb_index += 1
             self.distanciaDeTroca += self.distanciaDeTroca
-        self.image = self.frames[int(self.bomb_index)]
+            self.image = self.frames[int(self.bomb_index)]
+
+        if self.tipo == 'flecha':
+            self.flecha_index += 0.1
+            if self.flecha_index >= len(self.frames): self.flecha_index = 0
+            self.image = self.frames[int(self.flecha_index)]
 
 
 
@@ -313,8 +348,8 @@ tempo_colisao_Porto = 0
 moeda_timer = pygame.USEREVENT + 1
 pygame.time.set_timer(moeda_timer, 400)
 
-bomba_timer = pygame.USEREVENT + 2
-pygame.time.set_timer(bomba_timer, 1000)
+inimigo_timer = pygame.USEREVENT + 2
+pygame.time.set_timer(inimigo_timer, 1000)
 
 
 
@@ -408,8 +443,8 @@ while True:
         if event.type == moeda_timer:
             moeda_group.add(Moeda(choice(['ouro', 'prata', 'prata', 'bronze', 'bronze', 'bronze'])))
 
-        if event.type == bomba_timer:
-            bomba_group.add(Bomba())
+        if event.type == inimigo_timer:
+            bomba_group.add(Inimigo(choice(['bomba','flecha'])))
 
     if cont_fundo == 0:
         cont_fundo = 1
