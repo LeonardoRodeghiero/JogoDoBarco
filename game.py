@@ -269,7 +269,7 @@ class Player(pygame.sprite.Sprite):
 
         for i, (nome, cor, segundos) in enumerate(self.PowerUpsAtivos):
             texto = test_font.render(f"{nome} por {segundos} s", False, cor)
-            texto_rect = texto.get_rect(topleft=(0, start_y + i * spacing))  # Ajuste dinâmico
+            texto_rect = texto.get_rect(topleft=(5, start_y + i * spacing))  # Ajuste dinâmico
             screen.blit(texto, texto_rect)
 
 
