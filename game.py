@@ -2,6 +2,8 @@ import pygame
 from sys import exit
 from random import randint, choice
 
+
+
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -21,8 +23,12 @@ class Player(pygame.sprite.Sprite):
         self.peso = 0
         self.pontuacao = 0
         self.pontos = 0
-        self.velocidade = 0
+        self.velocidadeNormal = 10 - self.peso
+        self.velocidade = self.velocidadeNormal
         self.vidaAtual = 3
+        self.habilidade_ativa = False
+        self.tempo_inicio = None
+        self.tempo_totalPowerUps = 15
 
         self.image = self.frames[self.player_index]
         self.rect = self.image.get_rect(midbottom=(largura/2, altura))
@@ -30,7 +36,6 @@ class Player(pygame.sprite.Sprite):
 
     def player_input(self):
         keys = pygame.key.get_pressed()
-        self.velocidade = 10 - self.peso
 
         lentidao_animacao = int(self.peso) / 100
 
@@ -154,9 +159,40 @@ class Player(pygame.sprite.Sprite):
             if powerUp.tipo == 'vida':
                 if self.vidaAtual < 3:
                     self.vidaAtual += 1
+            if powerUp.tipo == 'velocidade':
+                self.ativar_power_up()
+                self.velocidade = self.velocidadeNormal + 10
+                
+                
 
 
+    def ativar_power_up(self):
+        """Ativa a habilidade temporária"""
+        self.habilidade_ativa = True
+        self.tempo_inicio = pygame.time.get_ticks()  # Guarda o tempo inicial
 
+    def verificar_tempo(self):
+        """Verifica se os 15 segundos já passaram"""
+        if self.habilidade_ativa and self.tempo_inicio:
+            tempo_decorrido = pygame.time.get_ticks() - self.tempo_inicio
+            if tempo_decorrido >= 15000:  # 15 segundos em milissegundos
+                self.habilidade_ativa = False  # Desativa a habilidade
+                self.velocidade = self.velocidadeNormal
+
+    def tempo_restante(self):
+        """Retorna o tempo restante"""
+        if self.habilidade_ativa and self.tempo_inicio:
+            tempo_decorrido = (pygame.time.get_ticks() - self.tempo_inicio) // 1000
+            tempo_restante = max(0, self.tempo_totalPowerUps - tempo_decorrido)
+
+            segundos = int(tempo_restante % 60)
+
+            timer_PowerUp = test_font.render(f'Velocidade por {segundos} s', False, 'yellow')
+            timer_PowerUp_rect = score_text.get_rect(topleft=(0, 100))
+            screen.blit(timer_PowerUp,timer_PowerUp_rect)
+
+
+    
 
 
     def update(self):
@@ -165,8 +201,8 @@ class Player(pygame.sprite.Sprite):
         self.colisaoBomba()
         self.colisaoPowerUp()
         self.mostrarVida()
-
-
+        self.verificar_tempo()
+        self.tempo_restante()
 
 
 
@@ -357,20 +393,44 @@ class PowerUp(pygame.sprite.Sprite):
             vida_11 = pygame.transform.scale2x(vida_11)
             vida_12 = pygame.transform.scale2x(vida_12)
 
-
-
-
-
-
-
             self.frames = [vida_1,vida_2,vida_3,vida_4,vida_5,vida_6,vida_7,vida_8,vida_9,vida_10,vida_11,vida_12]
 
-            self.gravidade = randint(1, 12)
+        if tipo == 'velocidade':
+            velocidade_1 = pygame.image.load('powerups/velocidade/velocidade1.png')
+            velocidade_2 = pygame.image.load('powerups/velocidade/velocidade2.png')
+            velocidade_3 = pygame.image.load('powerups/velocidade/velocidade3.png')
+            velocidade_4 = pygame.image.load('powerups/velocidade/velocidade4.png')
+            velocidade_5 = pygame.image.load('powerups/velocidade/velocidade5.png')
+            velocidade_6 = pygame.image.load('powerups/velocidade/velocidade6.png')
+            velocidade_7 = pygame.image.load('powerups/velocidade/velocidade7.png')
+            velocidade_8 = pygame.image.load('powerups/velocidade/velocidade8.png')
+            velocidade_9 = pygame.image.load('powerups/velocidade/velocidade9.png')
+            velocidade_10 = pygame.image.load('powerups/velocidade/velocidade10.png')
+            velocidade_11 = pygame.image.load('powerups/velocidade/velocidade11.png')
+            velocidade_12 = pygame.image.load('powerups/velocidade/velocidade12.png')
 
-            self.powerup_index = 0
+            velocidade_1 = pygame.transform.scale2x(velocidade_1)
+            velocidade_2 = pygame.transform.scale2x(velocidade_2)
+            velocidade_3 = pygame.transform.scale2x(velocidade_3)
+            velocidade_4 = pygame.transform.scale2x(velocidade_4)
+            velocidade_5 = pygame.transform.scale2x(velocidade_5)
+            velocidade_6 = pygame.transform.scale2x(velocidade_6)
+            velocidade_7 = pygame.transform.scale2x(velocidade_7)
+            velocidade_8 = pygame.transform.scale2x(velocidade_8)
+            velocidade_9 = pygame.transform.scale2x(velocidade_9)
+            velocidade_10 = pygame.transform.scale2x(velocidade_10)
+            velocidade_11 = pygame.transform.scale2x(velocidade_11)
+            velocidade_12 = pygame.transform.scale2x(velocidade_12)
 
-            self.image = self.frames[self.powerup_index]
-            self.rect = self.image.get_rect(midbottom=(randint(9, largura-9), randint(-100, -1)))
+            self.frames = [velocidade_1,velocidade_2,velocidade_3,velocidade_4,velocidade_5,velocidade_6,velocidade_7,velocidade_8,velocidade_9,velocidade_10,velocidade_11,velocidade_12]
+
+
+        self.gravidade = randint(1, 12)
+
+        self.powerup_index = 0
+
+        self.image = self.frames[self.powerup_index]
+        self.rect = self.image.get_rect(midbottom=(randint(9, largura-9), randint(-100, -1)))
 
 
     def queda(self):
@@ -431,7 +491,7 @@ inimigo_timer = pygame.USEREVENT + 2
 pygame.time.set_timer(inimigo_timer, 1000)
 
 powerup_timer = pygame.USEREVENT + 3
-pygame.time.set_timer(powerup_timer, 5000)
+pygame.time.set_timer(powerup_timer, 2000)
 
 
 
@@ -522,7 +582,7 @@ while True:
             pygame.quit()
             exit()
 
-
+        
         if event.type == moeda_timer:
             moeda_group.add(Moeda(choice(['ouro', 'prata', 'prata', 'bronze', 'bronze', 'bronze'])))
 
@@ -530,7 +590,7 @@ while True:
             inimigo_group.add(Inimigo(choice(['bomba','flecha'])))
 
         if event.type == powerup_timer:
-            powerup_group.add(PowerUp('vida'))
+            powerup_group.add(PowerUp(choice(['vida', 'velocidade'])))
 
 
 
