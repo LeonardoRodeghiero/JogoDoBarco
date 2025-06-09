@@ -154,7 +154,7 @@ class Player(pygame.sprite.Sprite):
 
 
                 if moeda.tipo == 'bronze':
-                    self.peso += 2.1
+                    self.peso += 0.1
                     self.pontos += 1
         
     def colisaoBomba(self):
