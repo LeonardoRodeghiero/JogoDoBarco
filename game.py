@@ -10,14 +10,6 @@ import FuncExternas.funcExternas
 
 pygame.init()
 
-pygame.display.set_caption("Catch The Coin")
-
-
-
-
-
-
-    
 
 import menu
 
@@ -44,7 +36,7 @@ def Jogo():
                 exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if play_button.checkForInput(mouse_pos):
-
+                    pygame.display.set_caption("Catch The Coin")
                     play()
                 if options_button.checkForInput(mouse_pos):
                     menu.options()
@@ -74,7 +66,6 @@ def play():
                 pygame.quit()
                 exit()
 
-            
             if event.type == config.moeda_timer:
                 config.moeda_group.add(Moeda(choice(['ouro', 'prata', 'prata', 'bronze', 'bronze', 'bronze'])))
 
