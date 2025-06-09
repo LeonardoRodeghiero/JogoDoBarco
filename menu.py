@@ -175,11 +175,12 @@ class Button:
             self.text = self.font.render(self.text_input, True, self.base_color)
 
 # Tela principal
-menu = pygame.display.set_mode((1000, 800))
+menu = pygame.display.set_mode((1000, 600))
 pygame.display.set_caption("MENU")
-menubg = pygame.Surface((1000, 800))
+menubg = pygame.Surface((1000, 600))
 menubg = pygame.image.load("fundo/fundo7.png").convert()
-def main_menu():
+"""def main_menu():
+    from game import play
     while True:
         menu.blit(menubg, (0, 0))
         mouse_pos = pygame.mouse.get_pos()
@@ -209,9 +210,9 @@ def main_menu():
                     pygame.quit()
                     sys.exit()
 
-        pygame.display.update()
+        pygame.display.update()"""
 
-def play():
+"""def play():
     while True:
         mouse_pos = pygame.mouse.get_pos()
         menu.fill("black")
@@ -232,7 +233,7 @@ def play():
                 if back_button.checkForInput(mouse_pos):
                     return
 
-        pygame.display.update()
+        pygame.display.update()"""
 
 def options():
     while True:
@@ -258,4 +259,4 @@ def options():
         pygame.display.update()
 
 # Iniciar o menu
-main_menu()
+#main_menu()
