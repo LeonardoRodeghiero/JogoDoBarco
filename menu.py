@@ -139,7 +139,7 @@ main_menu()
 
 import pygame
 import sys
-
+import config
 pygame.init()
 
 # Função para carregar fontes do sistema
@@ -175,10 +175,10 @@ class Button:
             self.text = self.font.render(self.text_input, True, self.base_color)
 
 # Tela principal
-menu = pygame.display.set_mode((1000, 600))
+menu = pygame.display.set_mode((config.largura, config.altura))
 pygame.display.set_caption("MENU")
-menubg = pygame.Surface((1000, 600))
-menubg = pygame.image.load("fundo/fundo7.png").convert()
+menubg = pygame.Surface((config.largura, config.altura))
+menubg = pygame.image.load("graficos/fundo/fundo7.png").convert()
 """def main_menu():
     from game import play
     while True:
