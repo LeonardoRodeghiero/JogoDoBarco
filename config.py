@@ -10,6 +10,9 @@ screen = pygame.display.set_mode((largura, altura))
 
 clock = pygame.time.Clock()
 
+
+
+
 # Timers
 
 moeda_timer = pygame.USEREVENT + 1
