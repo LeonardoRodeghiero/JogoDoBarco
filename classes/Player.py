@@ -23,7 +23,7 @@ class Player(pygame.sprite.Sprite):
         self.peso = 0
         self.pontuacao = 0
         self.pontos = 0
-        self.velocidadeNormal = 10 - self.peso
+        self.velocidadeNormal = 10
         self.velocidade = self.velocidadeNormal
         self.vidaAtual = 3
         self.PowerUpsAtivos = []
@@ -67,14 +67,14 @@ class Player(pygame.sprite.Sprite):
                     self.player_index = 0
                 self.image = self.frames[int(self.player_index)]
 
-                self.rect.x += self.velocidade
+                self.rect.x += self.velocidade - self.peso
             elif (keys[pygame.K_LEFT] or keys[pygame.K_a]) and self.rect.left >= 0:
                 self.player_index -= 0.15 - lentidao_animacao
                 if self.player_index < 0:
                     self.player_index = 8
                 self.image = self.frames[int(self.player_index)]
 
-                self.rect.x -= self.velocidade
+                self.rect.x -= self.velocidade - self.peso
         
             else:
                 self.player_index = int(self.player_index)
@@ -154,7 +154,7 @@ class Player(pygame.sprite.Sprite):
 
 
                 if moeda.tipo == 'bronze':
-                    self.peso += 0.1
+                    self.peso += 2.1
                     self.pontos += 1
         
     def colisaoBomba(self):
