@@ -8,7 +8,7 @@ class PowerUp(pygame.sprite.Sprite):
 
         self.tipo = tipo
 
-        if tipo == 'vida':
+        if tipo == 'moeda2x':
             vida_1 = pygame.image.load('graficos/powerups/vida/vida1.png')
             vida_2 = pygame.image.load('graficos/powerups/vida/vida2.png')
             vida_3 = pygame.image.load('graficos/powerups/vida/vida3.png')

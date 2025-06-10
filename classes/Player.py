@@ -40,8 +40,11 @@ class Player(pygame.sprite.Sprite):
         self.tempo_inicioPowerUpTeste = None
         self.tempoTotalPowerUpTeste = 15000
 
-
-
+        #Atributos PowerUps de moeda x2
+        self.powerUp_moeda2x_ativo = False
+        self.tempo_inicioPowerUpMoeda2x = None
+        self.tempoTotalPowerUpMoeda2x = 15000
+        self.multMoeda2x = 1
 
 
 
@@ -146,16 +149,16 @@ class Player(pygame.sprite.Sprite):
             for moeda in moeda_colidida:
                 if moeda.tipo == 'ouro':
                     self.peso += 0.5
-                    self.pontos += 3
+                    self.pontos += 3 * self.multMoeda2x
 
                 if moeda.tipo == 'prata':
                     self.peso += 0.3
-                    self.pontos += 2
+                    self.pontos += 2 * self.multMoeda2x
 
 
                 if moeda.tipo == 'bronze':
                     self.peso += 0.1
-                    self.pontos += 1
+                    self.pontos += 1 * self.multMoeda2x
         
     def colisaoBomba(self):
         if pygame.sprite.spritecollide(player.sprite, config.inimigo_group, True):
@@ -176,10 +179,14 @@ class Player(pygame.sprite.Sprite):
                     self.vidaAtual += 1"""
             if powerUp.tipo == 'velocidade':
                 self.ativar_power_up('velocidade')
-                self.velocidade = self.velocidadeNormal + 10
 
             if powerUp.tipo == 'vida':
                 self.ativar_power_up('teste')
+
+            if powerUp.tipo == 'moeda2x':
+                self.ativar_power_up('moeda2x')
+
+
 
 
     def ativar_power_up(self, powerUpTipo):
@@ -199,13 +206,37 @@ class Player(pygame.sprite.Sprite):
             self.tempo_inicioPowerUpTeste = pygame.time.get_ticks()  # Guarda o tempo inicial
 
 
+        if powerUpTipo == 'moeda2x':
+            if self.powerUp_moeda2x_ativo == False:
+                self.PowerUpsAtivos.append(['moeda2x', 'orange', 0])
+            
+            self.powerUp_moeda2x_ativo = True
+            self.tempo_inicioPowerUpMoeda2x = pygame.time.get_ticks()
+
+
+    def poderPowerUp(self):
+
+        for powerUp in self.PowerUpsAtivos:
+            if powerUp[0] == 'velocidade':
+                self.velocidade = self.velocidadeNormal + 10
+
+            if powerUp[0] == 'moeda2x':
+                self.multMoeda2x = 2
+
+
+        if self.powerUp_velocidade_ativo == False:
+            self.velocidade = self.velocidadeNormal
+
+        if self.powerUp_moeda2x_ativo == False:
+            self.multMoeda2x = 1
+
     def verificar_tempo(self):
         """Verifica se os 15 segundos já passaram"""
         if self.powerUp_velocidade_ativo and self.tempo_inicioPowerUpVelocidade:
             tempo_decorrido_velocidade = pygame.time.get_ticks() - self.tempo_inicioPowerUpVelocidade
             if tempo_decorrido_velocidade >= self.tempoTotalPowerUpVelocidade:  # 15 segundos em milissegundos
                 self.powerUp_velocidade_ativo = False  # Desativa a habilidade
-                self.velocidade = self.velocidadeNormal
+                
                 self.PowerUpsAtivos = [p for p in self.PowerUpsAtivos if p[0] != "velocidade"]
 
 
@@ -215,6 +246,15 @@ class Player(pygame.sprite.Sprite):
                 self.powerUp_Teste_ativo = False  # Desativa a habilidade
                 self.PowerUpsAtivos = [p for p in self.PowerUpsAtivos if p[0] != "teste"]
     
+
+        if self.powerUp_moeda2x_ativo and self.tempo_inicioPowerUpMoeda2x:
+            tempo_decorrido_moeda2x = pygame.time.get_ticks() - self.tempo_inicioPowerUpMoeda2x
+            if tempo_decorrido_moeda2x >= self.tempoTotalPowerUpMoeda2x:  # 15 segundos em milissegundos
+                self.powerUp_moeda2x_ativo = False  # Desativa a habilidade
+                self.PowerUpsAtivos = [p for p in self.PowerUpsAtivos if p[0] != "moeda2x"]
+    
+
+
     def tempo_restante(self):
         """Retorna o tempo restante"""
         if self.powerUp_velocidade_ativo and self.tempo_inicioPowerUpVelocidade:
@@ -237,8 +277,15 @@ class Player(pygame.sprite.Sprite):
                     segundos_teste = int(tempo_restante_teste % 60)
                     powerUp[2] = segundos_teste
 
+        if self.powerUp_moeda2x_ativo and self.tempo_inicioPowerUpMoeda2x:
+            tempo_decorrido_moeda2x = (pygame.time.get_ticks() - self.tempo_inicioPowerUpMoeda2x) // 1000
+            tempo_restante_moeda2x = max(0, self.tempoTotalPowerUpMoeda2x // 1000 - tempo_decorrido_moeda2x)
 
-        
+            for powerUp in self.PowerUpsAtivos:
+                if powerUp[0] == 'moeda2x':
+                    segundos_moeda2x = int(tempo_restante_moeda2x % 60)
+                    powerUp[2] = segundos_moeda2x
+
     
 
 
@@ -280,6 +327,7 @@ class Player(pygame.sprite.Sprite):
         self.colisaoBomba()
         self.tempo_restante()
         self.colisaoPowerUp()
+        self.poderPowerUp()
         self.verificar_tempo()
         self.mostrarVida()
 
