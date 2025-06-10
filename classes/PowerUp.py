@@ -8,7 +8,7 @@ class PowerUp(pygame.sprite.Sprite):
 
         self.tipo = tipo
 
-        if tipo == 'moeda2x':
+        if tipo == 'vida':
             vida_1 = pygame.image.load('graficos/powerups/vida/vida1.png')
             vida_2 = pygame.image.load('graficos/powerups/vida/vida2.png')
             vida_3 = pygame.image.load('graficos/powerups/vida/vida3.png')
@@ -66,6 +66,38 @@ class PowerUp(pygame.sprite.Sprite):
 
             self.frames = [velocidade_1,velocidade_2,velocidade_3,velocidade_4,velocidade_5,velocidade_6,velocidade_7,velocidade_8,velocidade_9,velocidade_10,velocidade_11,velocidade_12]
 
+        if tipo == 'moeda2x':
+            moeda2x_1 = pygame.image.load('graficos/powerups/moeda2x/moeda2x_1.png')
+            moeda2x_2 = pygame.image.load('graficos/powerups/moeda2x/moeda2x_2.png')
+            moeda2x_3 = pygame.image.load('graficos/powerups/moeda2x/moeda2x_3.png')
+            moeda2x_4 = pygame.image.load('graficos/powerups/moeda2x/moeda2x_4.png')
+            moeda2x_5 = pygame.image.load('graficos/powerups/moeda2x/moeda2x_5.png')
+            moeda2x_6 = pygame.image.load('graficos/powerups/moeda2x/moeda2x_6.png')
+            moeda2x_7 = pygame.image.load('graficos/powerups/moeda2x/moeda2x_7.png')
+            moeda2x_8 = pygame.image.load('graficos/powerups/moeda2x/moeda2x_8.png')
+            moeda2x_9 = pygame.image.load('graficos/powerups/moeda2x/moeda2x_9.png')
+            moeda2x_10 = pygame.image.load('graficos/powerups/moeda2x/moeda2x_10.png')
+            moeda2x_11 = pygame.image.load('graficos/powerups/moeda2x/moeda2x_11.png')
+            moeda2x_12 = pygame.image.load('graficos/powerups/moeda2x/moeda2x_12.png')
+            moeda2x_13 = pygame.image.load('graficos/powerups/moeda2x/moeda2x_13.png')
+            moeda2x_14 = pygame.image.load('graficos/powerups/moeda2x/moeda2x_14.png')
+
+            moeda2x_1 = pygame.transform.scale(moeda2x_1, (28,28))
+            moeda2x_2 = pygame.transform.scale(moeda2x_2, (28,28))
+            moeda2x_3 = pygame.transform.scale(moeda2x_3, (28,28))
+            moeda2x_4 = pygame.transform.scale(moeda2x_4, (28,28))
+            moeda2x_5 = pygame.transform.scale(moeda2x_5, (28,28))
+            moeda2x_6 = pygame.transform.scale(moeda2x_6, (28,28))
+            moeda2x_7 = pygame.transform.scale(moeda2x_7, (28,28))
+            moeda2x_8 = pygame.transform.scale(moeda2x_8, (28,28))
+            moeda2x_9 = pygame.transform.scale(moeda2x_9, (28,28))
+            moeda2x_10 = pygame.transform.scale(moeda2x_10, (28,28))
+            moeda2x_11 = pygame.transform.scale(moeda2x_11, (28,28))
+            moeda2x_12 = pygame.transform.scale(moeda2x_12, (28,28))
+            moeda2x_13 = pygame.transform.scale(moeda2x_13, (28,28))
+            moeda2x_14 = pygame.transform.scale(moeda2x_14, (28,28))
+
+            self.frames = [moeda2x_1, moeda2x_2,moeda2x_3,moeda2x_4,moeda2x_5,moeda2x_6,moeda2x_7,moeda2x_8,moeda2x_9,moeda2x_10,moeda2x_11,moeda2x_12,moeda2x_13,moeda2x_14]
 
         self.gravidade = randint(1, 12)
 
