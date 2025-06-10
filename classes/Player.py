@@ -174,15 +174,15 @@ class Player(pygame.sprite.Sprite):
         power_up_colidido = pygame.sprite.spritecollide(player.sprite, config.powerup_group, True)
 
         for powerUp in power_up_colidido:
-            """if powerUp.tipo == 'vida':
+            if powerUp.tipo == 'vida':
                 if self.vidaAtual < 3:
-                    self.vidaAtual += 1"""
+                    self.vidaAtual += 1
             if powerUp.tipo == 'velocidade':
                 self.ativar_power_up('velocidade')
 
-            if powerUp.tipo == 'vida':
+            """if powerUp.tipo == 'vida':
                 self.ativar_power_up('teste')
-
+            """
             if powerUp.tipo == 'moeda2x':
                 self.ativar_power_up('moeda2x')
 

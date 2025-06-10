@@ -99,6 +99,33 @@ class PowerUp(pygame.sprite.Sprite):
 
             self.frames = [moeda2x_1, moeda2x_2,moeda2x_3,moeda2x_4,moeda2x_5,moeda2x_6,moeda2x_7,moeda2x_8,moeda2x_9,moeda2x_10,moeda2x_11,moeda2x_12,moeda2x_13,moeda2x_14]
 
+        if tipo == 'tempo':
+            tempo_1 = pygame.image.load('graficos/powerups/tempo/relogio_1.png')
+            tempo_2 = pygame.image.load('graficos/powerups/tempo/relogio_2.png')
+            tempo_3 = pygame.image.load('graficos/powerups/tempo/relogio_3.png')
+            tempo_4 = pygame.image.load('graficos/powerups/tempo/relogio_4.png')
+            tempo_5 = pygame.image.load('graficos/powerups/tempo/relogio_5.png')
+            tempo_6 = pygame.image.load('graficos/powerups/tempo/relogio_6.png')
+            tempo_7 = pygame.image.load('graficos/powerups/tempo/relogio_7.png')
+            tempo_8 = pygame.image.load('graficos/powerups/tempo/relogio_8.png')
+            tempo_9 = pygame.image.load('graficos/powerups/tempo/relogio_9.png')
+            tempo_10 = pygame.image.load('graficos/powerups/tempo/relogio_10.png')
+            tempo_11 = pygame.image.load('graficos/powerups/tempo/relogio_11.png')
+            tempo_12 = pygame.image.load('graficos/powerups/tempo/relogio_12.png')
+            tempo_13 = pygame.image.load('graficos/powerups/tempo/relogio_13.png')
+            tempo_14 = pygame.image.load('graficos/powerups/tempo/relogio_14.png')
+
+            self.frames = [tempo_1, tempo_2, tempo_3, tempo_4, tempo_5, tempo_6, tempo_7, tempo_8, tempo_9, tempo_10, tempo_11, tempo_12, tempo_13, tempo_14]
+
+
+            for i in range(len(self.frames)):
+                self.frames[i] = pygame.transform.scale(self.frames[i], (28,28))
+
+
+
+            
+
+
         self.gravidade = randint(1, 12)
 
         self.powerup_index = 0
