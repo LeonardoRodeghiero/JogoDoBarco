@@ -67,7 +67,7 @@ def play():
                 config.inimigo_group.add(Inimigo(choice(['bomba','flecha'])))
 
             if event.type == config.powerup_timer:
-                config.powerup_group.add(PowerUp(choice(['vida', 'velocidade', 'moeda2x', 'tempo', 'pesoExtra'])))
+                config.powerup_group.add(PowerUp(choice(['invulnerabilidade', 'velocidade', 'moeda2x', 'tempo', 'pesoExtra', ])))
 
         
 

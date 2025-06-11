@@ -8,7 +8,7 @@ class PowerUp(pygame.sprite.Sprite):
 
         self.tipo = tipo
 
-        if tipo == 'vida':
+        """if tipo == 'vida':
             vida_1 = pygame.image.load('graficos/powerups/vida/vida1.png')
             vida_2 = pygame.image.load('graficos/powerups/vida/vida2.png')
             vida_3 = pygame.image.load('graficos/powerups/vida/vida3.png')
@@ -26,7 +26,7 @@ class PowerUp(pygame.sprite.Sprite):
 
             for i in range(len(self.frames)):
                 self.frames[i] = pygame.transform.scale(self.frames[i], (28,28))
-
+"""
         if tipo == 'velocidade':
             velocidade_1 = pygame.image.load('graficos/powerups/velocidade/velocidade1.png')
             velocidade_2 = pygame.image.load('graficos/powerups/velocidade/velocidade2.png')
@@ -106,6 +106,24 @@ class PowerUp(pygame.sprite.Sprite):
             for i in range(len(self.frames)):
                 self.frames[i] = pygame.transform.scale(self.frames[i], (28,28))
 
+        if tipo == 'invulnerabilidade':
+            vida_1 = pygame.image.load('graficos/powerups/vida/vida1.png')
+            vida_2 = pygame.image.load('graficos/powerups/vida/vida2.png')
+            vida_3 = pygame.image.load('graficos/powerups/vida/vida3.png')
+            vida_4 = pygame.image.load('graficos/powerups/vida/vida4.png')
+            vida_5 = pygame.image.load('graficos/powerups/vida/vida5.png')
+            vida_6 = pygame.image.load('graficos/powerups/vida/vida6.png')
+            vida_7 = pygame.image.load('graficos/powerups/vida/vida7.png')
+            vida_8 = pygame.image.load('graficos/powerups/vida/vida8.png')
+            vida_9 = pygame.image.load('graficos/powerups/vida/vida9.png')
+            vida_10 = pygame.image.load('graficos/powerups/vida/vida10.png')
+            vida_11 = pygame.image.load('graficos/powerups/vida/vida11.png')
+            vida_12 = pygame.image.load('graficos/powerups/vida/vida12.png')
+
+            self.frames = [vida_1,vida_2,vida_3,vida_4,vida_5,vida_6,vida_7,vida_8,vida_9,vida_10,vida_11,vida_12]
+
+            for i in range(len(self.frames)):
+                self.frames[i] = pygame.transform.scale(self.frames[i], (28,28))
 
 
         self.gravidade = randint(1, 12)

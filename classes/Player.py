@@ -1,6 +1,6 @@
 import pygame
 import config
-
+from sys import exit
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -33,10 +33,10 @@ class Player(pygame.sprite.Sprite):
         self.tempoTotalPowerUpVelocidade = 15000
 
 
-        #Atributos PowerUps de Teste
-        self.powerUp_Teste_ativo = False
-        self.tempo_inicioPowerUpTeste = None
-        self.tempoTotalPowerUpTeste = 15000
+        #Atributos PowerUps de invulnerabilidade
+        self.powerUp_invulnerabilidade_ativo = False
+        self.tempo_inicioPowerUpinvulnerabilidade = None
+        self.tempoTotalPowerUpinvulnerabilidade = 15000
 
         #Atributos PowerUps de moeda x2
         self.powerUp_moeda2x_ativo = False
@@ -53,6 +53,7 @@ class Player(pygame.sprite.Sprite):
 
 
     def player_input(self):
+
         keys = pygame.key.get_pressed()
 
         lentidao_animacao = int(self.peso) / 100
@@ -160,9 +161,10 @@ class Player(pygame.sprite.Sprite):
                     self.peso += 0.1
                     self.pontos += 1 * self.multMoeda2x
         
-    def colisaoBomba(self):
-        if pygame.sprite.spritecollide(player.sprite, config.inimigo_group, True):
-            self.vidaAtual -= 1
+    def colisaoInimigo(self):
+        if self.powerUp_invulnerabilidade_ativo == False:
+            if pygame.sprite.spritecollide(player.sprite, config.inimigo_group, True):
+                self.vidaAtual -= 1
 
         if self.vidaAtual <= 0:
             pygame.quit()
@@ -181,9 +183,9 @@ class Player(pygame.sprite.Sprite):
             if powerUp.tipo == 'velocidade':
                 self.ativar_power_up('velocidade')
 
-            """if powerUp.tipo == 'vida':
-                self.ativar_power_up('teste')
-            """
+            if powerUp.tipo == 'invulnerabilidade':
+                self.ativar_power_up('invulnerabilidade')
+            
             if powerUp.tipo == 'moeda2x':
                 self.ativar_power_up('moeda2x')
 
@@ -203,12 +205,12 @@ class Player(pygame.sprite.Sprite):
             self.powerUp_velocidade_ativo = True
             self.tempo_inicioPowerUpVelocidade = pygame.time.get_ticks()  # Guarda o tempo inicial
 
-        if powerUpTipo =='teste':
-            if self.powerUp_Teste_ativo == False:
-                self.PowerUpsAtivos.append(['teste', 'green', 0])
+        if powerUpTipo =='invulnerabilidade':
+            if self.powerUp_invulnerabilidade_ativo == False:
+                self.PowerUpsAtivos.append(['invulnerabilidade', 'white', 0])
 
-            self.powerUp_Teste_ativo = True
-            self.tempo_inicioPowerUpTeste = pygame.time.get_ticks()  # Guarda o tempo inicial
+            self.powerUp_invulnerabilidade_ativo = True
+            self.tempo_inicioPowerUpinvulnerabilidade = pygame.time.get_ticks()  # Guarda o tempo inicial
 
 
         if powerUpTipo == 'moeda2x':
@@ -229,12 +231,18 @@ class Player(pygame.sprite.Sprite):
             if powerUp[0] == 'moeda2x':
                 self.multMoeda2x = 2
 
+            if powerUp[0] == 'invulnerabilidade':
+                self.image.set_alpha(128)
+
 
         if self.powerUp_velocidade_ativo == False:
             self.velocidade = self.velocidadeNormal
 
         if self.powerUp_moeda2x_ativo == False:
             self.multMoeda2x = 1
+
+        if self.powerUp_invulnerabilidade_ativo == False:
+            self.image.set_alpha(255)
 
     def verificar_tempo(self):
         """Verifica se os 15 segundos já passaram"""
@@ -246,11 +254,11 @@ class Player(pygame.sprite.Sprite):
                 self.PowerUpsAtivos = [p for p in self.PowerUpsAtivos if p[0] != "velocidade"]
 
 
-        if self.powerUp_Teste_ativo and self.tempo_inicioPowerUpTeste:
-            tempo_decorrido_teste = pygame.time.get_ticks() - self.tempo_inicioPowerUpTeste
-            if tempo_decorrido_teste >= self.tempoTotalPowerUpTeste:  # 15 segundos em milissegundos
-                self.powerUp_Teste_ativo = False  # Desativa a habilidade
-                self.PowerUpsAtivos = [p for p in self.PowerUpsAtivos if p[0] != "teste"]
+        if self.powerUp_invulnerabilidade_ativo and self.tempo_inicioPowerUpinvulnerabilidade:
+            tempo_decorrido_invulnerabilidade = pygame.time.get_ticks() - self.tempo_inicioPowerUpinvulnerabilidade
+            if tempo_decorrido_invulnerabilidade >= self.tempoTotalPowerUpinvulnerabilidade:  # 15 segundos em milissegundos
+                self.powerUp_invulnerabilidade_ativo = False  # Desativa a habilidade
+                self.PowerUpsAtivos = [p for p in self.PowerUpsAtivos if p[0] != "invulnerabilidade"]
     
 
         if self.powerUp_moeda2x_ativo and self.tempo_inicioPowerUpMoeda2x:
@@ -273,15 +281,15 @@ class Player(pygame.sprite.Sprite):
                     segundos_velocidade = int(tempo_restante_velocidade % 60)
                     powerUp[2] = segundos_velocidade
 
-        if self.powerUp_Teste_ativo and self.tempo_inicioPowerUpTeste:
-            tempo_decorrido_teste = (pygame.time.get_ticks() - self.tempo_inicioPowerUpTeste) // 1000
-            tempo_restante_teste = max(0, self.tempoTotalPowerUpTeste // 1000 - tempo_decorrido_teste)
+        if self.powerUp_invulnerabilidade_ativo and self.tempo_inicioPowerUpinvulnerabilidade:
+            tempo_decorrido_invulnerabilidade = (pygame.time.get_ticks() - self.tempo_inicioPowerUpinvulnerabilidade) // 1000
+            tempo_restante_invulnerabilidade = max(0, self.tempoTotalPowerUpinvulnerabilidade // 1000 - tempo_decorrido_invulnerabilidade)
 
 
             for powerUp in self.PowerUpsAtivos:
-                if powerUp[0] == 'teste':
-                    segundos_teste = int(tempo_restante_teste % 60)
-                    powerUp[2] = segundos_teste
+                if powerUp[0] == 'invulnerabilidade':
+                    segundos_invulnerabilidade = int(tempo_restante_invulnerabilidade % 60)
+                    powerUp[2] = segundos_invulnerabilidade
 
         if self.powerUp_moeda2x_ativo and self.tempo_inicioPowerUpMoeda2x:
             tempo_decorrido_moeda2x = (pygame.time.get_ticks() - self.tempo_inicioPowerUpMoeda2x) // 1000
@@ -330,7 +338,7 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         self.player_input()
         self.colisaoMoeda()
-        self.colisaoBomba()
+        self.colisaoInimigo()
         self.tempo_restante()
         self.colisaoPowerUp()
         self.poderPowerUp()
