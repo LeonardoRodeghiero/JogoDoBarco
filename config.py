@@ -24,6 +24,9 @@ pygame.time.set_timer(inimigo_timer, 1000)
 powerup_timer = pygame.USEREVENT + 3
 pygame.time.set_timer(powerup_timer, 2000)
 
+debuff_timer = pygame.USEREVENT + 4
+pygame.time.set_timer(debuff_timer, 2000)
+
 
 #Grupos
 
@@ -33,3 +36,5 @@ moeda_group = pygame.sprite.Group()
 inimigo_group = pygame.sprite.Group()
 
 powerup_group = pygame.sprite.Group()
+
+debuff_group = pygame.sprite.Group()
