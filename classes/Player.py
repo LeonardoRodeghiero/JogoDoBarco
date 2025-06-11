@@ -2,8 +2,6 @@ import pygame
 import config
 
 
-
-
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -45,6 +43,8 @@ class Player(pygame.sprite.Sprite):
         self.tempo_inicioPowerUpMoeda2x = None
         self.tempoTotalPowerUpMoeda2x = 15000
         self.multMoeda2x = 1
+
+        
 
 
 
@@ -170,7 +170,8 @@ class Player(pygame.sprite.Sprite):
 
 
     def colisaoPowerUp(self):
-        
+        from tempo import adicionarTempo
+
         power_up_colidido = pygame.sprite.spritecollide(player.sprite, config.powerup_group, True)
 
         for powerUp in power_up_colidido:
@@ -186,7 +187,8 @@ class Player(pygame.sprite.Sprite):
             if powerUp.tipo == 'moeda2x':
                 self.ativar_power_up('moeda2x')
 
-
+            if powerUp.tipo == 'tempo':
+                adicionarTempo(10)
 
 
     def ativar_power_up(self, powerUpTipo):
@@ -212,6 +214,7 @@ class Player(pygame.sprite.Sprite):
             
             self.powerUp_moeda2x_ativo = True
             self.tempo_inicioPowerUpMoeda2x = pygame.time.get_ticks()
+
 
 
     def poderPowerUp(self):

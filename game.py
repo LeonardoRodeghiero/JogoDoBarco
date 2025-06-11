@@ -7,7 +7,6 @@ from classes.Moeda import Moeda
 from classes.Inimigo import Inimigo
 from classes.PowerUp import PowerUp
 import FuncExternas.funcExternas
-
 pygame.init()
 
 
@@ -48,12 +47,7 @@ def Jogo():
 
 
 def play():
-    tempo_total = 2 * 60  
-    tempo_inicio = pygame.time.get_ticks()
-
-    
-    
-    
+    import tempo
 
     cont_fundo = 0
     score = 0
@@ -102,9 +96,9 @@ def play():
         porto_rect = porto_surf.get_rect(bottomright=(config.largura, config.altura+38))
         config.screen.blit(porto_surf, porto_rect)
 
-
         
-        FuncExternas.funcExternas.verificar_timer(cor_score, tempo_total, tempo_inicio)
+        
+        tempo.verificar_timer(cor_score, tempo.tempo_total, tempo.tempo_inicio)
 
         tempo_necessario_Porto = int(player.sprite.peso) * 1000 / 2
         
