@@ -59,7 +59,7 @@ def mostrar_fundo(fundo):
 
 
 def barcoCheio(mensagem_text, mensagem_text_rect):
-    if player.sprite.peso >= 8:
+    if player.sprite.peso - player.sprite.pesoExtra >= 8:
         config.screen.blit(mensagem_text,mensagem_text_rect)
 
 

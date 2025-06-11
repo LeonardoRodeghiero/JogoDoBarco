@@ -25,7 +25,7 @@ class Player(pygame.sprite.Sprite):
         self.velocidade = self.velocidadeNormal
         self.vidaAtual = 3
         self.PowerUpsAtivos = []
-
+        self.pesoExtra = 0
 
         #Atributos PowerUps de velocidade
         self.powerUp_velocidade_ativo = False
@@ -70,14 +70,14 @@ class Player(pygame.sprite.Sprite):
                     self.player_index = 0
                 self.image = self.frames[int(self.player_index)]
 
-                self.rect.x += self.velocidade - self.peso
+                self.rect.x += self.velocidade - self.peso + self.pesoExtra
             elif (keys[pygame.K_LEFT] or keys[pygame.K_a]) and self.rect.left >= 0:
                 self.player_index -= 0.15 - lentidao_animacao
                 if self.player_index < 0:
                     self.player_index = 8
                 self.image = self.frames[int(self.player_index)]
 
-                self.rect.x -= self.velocidade - self.peso
+                self.rect.x -= self.velocidade - self.peso + self.pesoExtra
         
             else:
                 self.player_index = int(self.player_index)
@@ -143,7 +143,7 @@ class Player(pygame.sprite.Sprite):
 
     def colisaoMoeda(self):
 
-        if self.peso < 8:
+        if self.peso - self.pesoExtra < 8:
 
             moeda_colidida = pygame.sprite.spritecollide(player.sprite, config.moeda_group, True)
             for moeda in moeda_colidida:
@@ -189,6 +189,9 @@ class Player(pygame.sprite.Sprite):
 
             if powerUp.tipo == 'tempo':
                 adicionarTempo(10)
+
+            if powerUp.tipo == 'pesoExtra':
+                self.pesoExtra += 0.5
 
 
     def ativar_power_up(self, powerUpTipo):

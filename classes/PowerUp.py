@@ -22,20 +22,10 @@ class PowerUp(pygame.sprite.Sprite):
             vida_11 = pygame.image.load('graficos/powerups/vida/vida11.png')
             vida_12 = pygame.image.load('graficos/powerups/vida/vida12.png')
 
-            vida_1 = pygame.transform.scale2x(vida_1)
-            vida_2 = pygame.transform.scale2x(vida_2)
-            vida_3 = pygame.transform.scale2x(vida_3)
-            vida_4 = pygame.transform.scale2x(vida_4)
-            vida_5 = pygame.transform.scale2x(vida_5)
-            vida_6 = pygame.transform.scale2x(vida_6)
-            vida_7 = pygame.transform.scale2x(vida_7)
-            vida_8 = pygame.transform.scale2x(vida_8)
-            vida_9 = pygame.transform.scale2x(vida_9)
-            vida_10 = pygame.transform.scale2x(vida_10)
-            vida_11 = pygame.transform.scale2x(vida_11)
-            vida_12 = pygame.transform.scale2x(vida_12)
-
             self.frames = [vida_1,vida_2,vida_3,vida_4,vida_5,vida_6,vida_7,vida_8,vida_9,vida_10,vida_11,vida_12]
+
+            for i in range(len(self.frames)):
+                self.frames[i] = pygame.transform.scale(self.frames[i], (28,28))
 
         if tipo == 'velocidade':
             velocidade_1 = pygame.image.load('graficos/powerups/velocidade/velocidade1.png')
@@ -51,20 +41,11 @@ class PowerUp(pygame.sprite.Sprite):
             velocidade_11 = pygame.image.load('graficos/powerups/velocidade/velocidade11.png')
             velocidade_12 = pygame.image.load('graficos/powerups/velocidade/velocidade12.png')
 
-            velocidade_1 = pygame.transform.scale2x(velocidade_1)
-            velocidade_2 = pygame.transform.scale2x(velocidade_2)
-            velocidade_3 = pygame.transform.scale2x(velocidade_3)
-            velocidade_4 = pygame.transform.scale2x(velocidade_4)
-            velocidade_5 = pygame.transform.scale2x(velocidade_5)
-            velocidade_6 = pygame.transform.scale2x(velocidade_6)
-            velocidade_7 = pygame.transform.scale2x(velocidade_7)
-            velocidade_8 = pygame.transform.scale2x(velocidade_8)
-            velocidade_9 = pygame.transform.scale2x(velocidade_9)
-            velocidade_10 = pygame.transform.scale2x(velocidade_10)
-            velocidade_11 = pygame.transform.scale2x(velocidade_11)
-            velocidade_12 = pygame.transform.scale2x(velocidade_12)
-
+            
             self.frames = [velocidade_1,velocidade_2,velocidade_3,velocidade_4,velocidade_5,velocidade_6,velocidade_7,velocidade_8,velocidade_9,velocidade_10,velocidade_11,velocidade_12]
+            
+            for i in range(len(self.frames)):
+                self.frames[i] = pygame.transform.scale(self.frames[i], (28,28))
 
         if tipo == 'moeda2x':
             moeda2x_1 = pygame.image.load('graficos/powerups/moeda2x/moeda2x_1.png')
@@ -82,22 +63,11 @@ class PowerUp(pygame.sprite.Sprite):
             moeda2x_13 = pygame.image.load('graficos/powerups/moeda2x/moeda2x_13.png')
             moeda2x_14 = pygame.image.load('graficos/powerups/moeda2x/moeda2x_14.png')
 
-            moeda2x_1 = pygame.transform.scale(moeda2x_1, (28,28))
-            moeda2x_2 = pygame.transform.scale(moeda2x_2, (28,28))
-            moeda2x_3 = pygame.transform.scale(moeda2x_3, (28,28))
-            moeda2x_4 = pygame.transform.scale(moeda2x_4, (28,28))
-            moeda2x_5 = pygame.transform.scale(moeda2x_5, (28,28))
-            moeda2x_6 = pygame.transform.scale(moeda2x_6, (28,28))
-            moeda2x_7 = pygame.transform.scale(moeda2x_7, (28,28))
-            moeda2x_8 = pygame.transform.scale(moeda2x_8, (28,28))
-            moeda2x_9 = pygame.transform.scale(moeda2x_9, (28,28))
-            moeda2x_10 = pygame.transform.scale(moeda2x_10, (28,28))
-            moeda2x_11 = pygame.transform.scale(moeda2x_11, (28,28))
-            moeda2x_12 = pygame.transform.scale(moeda2x_12, (28,28))
-            moeda2x_13 = pygame.transform.scale(moeda2x_13, (28,28))
-            moeda2x_14 = pygame.transform.scale(moeda2x_14, (28,28))
-
+            
             self.frames = [moeda2x_1, moeda2x_2,moeda2x_3,moeda2x_4,moeda2x_5,moeda2x_6,moeda2x_7,moeda2x_8,moeda2x_9,moeda2x_10,moeda2x_11,moeda2x_12,moeda2x_13,moeda2x_14]
+
+            for i in range(len(self.frames)):
+                self.frames[i] = pygame.transform.scale(self.frames[i], (28,28))
 
         if tipo == 'tempo':
             tempo_1 = pygame.image.load('graficos/powerups/tempo/relogio_1.png')
@@ -122,8 +92,20 @@ class PowerUp(pygame.sprite.Sprite):
                 self.frames[i] = pygame.transform.scale(self.frames[i], (28,28))
 
 
-
+        if tipo == 'pesoExtra':
+            mochila_1 = pygame.image.load('graficos/powerups/mochila/mochila_1.png')
+            mochila_2 = pygame.image.load('graficos/powerups/mochila/mochila_2.png')
+            mochila_3 = pygame.image.load('graficos/powerups/mochila/mochila_3.png')
+            mochila_4 = pygame.image.load('graficos/powerups/mochila/mochila_4.png')
+            mochila_5 = pygame.image.load('graficos/powerups/mochila/mochila_5.png')
+            mochila_6 = pygame.image.load('graficos/powerups/mochila/mochila_6.png')
+            mochila_7 = pygame.image.load('graficos/powerups/mochila/mochila_7.png')
             
+            self.frames = [mochila_1, mochila_2, mochila_3, mochila_4, mochila_5, mochila_6, mochila_7]
+
+            for i in range(len(self.frames)):
+                self.frames[i] = pygame.transform.scale(self.frames[i], (28,28))
+
 
 
         self.gravidade = randint(1, 12)
