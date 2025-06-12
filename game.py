@@ -6,6 +6,7 @@ from classes.Player import player
 from classes.Moeda import Moeda
 from classes.Inimigo import Inimigo
 from classes.PowerUp import PowerUp
+from classes.Debuff import Debuff
 import FuncExternas.funcExternas
 pygame.init()
 
@@ -113,7 +114,8 @@ def play():
             if event.type == config.powerup_timer:
                 config.powerup_group.add(PowerUp(choice(['vida', 'velocidade', 'moeda2x', 'tempo', 'pesoExtra', 'invulnerabilidade'])))
         
-        
+            if event.type == config.debuff_timer:
+                config.debuff_group.add(Debuff(choice(['congelamento'])))
 
 
         if cont_fundo == 0:
@@ -177,6 +179,9 @@ def play():
 
         config.powerup_group.draw(config.screen)
         config.powerup_group.update()
+
+        config.debuff_group.draw(config.screen)
+        config.debuff_group.update()
 
 
         player.draw(config.screen)

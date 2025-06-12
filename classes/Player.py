@@ -25,7 +25,10 @@ class Player(pygame.sprite.Sprite):
         self.velocidade = self.velocidadeNormal
         self.vidaAtual = 3
         self.PowerUpsAtivos = []
+        self.debuffsAtivos = []
         self.pesoExtra = 0
+
+        # POWER UPS
 
         #Atributos PowerUps de velocidade
         self.powerUp_velocidade_ativo = False
@@ -45,6 +48,16 @@ class Player(pygame.sprite.Sprite):
         self.multMoeda2x = 1
 
         
+
+        # DEBUFFS
+
+        #Atributos Debuff de congelamento
+        self.debuff_congelamento_ativo = False
+        self.tempo_inicioDebuffCongelamento = None
+        self.tempototalDebuffCongelamento = 15000
+
+
+
 
 
 
@@ -170,6 +183,51 @@ class Player(pygame.sprite.Sprite):
             pygame.quit()
             exit()
 
+    def colisaoDebuff(self):
+        debuff_colidido = pygame.sprite.spritecollide(player.sprite, config.debuff_group, True)
+
+        for debuff in debuff_colidido:
+            if debuff.tipo == 'congelamento':
+                self.ativar_debuff('congelamento')
+
+    def ativar_debuff(self, debuff_tipo):
+        if debuff_tipo == 'congelamento':
+            if self.debuff_congelamento_ativo == False:
+                self.debuffsAtivos.append(['congelamento', 'white', 0])
+
+            self.debuff_congelamento_ativo = True
+            self.tempo_inicioDebuffCongelamento = pygame.time.get_ticks()
+
+            print(self.debuffsAtivos)
+    def poderDebuff(self):
+        for debuff in self.debuffsAtivos:
+            if debuff[0] == 'congelamento':
+                pass #Colocar o poder AQUI
+
+        if self.debuff_congelamento_ativo == False:
+            #Voltar ao normal AQUI
+            pass
+
+    def verificar_tempo_Debuff(self):
+        if self.debuff_congelamento_ativo and self.tempo_inicioDebuffCongelamento:
+            tempo_decorrido_congelamento = pygame.time.get_ticks() - self.tempo_inicioDebuffCongelamento
+            if tempo_decorrido_congelamento >= self.tempototalDebuffCongelamento:  # 15 segundos em milissegundos
+                self.debuff_congelamento_ativo = False  # Desativa a habilidade
+                
+                self.debuffsAtivos = [d for d in self.debuffsAtivos if d[0] != "congelamento"]
+
+    def tempo_restante_Debuff(self):
+        if self.debuff_congelamento_ativo and self.tempo_inicioDebuffCongelamento:
+            tempo_decorrido_congelamento = (pygame.time.get_ticks() - self.tempo_inicioDebuffCongelamento) // 1000
+            tempo_restante_congelamento = max(0, self.tempototalDebuffCongelamento // 1000 - tempo_decorrido_congelamento)
+
+
+            for debuff in self.debuffsAtivos:
+                if debuff[0] == 'congelamento':
+                    segundos_congelamento = int(tempo_restante_congelamento % 60)
+                    debuff[2] = segundos_congelamento
+
+
 
     def colisaoPowerUp(self):
         from tempo import adicionarTempo
@@ -244,7 +302,7 @@ class Player(pygame.sprite.Sprite):
         if self.powerUp_invulnerabilidade_ativo == False:
             self.image.set_alpha(255)
 
-    def verificar_tempo(self):
+    def verificar_tempo_PowerUp(self):
         """Verifica se os 15 segundos já passaram"""
         if self.powerUp_velocidade_ativo and self.tempo_inicioPowerUpVelocidade:
             tempo_decorrido_velocidade = pygame.time.get_ticks() - self.tempo_inicioPowerUpVelocidade
@@ -269,7 +327,7 @@ class Player(pygame.sprite.Sprite):
     
 
 
-    def tempo_restante(self):
+    def tempo_restante_PowerUp(self):
         """Retorna o tempo restante"""
         if self.powerUp_velocidade_ativo and self.tempo_inicioPowerUpVelocidade:
             tempo_decorrido_velocidade = (pygame.time.get_ticks() - self.tempo_inicioPowerUpVelocidade) // 1000
@@ -333,16 +391,26 @@ class Player(pygame.sprite.Sprite):
             texto_rect = texto.get_rect(topleft=(5, start_y + i * spacing))  # Ajuste dinâmico
             config.screen.blit(texto, texto_rect)
 
+        start_y_debuff = 100
+        spacing_debuff = 32
 
+        for i, (nome, cor, segundos) in enumerate(self.debuffsAtivos):
+            texto_debuff = config.test_font.render(f"{nome} por {segundos} s", False, cor)
+            texto_debuff_rect = texto_debuff.get_rect(topright=(config.largura - 5, start_y_debuff + i * spacing_debuff))  # Ajuste dinâmico
+            config.screen.blit(texto_debuff, texto_debuff_rect)
 
     def update(self):
         self.player_input()
         self.colisaoMoeda()
         self.colisaoInimigo()
-        self.tempo_restante()
+        self.colisaoDebuff()
+        self.poderDebuff()
+        self.verificar_tempo_Debuff()
+        self.tempo_restante_Debuff()
+        self.tempo_restante_PowerUp()
         self.colisaoPowerUp()
         self.poderPowerUp()
-        self.verificar_tempo()
+        self.verificar_tempo_PowerUp()
         self.mostrarVida()
 
 
