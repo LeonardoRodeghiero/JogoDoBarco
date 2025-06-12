@@ -21,14 +21,14 @@ def Jogo():
         menu.menu.blit(title_text, title_rect)
 
         # Carrega imagens normais e de hover
-        play_default = pygame.transform.scale(pygame.image.load('playwhite1.png').convert_alpha(), (150, 60))
-        play_hover =pygame.transform.scale(pygame.image.load('playgreen1.png').convert_alpha(), (150, 60))
+        play_default = pygame.transform.scale(pygame.image.load('graficos/botoes/playwhite1.png').convert_alpha(), (150, 60))
+        play_hover =pygame.transform.scale(pygame.image.load('graficos/botoes/playgreen1.png').convert_alpha(), (150, 60))
 
-        options_default =pygame.transform.scale(pygame.image.load('optionwhite.png').convert_alpha(),(150, 60))
-        options_hover = pygame.transform.scale(pygame.image.load('optiongreen.png').convert_alpha(),(150, 60))
+        options_default =pygame.transform.scale(pygame.image.load('graficos/botoes/optionwhite.png').convert_alpha(),(150, 60))
+        options_hover = pygame.transform.scale(pygame.image.load('graficos/botoes/optiongreen.png').convert_alpha(),(150, 60))
 
-        quit_default = pygame.transform.scale(pygame.image.load('quitwhite.png').convert_alpha(), (150, 60))
-        quit_hover = pygame.transform.scale(pygame.image.load('quitgreen.png').convert_alpha(), (150, 60))
+        quit_default = pygame.transform.scale(pygame.image.load('graficos/botoes/quitwhite.png').convert_alpha(), (150, 60))
+        quit_hover = pygame.transform.scale(pygame.image.load('graficos/botoes/quitgreen.png').convert_alpha(), (150, 60))
 
         # Cria botões com as duas imagens
         play_button = menu.Button(play_default, play_hover, (config.largura/2, 300), "", menu.get_font(50), "#d7fcd4", "green")
