@@ -1,5 +1,6 @@
 import pygame, config
 from random import randint
+from classes.Player import player
 
 pygame.init()
 
@@ -32,13 +33,31 @@ class Debuff(pygame.sprite.Sprite):
                 self.frames[i] = pygame.transform.scale(self.frames[i], (30, 30))
 
 
+        self.virou_area = False
 
-
+        self.duracao_area = 5000
+        self.tempo_criacao = None
         self.gravidade = randint(1, 12)
         self.debuff_index = 0
         self.image = self.frames[self.debuff_index]
         self.rect = self.image.get_rect(midbottom=(randint(9, config.largura-9), randint(-100, -1)))
     
+    def transformar_em_area(self):
+        self.virou_area = True
+
+        area = pygame.sprite.Sprite()
+        area.image = pygame.Surface((80, 30), pygame.SRCALPHA)
+        area.image.fill((180,240,255,120))
+        area.rect = area.image.get_rect(midbottom=(self.rect.midbottom))
+        area.tempo_criacao = pygame.time.get_ticks()
+        area.duracao = 5000
+
+        config.area_congelada_group.add(area)
+
+        self.kill()
+
+
+
     def queda(self):
         self.rect.y += self.gravidade
 
@@ -52,6 +71,14 @@ class Debuff(pygame.sprite.Sprite):
             self.kill()
 
     def update(self):
+        if self.tipo == 'congelamento' and not self.virou_area:
+            self.rect.y += self.gravidade
+
+            if self.rect.bottom >= config.altura:
+                self.transformar_em_area()
+
+
         self.animacao()
         self.queda()
         self.destruir()
+        

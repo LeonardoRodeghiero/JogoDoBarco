@@ -183,7 +183,12 @@ def play():
         config.debuff_group.draw(config.screen)
         config.debuff_group.update()
 
+        for area in config.area_congelada_group:
+            tempo_atual = pygame.time.get_ticks()
+            if pygame.time.get_ticks() - area.tempo_criacao >= area.duracao:
+                area.kill()
 
+        config.area_congelada_group.draw(config.screen)
         player.draw(config.screen)
         player.update()
 

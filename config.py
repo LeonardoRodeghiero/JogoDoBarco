@@ -47,3 +47,5 @@ inimigo_group = pygame.sprite.Group()
 powerup_group = pygame.sprite.Group()
 
 debuff_group = pygame.sprite.Group()
+
+area_congelada_group = pygame.sprite.Group()

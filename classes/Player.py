@@ -54,7 +54,7 @@ class Player(pygame.sprite.Sprite):
         #Atributos Debuff de congelamento
         self.debuff_congelamento_ativo = False
         self.tempo_inicioDebuffCongelamento = None
-        self.tempototalDebuffCongelamento = 15000
+        self.tempototalDebuffCongelamento = 2000
 
 
 
@@ -74,27 +74,27 @@ class Player(pygame.sprite.Sprite):
 
 
 
-
-        if (keys[pygame.K_LEFT] or keys[pygame.K_a]) and (keys[pygame.K_RIGHT] or keys[pygame.K_d]):
-            pass
-        else:
-            if (keys[pygame.K_RIGHT] or keys[pygame.K_d]) and self.rect.right <= config.largura:
-                self.player_index += 0.15 - lentidao_animacao
-                if self.player_index >= 9:
-                    self.player_index = 0
-                self.image = self.frames[int(self.player_index)]
-
-                self.rect.x += self.velocidade - self.peso + self.pesoExtra
-            elif (keys[pygame.K_LEFT] or keys[pygame.K_a]) and self.rect.left >= 0:
-                self.player_index -= 0.15 - lentidao_animacao
-                if self.player_index < 0:
-                    self.player_index = 8
-                self.image = self.frames[int(self.player_index)]
-
-                self.rect.x -= self.velocidade - self.peso + self.pesoExtra
-        
+        if self.debuff_congelamento_ativo == False:
+            if (keys[pygame.K_LEFT] or keys[pygame.K_a]) and (keys[pygame.K_RIGHT] or keys[pygame.K_d]):
+                pass
             else:
-                self.player_index = int(self.player_index)
+                if (keys[pygame.K_RIGHT] or keys[pygame.K_d]) and self.rect.right <= config.largura:
+                    self.player_index += 0.15 - lentidao_animacao
+                    if self.player_index >= 9:
+                        self.player_index = 0
+                    self.image = self.frames[int(self.player_index)]
+
+                    self.rect.x += self.velocidade - self.peso + self.pesoExtra
+                elif (keys[pygame.K_LEFT] or keys[pygame.K_a]) and self.rect.left >= 0:
+                    self.player_index -= 0.15 - lentidao_animacao
+                    if self.player_index < 0:
+                        self.player_index = 8
+                    self.image = self.frames[int(self.player_index)]
+
+                    self.rect.x -= self.velocidade - self.peso + self.pesoExtra
+            
+                else:
+                    self.player_index = int(self.player_index)
         
 
     def mostrarVida(self):
@@ -184,11 +184,12 @@ class Player(pygame.sprite.Sprite):
             exit()
 
     def colisaoDebuff(self):
-        debuff_colidido = pygame.sprite.spritecollide(player.sprite, config.debuff_group, True)
+        if self.powerUp_invulnerabilidade_ativo == False:
+            debuff_colidido = pygame.sprite.spritecollide(player.sprite, config.debuff_group, True)
 
-        for debuff in debuff_colidido:
-            if debuff.tipo == 'congelamento':
-                self.ativar_debuff('congelamento')
+            for debuff in debuff_colidido:
+                if debuff.tipo == 'congelamento':
+                    self.ativar_debuff('congelamento')
 
     def ativar_debuff(self, debuff_tipo):
         if debuff_tipo == 'congelamento':
@@ -198,15 +199,40 @@ class Player(pygame.sprite.Sprite):
             self.debuff_congelamento_ativo = True
             self.tempo_inicioDebuffCongelamento = pygame.time.get_ticks()
 
-            print(self.debuffsAtivos)
+
+        
     def poderDebuff(self):
         for debuff in self.debuffsAtivos:
             if debuff[0] == 'congelamento':
-                pass #Colocar o poder AQUI
+                imagem_base = self.frames[int(self.player_index)].copy()
+        
+                # Criar overlay azul claro do mesmo tamanho, totalmente transparente
+                overlay = pygame.Surface(imagem_base.get_size(), pygame.SRCALPHA)
+                overlay.fill((180, 240, 255, 0))  # Totalmente transparente a princípio
 
+                # Acessar os pixels da imagem base
+                for y in range(imagem_base.get_height()):
+                    for x in range(imagem_base.get_width()):
+                        r, g, b, a = imagem_base.get_at((x, y))
+                        if a != 0:  # Só se o pixel for visível
+                            overlay.set_at((x, y), (190, 230, 250, 90))  # Azul claro no pixel visível
+
+                # Aplica o overlay pixel a pixel
+                imagem_base.blit(overlay, (0, 0), special_flags=pygame.BLEND_RGBA_ADD)
+
+                self.image = imagem_base      
         if self.debuff_congelamento_ativo == False:
             #Voltar ao normal AQUI
-            pass
+            self.image = self.frames[int(self.player_index)]
+
+    def verificar_area_congelada(self):
+        colisoes = pygame.sprite.spritecollide(self, config.area_congelada_group, False)
+        if colisoes and not self.debuff_congelamento_ativo:
+            self.velocidade = self.velocidadeNormal // 2
+        elif not self.debuff_congelamento_ativo:
+            self.velocidade = self.velocidadeNormal
+
+
 
     def verificar_tempo_Debuff(self):
         if self.debuff_congelamento_ativo and self.tempo_inicioDebuffCongelamento:
@@ -412,7 +438,7 @@ class Player(pygame.sprite.Sprite):
         self.poderPowerUp()
         self.verificar_tempo_PowerUp()
         self.mostrarVida()
-
+        self.verificar_area_congelada()
 
 #Instancia da classe Player
 player = pygame.sprite.GroupSingle()
