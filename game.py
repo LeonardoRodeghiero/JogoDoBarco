@@ -6,7 +6,7 @@ from classes.Player import player
 from classes.Moeda import Moeda
 from classes.Inimigo import Inimigo
 from classes.PowerUp import PowerUp
-from classes.Debuff import Debuff
+from classes.Debuff import Debuff, ParticulaFumaca
 import FuncExternas.funcExternas
 pygame.init()
 
@@ -184,9 +184,24 @@ def play():
         config.debuff_group.update()
 
         for area in config.area_congelada_group:
-            tempo_atual = pygame.time.get_ticks()
             if pygame.time.get_ticks() - area.tempo_criacao >= area.duracao:
                 area.kill()
+
+        for area in config.area_congelada_group:
+            # Remove se passou o tempo
+            tempo_area = pygame.time.get_ticks()
+            if tempo_area - area.tempo_criacao >= area.duracao:
+                area.kill()
+            else:
+                # Cria partícula ocasionalmente
+                if randint(0, 10) == 0:  # 1 em 10 frames (pode ajustar)
+                    x = randint(area.rect.left, area.rect.right)
+                    y = area.rect.top + randint(-5, 5)
+                    particula = ParticulaFumaca((x,y))                    
+                    config.grupo_particulas_gelo.add(particula)
+
+        config.grupo_particulas_gelo.update()
+        config.grupo_particulas_gelo.draw(config.screen)
 
         config.area_congelada_group.draw(config.screen)
         player.draw(config.screen)

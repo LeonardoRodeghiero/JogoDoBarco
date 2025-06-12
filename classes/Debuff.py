@@ -1,8 +1,29 @@
 import pygame, config
 from random import randint
-from classes.Player import player
 
 pygame.init()
+#fumacinha = pygame.Surface((10, 10), pygame.SRCALPHA)
+fumacinha = pygame.image.load('graficos/debuffs/congelamento/congelamento_1.png')
+#pygame.draw.circle(fumacinha, (200, 240, 255, 100), (5, 5), 5)
+fumacinha = pygame.transform.scale(fumacinha, (12, 12))
+
+class ParticulaFumaca(pygame.sprite.Sprite):
+    def __init__(self, pos):
+        super().__init__()
+        self.image = fumacinha.copy()
+        self.rect = self.image.get_rect(center=pos)
+        self.vel_y = -1  # sobe
+        self.alpha = 100
+    
+    def update(self):
+        self.rect.y += self.vel_y
+        self.alpha -= 2  # vai desaparecendo
+        if self.alpha <= 0:
+            self.kill()
+        else:
+            self.image.set_alpha(self.alpha)
+
+
 
 class Debuff(pygame.sprite.Sprite):
     def __init__(self, tipo):
@@ -48,6 +69,7 @@ class Debuff(pygame.sprite.Sprite):
         area = pygame.sprite.Sprite()
         area.image = pygame.Surface((80, 30), pygame.SRCALPHA)
         area.image.fill((180,240,255,120))
+        pygame.draw.rect(area.image, (200, 255, 255), area.image.get_rect(), 2)
         area.rect = area.image.get_rect(midbottom=(self.rect.midbottom))
         area.tempo_criacao = pygame.time.get_ticks()
         area.duracao = 5000

@@ -49,3 +49,5 @@ powerup_group = pygame.sprite.Group()
 debuff_group = pygame.sprite.Group()
 
 area_congelada_group = pygame.sprite.Group()
+
+grupo_particulas_gelo = pygame.sprite.Group()
