@@ -3,7 +3,16 @@ import pygame
 pygame.init()
 test_font = pygame.font.Font('fonte/Pixeltype.ttf', 50)
 mensagem_test_font = pygame.font.Font('fonte/Pixeltype.ttf', 15)
+"""
+# Obter informações do modo de exibição
+infoObject = pygame.display.Info()
 
+# A largura do monitor está em infoObject.current_w
+largura = infoObject.current_w
+
+# A altura do monitor está em infoObject.current_h
+altura = infoObject.current_h
+"""
 largura = 1000
 altura = 600
 screen = pygame.display.set_mode((largura, altura))
