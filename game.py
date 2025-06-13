@@ -1,7 +1,9 @@
 import pygame
 from sys import exit
 from random import randint, choice
+from time import sleep
 import config
+import audio
 from classes.Player import player
 from classes.Moeda import Moeda
 from classes.Inimigo import Inimigo
@@ -11,8 +13,14 @@ import FuncExternas.funcExternas
 pygame.init()
 
 
+
+
+
 import menu
+
 def Jogo():
+    audio.escolher_musica_fundo_e_tocar()
+
     while True:
         menu.menu.blit(menu.menubg, (0, 0))
         mouse_pos = pygame.mouse.get_pos()
@@ -47,10 +55,15 @@ def Jogo():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if play_button.checkForInput(mouse_pos):
                     pygame.display.set_caption("Catch The Coin")
+                    audio.click_menu.play()
                     play()
                 if options_button.checkForInput(mouse_pos):
+                    audio.click_menu.play()
                     menu.options()
+
                 if quit_button.checkForInput(mouse_pos):
+                    audio.click_menu.play()
+                    sleep(0.1)
                     pygame.quit()
                     exit()
 
@@ -93,7 +106,8 @@ def Jogo():
 
 def play():
     import tempo
-
+    audio.parar_musica_fundo()
+    audio.tocar_musica_game()
     cont_fundo = 0
     score = 0
     tempo_colisao_Porto = 0
@@ -115,7 +129,6 @@ def play():
             
             if event.type == config.powerup_timer:
                 config.powerup_group.add(PowerUp(choice(['vida', 'velocidade', 'moeda2x', 'tempo', 'pesoExtra', 'invulnerabilidade'])))
-        
             if event.type == config.debuff_timer:
                 config.debuff_group.add(Debuff(choice(['congelamento'])))
 

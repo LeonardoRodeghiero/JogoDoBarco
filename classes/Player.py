@@ -1,5 +1,6 @@
 import pygame
 import config
+import audio
 from sys import exit
 
 class Player(pygame.sprite.Sprite):
@@ -70,9 +71,6 @@ class Player(pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()
 
         lentidao_animacao = int(self.peso) / 100
-
-
-
 
         if self.debuff_congelamento_ativo == False:
             if (keys[pygame.K_LEFT] or keys[pygame.K_a]) and (keys[pygame.K_RIGHT] or keys[pygame.K_d]):
@@ -164,20 +162,30 @@ class Player(pygame.sprite.Sprite):
                 if moeda.tipo == 'ouro':
                     self.peso += 0.5
                     self.pontos += 3 * self.multMoeda2x
+                    audio.escolher_som_moeda_e_tocar()
 
                 if moeda.tipo == 'prata':
                     self.peso += 0.3
                     self.pontos += 2 * self.multMoeda2x
-
+                    audio.escolher_som_moeda_e_tocar()
 
                 if moeda.tipo == 'bronze':
                     self.peso += 0.1
                     self.pontos += 1 * self.multMoeda2x
+                    audio.escolher_som_moeda_e_tocar()
         
     def colisaoInimigo(self):
         if self.powerUp_invulnerabilidade_ativo == False:
-            if pygame.sprite.spritecollide(player.sprite, config.inimigo_group, True):
-                self.vidaAtual -= 1
+            inimigo_colidido = pygame.sprite.spritecollide(player.sprite, config.inimigo_group, True)
+            for inimigo in inimigo_colidido:
+                if inimigo.tipo == 'bomba':
+                    self.vidaAtual -= 1
+                    audio.tocar_som_explosao()
+
+                if inimigo.tipo == 'flecha':
+                    self.vidaAtual -= 1
+                    audio.tocar_som_flechada()
+
 
         if self.vidaAtual <= 0:
             pygame.quit()

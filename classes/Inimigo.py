@@ -1,6 +1,6 @@
 import pygame
 from random import randint, choice
-import config
+import config, audio
 
 
 class Inimigo(pygame.sprite.Sprite):
@@ -29,6 +29,11 @@ class Inimigo(pygame.sprite.Sprite):
             self.distanciaDeTroca = distanciaApercorrer // 6
             self.rect = self.image.get_rect(midbottom=((randint(9, config.largura-9), inicio)))
             self.gravidade = randint(1, 12)
+
+
+
+
+
 
         elif tipo == 'flecha':
             flecha_1 = pygame.image.load('graficos/inimigos/flecha/flecha1.png')
@@ -84,3 +89,5 @@ class Inimigo(pygame.sprite.Sprite):
         self.animacao()
         self.queda()
         self.destruir()
+
+
