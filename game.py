@@ -54,7 +54,6 @@ def Jogo():
                 exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if play_button.checkForInput(mouse_pos):
-                    pygame.display.set_caption("Catch The Coin")
                     audio.click_menu.play()
                     return "jogo"
                 if options_button.checkForInput(mouse_pos):
@@ -99,7 +98,6 @@ def Jogo():
                 exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if play_button.checkForInput(mouse_pos):
-                    pygame.display.set_caption("Catch The Coin")
                     play()
                 if options_button.checkForInput(mouse_pos):
                     menu.options()
@@ -114,11 +112,14 @@ def main():
     from gameover import gameover
     estado = "menu"
     while True:
-        if estado == "menu":
+        if estado == "menu":                    
+            pygame.display.set_caption("Menu")
             estado = Jogo()
-        elif estado == "jogo":
+            pygame.display.set_caption("Catch The Coin")
             estado = play()
+
         elif estado == "gameover":
+            pygame.display.set_caption("Game Over")
             estado = gameover()
         elif estado == "sair":
             break

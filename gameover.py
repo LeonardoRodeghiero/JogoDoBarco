@@ -37,12 +37,10 @@ def gameover():
                 exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if restart_button.checkForInput(mouse_pos):
-                    pygame.display.set_caption("Catch The Coin")
                     audio.click_menu.play()
 
                     return "jogo"
                 if menu_button.checkForInput(mouse_pos):
-                    pygame.display.set_caption("MENU")
                     audio.click_menu.play()
                     return "menu"
                 if quitg_button.checkForInput(mouse_pos):
