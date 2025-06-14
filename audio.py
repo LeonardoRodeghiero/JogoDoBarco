@@ -68,8 +68,8 @@ def escolher_som_moeda_e_tocar():
 
 
 def tocar_som_explosao():
-    explosao = pygame.mixer.Sound('audios/sons_bombas/explosao.wav')
-    explosao.set_volume(0.1)
+    explosao = pygame.mixer.Sound('audios/sons_bombas/explosao.mp3')
+    explosao.set_volume(0.3)
     explosao.play()
 
 """def tocar_som_queda_bomba(inimigo):
@@ -85,4 +85,51 @@ def tocar_som_flechada():
     flechada = pygame.mixer.Sound('audios/flecha/flecha.ogg')
     flechada.set_volume(0.2)
     flechada.play()
+
+def tocar_som_congelamento():
+    som_escolhido = randint(1,1)
+
+    if som_escolhido == 1:
+        congelamento = pygame.mixer.Sound('audios/congelamento/congelamento1.flac')
+
+    elif som_escolhido == 2:
+        congelamento = pygame.mixer.Sound('audios/congelamento/congelamento2.flac')
+
+    elif som_escolhido == 3:
+        congelamento = pygame.mixer.Sound('audios/congelamento/congelamento3.flac')
+
+    elif som_escolhido == 4:
+        congelamento = pygame.mixer.Sound('audios/congelamento/congelamento4.flac')
+
+    elif som_escolhido == 5:
+        congelamento = pygame.mixer.Sound('audios/congelamento/congelamento5.flac')
+
+    elif som_escolhido == 6:
+        congelamento = pygame.mixer.Sound('audios/congelamento/congelamento6.flac')
+
+    elif som_escolhido == 7:
+        congelamento = pygame.mixer.Sound('audios/congelamento/congelamento7.flac')
+
+
+    congelamento.set_volume(0.1)
+    congelamento.play()
+
+
+# Sons de gameOver
+def tocarMusicaGameOver():
+    mus_escolhida = randint(1,3)
+
+    if mus_escolhida == 1:
+        pygame.mixer.music.load('audios/gameOver/gameOver.wav')
+        pygame.mixer.music.play(0)
+
+    elif mus_escolhida == 2:
+        pygame.mixer.music.load('audios/gameOver/gameOver2.wav')
+        pygame.mixer.music.play(-1)
+
+    elif mus_escolhida == 3:
+        pygame.mixer.music.load('audios/gameOver/No Hope.mp3')
+        pygame.mixer.music.play(-1)
+
+    pygame.mixer.music.set_volume(0.5)
 

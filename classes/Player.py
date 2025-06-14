@@ -203,6 +203,7 @@ class Player(pygame.sprite.Sprite):
             for debuff in debuff_colidido:
                 if debuff.tipo == 'congelamento':
                     self.ativar_debuff('congelamento')
+                    audio.tocar_som_congelamento()
 
     def ativar_debuff(self, debuff_tipo):
         if debuff_tipo == 'congelamento':

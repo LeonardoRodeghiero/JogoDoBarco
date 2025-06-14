@@ -4,6 +4,7 @@ import config
 import audio
 from time import sleep
 def gameover():
+    audio.tocarMusicaGameOver()
     while True:
         menu.over.blit(menu.overbg, (0, 0))
         mouse_pos = pygame.mouse.get_pos()

@@ -176,7 +176,7 @@ def escolher_fundo(fundoSorteado):
             {"imagem": pygame.image.load('graficos/fundo/FundosDivididos/fundo7/ceu-mar.png').convert_alpha(), "velocidade": 0.05},
             {"imagem": pygame.image.load('graficos/fundo/FundosDivididos/fundo7/lua.png').convert_alpha(), "velocidade": 0.02},
             {"imagem": pygame.image.load('graficos/fundo/FundosDivididos/fundo7/nuvens-atras.png').convert_alpha(), "velocidade": 0.15},
-            {"imagem": pygame.image.load('graficos/fundo/FundosDivididos/fundo7/nuvens.png').convert_alpha(), "velocidade": 0.3},
+            {"imagem": pygame.image.load('graficos/fundo/FundosDivididos/fundo7/nuvens.png').convert_alpha(), "velocidade": 0.10},
             {"imagem": pygame.image.load('graficos/fundo/FundosDivididos/fundo7/nuvens-baixo.png').convert_alpha(), "velocidade": 0.15}
         ]
         fundo_atual = []
