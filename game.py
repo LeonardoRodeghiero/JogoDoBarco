@@ -128,7 +128,6 @@ def play():
     import tempo
     audio.parar_musica_fundo()
     audio.tocar_musica_game()
-    cont_fundo = 0
     score = 0
     tempo_colisao_Porto = 0
     fundoSorteado = randint(2, 7)

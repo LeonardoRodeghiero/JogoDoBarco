@@ -208,7 +208,7 @@ class Button:
 menu = pygame.display.set_mode((config.largura, config.altura))
 pygame.display.set_caption("MENU")
 menubg = pygame.Surface((config.largura, config.altura))
-menubg = pygame.image.load("graficos/fundo/fundo7.png").convert()
+menubg = pygame.image.load("graficos/fundo/FundosDivididos/fundo7/fundo7.png").convert()
 """def main_menu():
     from game import play
     while True:
