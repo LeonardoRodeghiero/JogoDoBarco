@@ -175,7 +175,6 @@ class Player(pygame.sprite.Sprite):
                     audio.escolher_som_moeda_e_tocar()
         
     def colisaoInimigo(self):
-        import gameover
         if self.powerUp_invulnerabilidade_ativo == False:
             inimigo_colidido = pygame.sprite.spritecollide(player.sprite, config.inimigo_group, True)
             for inimigo in inimigo_colidido:
