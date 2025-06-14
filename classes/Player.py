@@ -63,9 +63,15 @@ class Player(pygame.sprite.Sprite):
 
         self.image = self.frames[self.player_index]
         self.rect = self.image.get_rect(midbottom=(config.largura/2, config.altura))
+    
     def atualizar_velocidade_base(self):
-        base = self.velocidadeNormal - self.peso + self.pesoExtra
-        self.velocidadeBase = max(2, base)  # Garante um mínimo pra base ficar funcional
+        if self.powerUp_velocidade_ativo == True:
+            base = (self.velocidadeNormal - self.peso + self.pesoExtra) * 2
+            self.velocidadeBase = max(2, base)
+
+        if self.powerUp_velocidade_ativo == False:
+            base = self.velocidadeNormal - self.peso + self.pesoExtra
+            self.velocidadeBase = max(2, base)  # Garante um mínimo pra base ficar funcional
 
     def player_input(self):
 
@@ -319,9 +325,9 @@ class Player(pygame.sprite.Sprite):
     def poderPowerUp(self):
 
         for powerUp in self.PowerUpsAtivos:
-            if powerUp[0] == 'velocidade':
-                self.velocidade = self.velocidade + 10
-
+            """    if powerUp[0] == 'velocidade':
+                self.velocidade = max(1, self.velocidadeBase + 10)
+            """
             if powerUp[0] == 'moeda2x':
                 self.multMoeda2x = 2
 
@@ -330,7 +336,7 @@ class Player(pygame.sprite.Sprite):
 
 
         if self.powerUp_velocidade_ativo == False:
-            self.velocidade = self.velocidade
+            self.velocidade = self.velocidadeBase
 
         if self.powerUp_moeda2x_ativo == False:
             self.multMoeda2x = 1

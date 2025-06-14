@@ -161,6 +161,34 @@ def play():
             if event.type == config.debuff_timer:
                 config.debuff_group.add(Debuff(choice(['congelamento'])))
 
+            """if event.type == config.dificuldade_timer:
+                if config.tempo_moeda > 200:
+                    config.tempo_moeda = max(config.tempo_moeda - 200, 200)
+                    pygame.time.set_timer(config.moeda_timer, config.tempo_moeda)
+
+                if config.tempo_inimigo > 500:
+                    config.tempo_inimigo = max(config.tempo_inimigo - 300, 500)
+                    pygame.time.set_timer(config.inimigo_timer, config.tempo_inimigo)
+
+                if config.tempo_powerUp > 4000:
+                    config.tempo_powerUp = max(config.tempo_powerUp - 450, 4000)
+                    pygame.time.set_timer(config.powerup_timer, config.tempo_powerUp)
+
+                if config.tempo_debuff > 3000:
+                    config.tempo_debuff = max(config.tempo_debuff - 550, 3000)
+                    pygame.time.set_timer(config.debuff_timer, config.tempo_debuff)
+
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_p:
+                print("=== STATUS DOS TIMERS ===")
+                print(f"Moeda: {config.tempo_moeda} ms")
+                print(f"Inimigo: {config.tempo_inimigo} ms")
+                print(f"PowerUp: {config.tempo_powerUp} ms")
+                print(f"Debuff: {config.tempo_debuff} ms")"""
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_w:
+                print("=== STATUS DO Jogador ===")
+                print(f"velocidade: {player.sprite.velocidade}")
+                print(f"Vida: {player.sprite.vidaAtual}")
+                
 
         if player.sprite.vidaAtual <= 0:
             return "gameover"
