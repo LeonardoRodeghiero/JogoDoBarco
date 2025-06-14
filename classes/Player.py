@@ -1,6 +1,5 @@
 import pygame
 import config
-from sys import exit
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -64,6 +63,8 @@ class Player(pygame.sprite.Sprite):
         self.image = self.frames[self.player_index]
         self.rect = self.image.get_rect(midbottom=(config.largura/2, config.altura))
 
+
+   
 
     def player_input(self):
 
@@ -175,13 +176,13 @@ class Player(pygame.sprite.Sprite):
                     self.pontos += 1 * self.multMoeda2x
         
     def colisaoInimigo(self):
+        import gameOver
         if self.powerUp_invulnerabilidade_ativo == False:
             if pygame.sprite.spritecollide(player.sprite, config.inimigo_group, True):
                 self.vidaAtual -= 1
 
-        if self.vidaAtual <= 0:
-            pygame.quit()
-            exit()
+        
+
 
     def colisaoDebuff(self):
         if self.powerUp_invulnerabilidade_ativo == False:

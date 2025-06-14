@@ -2,7 +2,7 @@ import pygame
 from sys import exit
 from random import randint, choice
 import config
-from classes.Player import player
+from classes.Player import player, Player
 from classes.Moeda import Moeda
 from classes.Inimigo import Inimigo
 from classes.PowerUp import PowerUp
@@ -11,7 +11,7 @@ import FuncExternas.funcExternas
 
 
 pygame.init()
-
+    
 
 import menu
 def Jogo():
@@ -49,7 +49,7 @@ def Jogo():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if play_button.checkForInput(mouse_pos):
                     pygame.display.set_caption("Catch The Coin")
-                    play()
+                    return "jogo"
                 if options_button.checkForInput(mouse_pos):
                     menu.options()
                 if quit_button.checkForInput(mouse_pos):
@@ -59,50 +59,7 @@ def Jogo():
         pygame.display.update()
 
 
-def gameover():
-    while True:
-        menu.over.blit(menu.overbg, (0, 0))
-        mouse_pos = pygame.mouse.get_pos()
 
-        title_text = menu.get_font(80).render("GAMME OVER", True, "#b68f40")
-        title_rect = title_text.get_rect(center=(config.largura/2, 100))
-        menu.over.blit(title_text, title_rect)
-
-        # Carrega imagens normais e de hover
-        restart_default = pygame.transform.scale(pygame.image.load('graficos/botoes/restartblack.png').convert_alpha(), (150, 60))
-        restart_hover =pygame.transform.scale(pygame.image.load('graficos/botoes/restartgreen.png').convert_alpha(), (150, 60))
-
-        menu_default =pygame.transform.scale(pygame.image.load('graficos/botoes/menublack.png').convert_alpha(),(150, 60))
-        menu_hover = pygame.transform.scale(pygame.image.load('graficos/botoes/menugreen.png').convert_alpha(), (150, 60))
-
-        quitg_default = pygame.transform.scale(pygame.image.load('graficos/botoes/quitblack.png').convert_alpha(), (150, 60))
-        quitg_hover = pygame.transform.scale(pygame.image.load('graficos/botoes/quitgreen2.png').convert_alpha(), (150, 60))
-
-        # Cria botões com as duas imagens
-        restart_button = menu.Button(restart_default, restart_hover, (config.largura/2, 300), "", menu.get_font(50), "#d7fcd4", "green")
-        menu_button = menu.Button(menu_default, menu_hover, (config.largura/2, 400), "", menu.get_font(50), "#d7fcd4", "green")
-        quitg_button = menu.Button(quitg_default, quitg_hover, (config.largura/2, 500), "", menu.get_font(50), "#d7fcd4", "green")
-
-        for button in [restart_button, menu_button, quitg_button]:
-            button.changeColor(mouse_pos)
-            button.update(menu.over)
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if restart_button.checkForInput(mouse_pos):
-                    pygame.display.set_caption("Catch The Coin")
-                    play()
-                if menu_button.checkForInput(mouse_pos):
-                    pygame.display.set_caption("MENU")
-                    Jogo()
-                if quitg_button.checkForInput(mouse_pos):
-                    pygame.quit()
-                    exit()
-
-        pygame.display.update()
 
 
 
@@ -142,17 +99,37 @@ def gameover():
         pygame.display.update()
 """
 
+def main():
+    from gameOver import gameover
+    estado = "menu"
+    while True:
+        if estado == "menu":
+            estado = Jogo()
+        elif estado == "jogo":
+            estado = play()
+        elif estado == "gameover":
+            estado = gameover()
+        elif estado == "sair":
+            break
+
+
 def play():
     import tempo
-
     cont_fundo = 0
     score = 0
     tempo_colisao_Porto = 0
 
-
+    config.inimigo_group.empty()
+    config.moeda_group.empty()
+    config.powerup_group.empty()
+    config.debuff_group.empty()
+    config.area_congelada_group.empty()
+    config.grupo_particulas_gelo.empty()
+    player.empty()
+    player.add(Player())
+    tempo.resetar_tempo()
+    estado = "menu"
     while True:
-
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -171,6 +148,10 @@ def play():
                 config.debuff_group.add(Debuff(choice(['congelamento'])))
 
 
+        if player.sprite.vidaAtual <= 0:
+            return "gameover"
+
+        
         if cont_fundo == 0:
             cont_fundo = 1
             if cont_fundo == 1:
@@ -267,5 +248,4 @@ def play():
         pygame.display.update()
         config.clock.tick(60)
 
-#Jogo()
-gameover()
+main()
