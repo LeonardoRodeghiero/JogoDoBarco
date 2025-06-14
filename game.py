@@ -161,7 +161,7 @@ def play():
             if event.type == config.powerup_timer:
                 config.powerup_group.add(PowerUp(choice(['vida', 'velocidade', 'moeda2x', 'tempo', 'pesoExtra', 'invulnerabilidade'])))
             if event.type == config.debuff_timer:
-                config.debuff_group.add(Debuff(choice(['congelamento'])))
+                config.debuff_group.add(Debuff(choice(['congelamento', 'lentidao'])))
 
             """if event.type == config.dificuldade_timer:
                 if config.tempo_moeda > 200:
@@ -190,6 +190,7 @@ def play():
                 print("=== STATUS DO Jogador ===")
                 print(f"velocidade: {player.sprite.velocidade}")
                 print(f"Vida: {player.sprite.vidaAtual}")
+                print(f"Debuffs Ativos: {player.sprite.debuffsAtivos}")
                 
 
         if player.sprite.vidaAtual <= 0:

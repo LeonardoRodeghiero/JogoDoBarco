@@ -57,7 +57,9 @@ class Player(pygame.sprite.Sprite):
         self.tempo_inicioDebuffCongelamento = None
         self.tempototalDebuffCongelamento = 2000
 
-
+        self.debuff_lentidao_ativo = False
+        self.tempo_inicioDebuffLentidao = None
+        self.tempototalDebuffLentidao = 15000
 
 
 
@@ -69,9 +71,15 @@ class Player(pygame.sprite.Sprite):
             base = (self.velocidadeNormal - self.peso + self.pesoExtra) * 2
             self.velocidadeBase = max(2, base)
 
-        if self.powerUp_velocidade_ativo == False:
+        if self.debuff_lentidao_ativo == True:
+            base = (self.velocidadeNormal - self.peso + self.pesoExtra) / 2
+            self.velocidadeBase = max(2, base)
+
+        if self.powerUp_velocidade_ativo == False and self.debuff_lentidao_ativo == False:
             base = self.velocidadeNormal - self.peso + self.pesoExtra
             self.velocidadeBase = max(2, base)  # Garante um mínimo pra base ficar funcional
+
+
 
     def player_input(self):
 
@@ -204,6 +212,9 @@ class Player(pygame.sprite.Sprite):
                 if debuff.tipo == 'congelamento':
                     self.ativar_debuff('congelamento')
                     audio.tocar_som_congelamento()
+                if debuff.tipo == 'lentidao':
+                    self.ativar_debuff('lentidao')
+
 
     def ativar_debuff(self, debuff_tipo):
         if debuff_tipo == 'congelamento':
@@ -213,6 +224,12 @@ class Player(pygame.sprite.Sprite):
             self.debuff_congelamento_ativo = True
             self.tempo_inicioDebuffCongelamento = pygame.time.get_ticks()
 
+        if debuff_tipo == 'lentidao':
+            if self.debuff_lentidao_ativo== False:
+                self.debuffsAtivos.append(['lentidao', 'purple', 0])
+
+            self.debuff_lentidao_ativo = True
+            self.tempo_inicioDebuffLentidao = pygame.time.get_ticks()
 
         
     def poderDebuff(self):
@@ -234,11 +251,13 @@ class Player(pygame.sprite.Sprite):
                 # Aplica o overlay pixel a pixel
                 imagem_base.blit(overlay, (0, 0), special_flags=pygame.BLEND_RGBA_ADD)
 
-                self.image = imagem_base      
+                self.image = imagem_base  
+
+            
         if self.debuff_congelamento_ativo == False:
             #Voltar ao normal AQUI
             self.image = self.frames[int(self.player_index)]
-    
+
     """def atualizar_velocidade_base(self):
         self.velocidadeBase = max(1, self.velocidadeNormal - self.peso + self.pesoExtra)"""
 
@@ -246,7 +265,7 @@ class Player(pygame.sprite.Sprite):
     def verificar_area_congelada(self):
         colisoes = pygame.sprite.spritecollide(self, config.area_congelada_group, False)
         if colisoes:
-            self.velocidade = max(1, self.velocidadeBase // 2)
+            self.velocidade = max(1, self.velocidadeBase / 2)
         elif not self.debuff_congelamento_ativo:
             self.velocidade = self.velocidadeBase
 
@@ -259,6 +278,13 @@ class Player(pygame.sprite.Sprite):
                 
                 self.debuffsAtivos = [d for d in self.debuffsAtivos if d[0] != "congelamento"]
 
+        if self.debuff_lentidao_ativo and self.tempo_inicioDebuffLentidao:
+            tempo_decorrido_lentidao = pygame.time.get_ticks() - self.tempo_inicioDebuffLentidao
+            if tempo_decorrido_lentidao >= self.tempototalDebuffLentidao:  # 15 segundos em milissegundos
+                self.debuff_lentidao_ativo = False  # Desativa a habilidade
+                
+                self.debuffsAtivos = [d for d in self.debuffsAtivos if d[0] != "lentidao"]
+
     def tempo_restante_Debuff(self):
         if self.debuff_congelamento_ativo and self.tempo_inicioDebuffCongelamento:
             tempo_decorrido_congelamento = (pygame.time.get_ticks() - self.tempo_inicioDebuffCongelamento) // 1000
@@ -270,6 +296,15 @@ class Player(pygame.sprite.Sprite):
                     segundos_congelamento = int(tempo_restante_congelamento % 60)
                     debuff[2] = segundos_congelamento
 
+        if self.debuff_lentidao_ativo and self.tempo_inicioDebuffLentidao:
+            tempo_decorrido_lentidao = (pygame.time.get_ticks() - self.tempo_inicioDebuffLentidao) // 1000
+            tempo_restante_lentidao = max(0, self.tempototalDebuffLentidao // 1000 - tempo_decorrido_lentidao)
+
+
+            for debuff in self.debuffsAtivos:
+                if debuff[0] == 'lentidao':
+                    segundos_lentidao = int(tempo_restante_lentidao % 60)
+                    debuff[2] = segundos_lentidao
 
 
     def colisaoPowerUp(self):

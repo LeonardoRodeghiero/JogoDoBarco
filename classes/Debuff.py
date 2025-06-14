@@ -53,6 +53,19 @@ class Debuff(pygame.sprite.Sprite):
             for i in range(len(self.frames)):
                 self.frames[i] = pygame.transform.scale(self.frames[i], (30, 30))
 
+        if tipo == 'lentidao':
+            lentidao_1 = pygame.image.load('graficos/debuffs/lentidao/lentidao_1.png')
+            lentidao_2 = pygame.image.load('graficos/debuffs/lentidao/lentidao_2.png')
+            lentidao_3 = pygame.image.load('graficos/debuffs/lentidao/lentidao_3.png')
+            lentidao_4 = pygame.image.load('graficos/debuffs/lentidao/lentidao_4.png')
+            lentidao_5 = pygame.image.load('graficos/debuffs/lentidao/lentidao_5.png')
+            lentidao_6 = pygame.image.load('graficos/debuffs/lentidao/lentidao_6.png')
+            lentidao_7 = pygame.image.load('graficos/debuffs/lentidao/lentidao_7.png')
+            lentidao_8 = pygame.image.load('graficos/debuffs/lentidao/lentidao_8.png')
+
+            self.frames = [lentidao_1, lentidao_2, lentidao_3, lentidao_4, lentidao_5, lentidao_6, lentidao_7, lentidao_8]
+            for i in range(len(self.frames)):
+                self.frames[i] = pygame.transform.scale(self.frames[i], (30, 30))
 
         self.virou_area = False
 
