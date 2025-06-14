@@ -39,7 +39,7 @@ tempo_debuff = 2000
 debuff_timer = pygame.USEREVENT + 4
 pygame.time.set_timer(debuff_timer, tempo_debuff)
 
-""" Configurações para o aumento de nível gradual
+"""#Configurações para o aumento de nível gradual
 
 tempo_moeda = 1800
 moeda_timer = pygame.USEREVENT + 1

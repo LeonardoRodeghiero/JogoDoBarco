@@ -108,9 +108,10 @@ def play():
     import tempo
     audio.parar_musica_fundo()
     audio.tocar_musica_game()
-    cont_fundo = 0
     score = 0
     tempo_colisao_Porto = 0
+    fundoSorteado = randint(2, 7)
+    fundo_atual, cor_score = FuncExternas.funcExternas.escolher_fundo(fundoSorteado)
 
 
     while True:
@@ -157,15 +158,11 @@ def play():
                 print(f"Debuff: {config.tempo_debuff} ms")"""
 
 
-        if cont_fundo == 0:
-            cont_fundo = 1
-            if cont_fundo == 1:
-                fundoSorteado = randint(1, 7)
-                fundo_surf, cor_score = FuncExternas.funcExternas.escolher_fundo(fundoSorteado)
+    
+        #FuncExternas.funcExternas.mostrar_fundo(fundo_surf)
+        for camada in fundo_atual:
+            FuncExternas.funcExternas.mostrar_fundo_com_efeito(camada["imagem"], camada['velocidade'], camada['y'], player.sprite.rect.x)
 
-        FuncExternas.funcExternas.mostrar_fundo(fundo_surf)
-
-        
 
         score_text = config.test_font.render(f'Score: {score}', False, cor_score)
         score_text_rect = score_text.get_rect(topright=(config.largura-20, 20))

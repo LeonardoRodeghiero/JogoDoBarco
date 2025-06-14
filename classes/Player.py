@@ -22,12 +22,14 @@ class Player(pygame.sprite.Sprite):
         self.peso = 0
         self.pontuacao = 0
         self.pontos = 0
-        self.velocidadeNormal = 10
-        self.velocidade = self.velocidadeNormal
         self.vidaAtual = 3
         self.PowerUpsAtivos = []
         self.debuffsAtivos = []
         self.pesoExtra = 0
+        #Velocidade
+        self.velocidadeNormal = 10
+        self.velocidadeBase = max(1, self.velocidadeNormal - self.peso + self.pesoExtra)
+        self.velocidade = self.velocidadeBase
 
         # POWER UPS
 
@@ -61,10 +63,11 @@ class Player(pygame.sprite.Sprite):
 
 
 
-
         self.image = self.frames[self.player_index]
         self.rect = self.image.get_rect(midbottom=(config.largura/2, config.altura))
-
+    def atualizar_velocidade_base(self):
+        base = self.velocidadeNormal - self.peso + self.pesoExtra
+        self.velocidadeBase = max(2, base)  # Garante um mínimo pra base ficar funcional
 
     def player_input(self):
 
@@ -82,15 +85,14 @@ class Player(pygame.sprite.Sprite):
                         self.player_index = 0
                     self.image = self.frames[int(self.player_index)]
 
-                    self.rect.x += self.velocidade - self.peso + self.pesoExtra
+                    self.rect.x += self.velocidade
                 elif (keys[pygame.K_LEFT] or keys[pygame.K_a]) and self.rect.left >= 0:
                     self.player_index -= 0.15 - lentidao_animacao
                     if self.player_index < 0:
                         self.player_index = 8
                     self.image = self.frames[int(self.player_index)]
 
-                    self.rect.x -= self.velocidade - self.peso + self.pesoExtra
-            
+                    self.rect.x -= self.velocidade
                 else:
                     self.player_index = int(self.player_index)
         
@@ -232,16 +234,19 @@ class Player(pygame.sprite.Sprite):
         if self.debuff_congelamento_ativo == False:
             #Voltar ao normal AQUI
             self.image = self.frames[int(self.player_index)]
+    
+    """def atualizar_velocidade_base(self):
+        self.velocidadeBase = max(1, self.velocidadeNormal - self.peso + self.pesoExtra)"""
+
 
     def verificar_area_congelada(self):
         colisoes = pygame.sprite.spritecollide(self, config.area_congelada_group, False)
-        if colisoes and not self.debuff_congelamento_ativo:
-            self.velocidade = self.velocidadeNormal // 2
+        if colisoes:
+            self.velocidade = max(1, self.velocidadeBase // 2)
         elif not self.debuff_congelamento_ativo:
-            self.velocidade = self.velocidadeNormal
+            self.velocidade = self.velocidadeBase
 
-
-
+    
     def verificar_tempo_Debuff(self):
         if self.debuff_congelamento_ativo and self.tempo_inicioDebuffCongelamento:
             tempo_decorrido_congelamento = pygame.time.get_ticks() - self.tempo_inicioDebuffCongelamento
@@ -318,7 +323,7 @@ class Player(pygame.sprite.Sprite):
 
         for powerUp in self.PowerUpsAtivos:
             if powerUp[0] == 'velocidade':
-                self.velocidade = self.velocidadeNormal + 10
+                self.velocidade = self.velocidade + 10
 
             if powerUp[0] == 'moeda2x':
                 self.multMoeda2x = 2
@@ -328,7 +333,7 @@ class Player(pygame.sprite.Sprite):
 
 
         if self.powerUp_velocidade_ativo == False:
-            self.velocidade = self.velocidadeNormal
+            self.velocidade = self.velocidade
 
         if self.powerUp_moeda2x_ativo == False:
             self.multMoeda2x = 1
@@ -434,6 +439,7 @@ class Player(pygame.sprite.Sprite):
             config.screen.blit(texto_debuff, texto_debuff_rect)
 
     def update(self):
+        self.atualizar_velocidade_base()
         self.player_input()
         self.colisaoMoeda()
         self.colisaoInimigo()
