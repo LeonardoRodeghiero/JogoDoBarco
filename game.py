@@ -100,7 +100,7 @@ def Jogo():
 """
 
 def main():
-    from gameOver import gameover
+    from gameover import gameover
     estado = "menu"
     while True:
         if estado == "menu":
