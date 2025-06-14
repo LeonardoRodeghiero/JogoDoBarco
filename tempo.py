@@ -3,6 +3,12 @@ import pygame, config
 tempo_total = 2 * 60  
 tempo_inicio = pygame.time.get_ticks()
 
+def resetar_tempo():
+    global tempo_total, tempo_inicio
+    tempo_total = 2 * 60
+    tempo_inicio = pygame.time.get_ticks()
+
+
 def verificar_timer(cor_score, tempo_total, tempo_inicio):
     tempo_decorrido = (pygame.time.get_ticks() - tempo_inicio) // 1000
     tempo_restante = max(0, tempo_total - tempo_decorrido)  # Impede valores negativos
@@ -19,8 +25,8 @@ def verificar_timer(cor_score, tempo_total, tempo_inicio):
 
 
     if tempo_restante == 0:
-        pygame.quit() # Melhorar a lógica de parada por tempo
-        exit()
+        from gameover import gameover
+        gameover()
 
 
 def adicionarTempo(segundos):

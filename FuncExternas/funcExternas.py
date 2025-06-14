@@ -122,7 +122,6 @@ def escolher_fundo(fundoSorteado):
                 "velocidade": velocidade,
                 "y": 0
             })
-
         cor_score =  'white'
 
     if fundoSorteado == 5:

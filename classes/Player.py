@@ -1,8 +1,6 @@
 import pygame
 import config
 import audio
-from sys import exit
-
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -177,6 +175,7 @@ class Player(pygame.sprite.Sprite):
                     audio.escolher_som_moeda_e_tocar()
         
     def colisaoInimigo(self):
+        import gameover
         if self.powerUp_invulnerabilidade_ativo == False:
             inimigo_colidido = pygame.sprite.spritecollide(player.sprite, config.inimigo_group, True)
             for inimigo in inimigo_colidido:
@@ -189,9 +188,8 @@ class Player(pygame.sprite.Sprite):
                     audio.tocar_som_flechada()
 
 
-        if self.vidaAtual <= 0:
-            pygame.quit()
-            exit()
+        
+
 
     def colisaoDebuff(self):
         if self.powerUp_invulnerabilidade_ativo == False:

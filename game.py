@@ -5,16 +5,16 @@ from time import sleep
 import config
 import audio
 from classes.Player import player
+from classes.Player import player, Player
 from classes.Moeda import Moeda
 from classes.Inimigo import Inimigo
 from classes.PowerUp import PowerUp
 from classes.Debuff import Debuff, ParticulaFumaca
 import FuncExternas.funcExternas
+
+
 pygame.init()
-
-
-
-
+    
 
 import menu
 
@@ -56,7 +56,7 @@ def Jogo():
                 if play_button.checkForInput(mouse_pos):
                     pygame.display.set_caption("Catch The Coin")
                     audio.click_menu.play()
-                    play()
+                    return "jogo"
                 if options_button.checkForInput(mouse_pos):
                     audio.click_menu.play()
                     menu.options()
@@ -68,6 +68,12 @@ def Jogo():
                     exit()
 
         pygame.display.update()
+
+
+
+
+
+
 
 
 """def Jogo():
@@ -104,16 +110,39 @@ def Jogo():
         pygame.display.update()
 """
 
+def main():
+    from gameover import gameover
+    estado = "menu"
+    while True:
+        if estado == "menu":
+            estado = Jogo()
+        elif estado == "jogo":
+            estado = play()
+        elif estado == "gameover":
+            estado = gameover()
+        elif estado == "sair":
+            break
+
+
 def play():
     import tempo
     audio.parar_musica_fundo()
     audio.tocar_musica_game()
+    cont_fundo = 0
     score = 0
     tempo_colisao_Porto = 0
     fundoSorteado = randint(2, 7)
     fundo_atual, cor_score = FuncExternas.funcExternas.escolher_fundo(fundoSorteado)
 
-
+    config.inimigo_group.empty()
+    config.moeda_group.empty()
+    config.powerup_group.empty()
+    config.debuff_group.empty()
+    config.area_congelada_group.empty()
+    config.grupo_particulas_gelo.empty()
+    player.empty()
+    player.add(Player())
+    tempo.resetar_tempo()
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -133,35 +162,17 @@ def play():
             if event.type == config.debuff_timer:
                 config.debuff_group.add(Debuff(choice(['congelamento'])))
 
-            """if event.type == config.dificuldade_timer:
-                if config.tempo_moeda > 200:
-                    config.tempo_moeda = max(config.tempo_moeda - 200, 200)
-                    pygame.time.set_timer(config.moeda_timer, config.tempo_moeda)
 
-                if config.tempo_inimigo > 500:
-                    config.tempo_inimigo = max(config.tempo_inimigo - 300, 500)
-                    pygame.time.set_timer(config.inimigo_timer, config.tempo_inimigo)
+        if player.sprite.vidaAtual <= 0:
+            return "gameover"
 
-                if config.tempo_powerUp > 4000:
-                    config.tempo_powerUp = max(config.tempo_powerUp - 450, 4000)
-                    pygame.time.set_timer(config.powerup_timer, config.tempo_powerUp)
-
-                if config.tempo_debuff > 3000:
-                    config.tempo_debuff = max(config.tempo_debuff - 550, 3000)
-                    pygame.time.set_timer(config.debuff_timer, config.tempo_debuff)
-
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_p:
-                print("=== STATUS DOS TIMERS ===")
-                print(f"Moeda: {config.tempo_moeda} ms")
-                print(f"Inimigo: {config.tempo_inimigo} ms")
-                print(f"PowerUp: {config.tempo_powerUp} ms")
-                print(f"Debuff: {config.tempo_debuff} ms")"""
-
-
-    
+        
         #FuncExternas.funcExternas.mostrar_fundo(fundo_surf)
         for camada in fundo_atual:
             FuncExternas.funcExternas.mostrar_fundo_com_efeito(camada["imagem"], camada['velocidade'], camada['y'], player.sprite.rect.x)
+
+
+
 
 
         score_text = config.test_font.render(f'Score: {score}', False, cor_score)
@@ -248,5 +259,4 @@ def play():
         pygame.display.update()
         config.clock.tick(60)
 
-Jogo()
-
+main()
