@@ -77,21 +77,21 @@ class Player(pygame.sprite.Sprite):
 
         keys = pygame.key.get_pressed()
 
-        lentidao_animacao = int(self.peso) / 100
+        animacao = self.velocidade / 100
 
         if self.debuff_congelamento_ativo == False:
             if (keys[pygame.K_LEFT] or keys[pygame.K_a]) and (keys[pygame.K_RIGHT] or keys[pygame.K_d]):
                 pass
             else:
                 if (keys[pygame.K_RIGHT] or keys[pygame.K_d]) and self.rect.right <= config.largura:
-                    self.player_index += 0.15 - lentidao_animacao
+                    self.player_index += animacao
                     if self.player_index >= 9:
                         self.player_index = 0
                     self.image = self.frames[int(self.player_index)]
 
                     self.rect.x += self.velocidade
                 elif (keys[pygame.K_LEFT] or keys[pygame.K_a]) and self.rect.left >= 0:
-                    self.player_index -= 0.15 - lentidao_animacao
+                    self.player_index -= animacao
                     if self.player_index < 0:
                         self.player_index = 8
                     self.image = self.frames[int(self.player_index)]

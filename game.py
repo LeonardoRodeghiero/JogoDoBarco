@@ -115,6 +115,7 @@ def main():
         if estado == "menu":                    
             pygame.display.set_caption("Menu")
             estado = Jogo()
+        if estado == 'jogo':
             pygame.display.set_caption("Catch The Coin")
             estado = play()
 
