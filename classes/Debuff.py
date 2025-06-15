@@ -67,6 +67,22 @@ class Debuff(pygame.sprite.Sprite):
             for i in range(len(self.frames)):
                 self.frames[i] = pygame.transform.scale(self.frames[i], (30, 30))
 
+
+        if tipo == 'menostempo':
+            rel_quebrado_2 = pygame.image.load('graficos/debuffs/relogioQuebrado/relogioQuebrado_2.png')
+            rel_quebrado_3 = pygame.image.load('graficos/debuffs/relogioQuebrado/relogioQuebrado_3.png')
+            rel_quebrado_4 = pygame.image.load('graficos/debuffs/relogioQuebrado/relogioQuebrado_4.png')
+            rel_quebrado_5 = pygame.image.load('graficos/debuffs/relogioQuebrado/relogioQuebrado_5.png')
+            rel_quebrado_6 = pygame.image.load('graficos/debuffs/relogioQuebrado/relogioQuebrado_6.png')
+            rel_quebrado_7 = pygame.image.load('graficos/debuffs/relogioQuebrado/relogioQuebrado_7.png')
+            rel_quebrado_8 = pygame.image.load('graficos/debuffs/relogioQuebrado/relogioQuebrado_8.png')
+
+            self.frames = [rel_quebrado_2,rel_quebrado_3,rel_quebrado_4,rel_quebrado_5,rel_quebrado_6,rel_quebrado_7,rel_quebrado_8]
+
+            for i in range(len(self.frames)):
+                self.frames[i] = pygame.transform.scale(self.frames[i], (30, 30))
+
+
         self.virou_area = False
 
         self.duracao_area = 5000

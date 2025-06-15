@@ -205,6 +205,7 @@ class Player(pygame.sprite.Sprite):
 
 
     def colisaoDebuff(self):
+        from tempo import retirarTempo
         if self.powerUp_invulnerabilidade_ativo == False:
             debuff_colidido = pygame.sprite.spritecollide(player.sprite, config.debuff_group, True)
 
@@ -214,7 +215,8 @@ class Player(pygame.sprite.Sprite):
                     audio.tocar_som_congelamento()
                 if debuff.tipo == 'lentidao':
                     self.ativar_debuff('lentidao')
-
+                if debuff.tipo == 'menostempo':
+                    retirarTempo(10)
 
     def ativar_debuff(self, debuff_tipo):
         if debuff_tipo == 'congelamento':

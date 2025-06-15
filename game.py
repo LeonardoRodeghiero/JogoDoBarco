@@ -161,8 +161,7 @@ def play():
             if event.type == config.powerup_timer:
                 config.powerup_group.add(PowerUp(choice(['vida', 'velocidade', 'moeda2x', 'tempo', 'pesoExtra', 'invulnerabilidade'])))
             if event.type == config.debuff_timer:
-                config.debuff_group.add(Debuff(choice(['congelamento', 'lentidao'])))
-
+                config.debuff_group.add(Debuff(choice(['congelamento', 'lentidao', 'menostempo'])))
             """if event.type == config.dificuldade_timer:
                 if config.tempo_moeda > 200:
                     config.tempo_moeda = max(config.tempo_moeda - 200, 200)
@@ -195,7 +194,7 @@ def play():
 
         if player.sprite.vidaAtual <= 0:
             return "gameover"
-
+        
         
         #FuncExternas.funcExternas.mostrar_fundo(fundo_surf)
         for camada in fundo_atual:
@@ -221,7 +220,6 @@ def play():
 
         
         
-        tempo.verificar_timer(cor_score, tempo.tempo_total, tempo.tempo_inicio)
 
         tempo_necessario_Porto = int(player.sprite.peso) * 1000 / 2
         
@@ -259,6 +257,11 @@ def play():
 
         config.debuff_group.draw(config.screen)
         config.debuff_group.update()
+
+        estado = tempo.verificar_timer(cor_score, tempo.tempo_total, tempo.tempo_inicio)
+        if estado == "gameover":
+            return "gameover"
+
 
         for area in config.area_congelada_group:
             if pygame.time.get_ticks() - area.tempo_criacao >= area.duracao:
