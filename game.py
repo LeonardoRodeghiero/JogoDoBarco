@@ -161,7 +161,8 @@ def play():
             if event.type == config.powerup_timer:
                 config.powerup_group.add(PowerUp(choice(['vida', 'velocidade', 'moeda2x', 'tempo', 'pesoExtra', 'invulnerabilidade'])))
             if event.type == config.debuff_timer:
-                config.debuff_group.add(Debuff(choice(['congelamento', 'lentidao', 'menostempo'])))
+                config.debuff_group.add(Debuff(choice(['congelamento', 'lentidao', 'menostempo', 'moedas valem menos'])))
+                
             """if event.type == config.dificuldade_timer:
                 if config.tempo_moeda > 200:
                     config.tempo_moeda = max(config.tempo_moeda - 200, 200)

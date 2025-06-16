@@ -81,6 +81,20 @@ class Debuff(pygame.sprite.Sprite):
 
             for i in range(len(self.frames)):
                 self.frames[i] = pygame.transform.scale(self.frames[i], (30, 30))
+        if tipo == 'moedas valem menos':
+            moedaDiv2_1 = pygame.image.load('graficos/debuffs/moedaDiv2/moedaDiv2_1.png')
+            moedaDiv2_2 = pygame.image.load('graficos/debuffs/moedaDiv2/moedaDiv2_2.png')
+            moedaDiv2_3 = pygame.image.load('graficos/debuffs/moedaDiv2/moedaDiv2_3.png')
+            moedaDiv2_4 = pygame.image.load('graficos/debuffs/moedaDiv2/moedaDiv2_4.png')
+            moedaDiv2_5 = pygame.image.load('graficos/debuffs/moedaDiv2/moedaDiv2_5.png')
+            moedaDiv2_6 = pygame.image.load('graficos/debuffs/moedaDiv2/moedaDiv2_6.png')
+            moedaDiv2_7 = pygame.image.load('graficos/debuffs/moedaDiv2/moedaDiv2_7.png')
+            moedaDiv2_8 = pygame.image.load('graficos/debuffs/moedaDiv2/moedaDiv2_8.png')
+            
+            self.frames = [moedaDiv2_1,moedaDiv2_2,moedaDiv2_3,moedaDiv2_4,moedaDiv2_5,moedaDiv2_6,moedaDiv2_7,moedaDiv2_8]
+
+            for i in range(len(self.frames)):
+                self.frames[i] = pygame.transform.scale(self.frames[i], (30, 30))
 
 
         self.virou_area = False

@@ -57,11 +57,16 @@ class Player(pygame.sprite.Sprite):
         self.tempo_inicioDebuffCongelamento = None
         self.tempototalDebuffCongelamento = 2000
 
+        #Atributos debuff de lentidao
         self.debuff_lentidao_ativo = False
         self.tempo_inicioDebuffLentidao = None
         self.tempototalDebuffLentidao = 15000
 
-
+        #atirbutos debuff de moedas divididas por 2
+        self.debuff_moedadiv2_ativo = False
+        self.tempo_inicioDebuffmoedadiv2 = None
+        self.tempototalDebuffmoedadiv2 = 15000
+        self.divmoeda = 1
 
         self.image = self.frames[self.player_index]
         self.rect = self.image.get_rect(midbottom=(config.largura/2, config.altura))
@@ -175,17 +180,19 @@ class Player(pygame.sprite.Sprite):
             for moeda in moeda_colidida:
                 if moeda.tipo == 'ouro':
                     self.peso += 0.5
-                    self.pontos += 3 * self.multMoeda2x
+
+                    self.pontos += 3 * self.multMoeda2x // self.divmoeda
+
                     audio.escolher_som_moeda_e_tocar()
 
                 if moeda.tipo == 'prata':
                     self.peso += 0.3
-                    self.pontos += 2 * self.multMoeda2x
+                    self.pontos += 2 * self.multMoeda2x // self.divmoeda
                     audio.escolher_som_moeda_e_tocar()
 
                 if moeda.tipo == 'bronze':
                     self.peso += 0.1
-                    self.pontos += 1 * self.multMoeda2x
+                    self.pontos += 1 * self.multMoeda2x // self.divmoeda
                     audio.escolher_som_moeda_e_tocar()
         
     def colisaoInimigo(self):
@@ -217,6 +224,8 @@ class Player(pygame.sprite.Sprite):
                     self.ativar_debuff('lentidao')
                 if debuff.tipo == 'menostempo':
                     retirarTempo(10)
+                if debuff.tipo == 'moedas valem menos':
+                    self.ativar_debuff('moedas valem menos')
 
     def ativar_debuff(self, debuff_tipo):
         if debuff_tipo == 'congelamento':
@@ -233,7 +242,13 @@ class Player(pygame.sprite.Sprite):
             self.debuff_lentidao_ativo = True
             self.tempo_inicioDebuffLentidao = pygame.time.get_ticks()
 
-        
+        if debuff_tipo == 'moedas valem menos':
+            if self.debuff_moedadiv2_ativo== False:
+                self.debuffsAtivos.append(['moedas valem menos', 'pink', 0])
+
+            self.debuff_moedadiv2_ativo = True
+            self.tempo_inicioDebuffmoedadiv2 = pygame.time.get_ticks()
+
     def poderDebuff(self):
         for debuff in self.debuffsAtivos:
             if debuff[0] == 'congelamento':
@@ -255,11 +270,17 @@ class Player(pygame.sprite.Sprite):
 
                 self.image = imagem_base  
 
+            if debuff[0] == 'moedas valem menos':
+                self.divmoeda = 2
+
+
             
         if self.debuff_congelamento_ativo == False:
             #Voltar ao normal AQUI
             self.image = self.frames[int(self.player_index)]
 
+        if self.debuff_moedadiv2_ativo == False:
+            self.divmoeda = 1
     """def atualizar_velocidade_base(self):
         self.velocidadeBase = max(1, self.velocidadeNormal - self.peso + self.pesoExtra)"""
 
@@ -287,6 +308,13 @@ class Player(pygame.sprite.Sprite):
                 
                 self.debuffsAtivos = [d for d in self.debuffsAtivos if d[0] != "lentidao"]
 
+        if self.debuff_moedadiv2_ativo and self.tempo_inicioDebuffmoedadiv2:
+            tempo_decorrido_moedadiv2 = pygame.time.get_ticks() - self.tempo_inicioDebuffmoedadiv2
+            if tempo_decorrido_moedadiv2 >= self.tempototalDebuffmoedadiv2:  # 15 segundos em milissegundos
+                self.debuff_moedadiv2_ativo = False  # Desativa a habilidade
+                
+                self.debuffsAtivos = [d for d in self.debuffsAtivos if d[0] != "moedas valem menos"]
+
     def tempo_restante_Debuff(self):
         if self.debuff_congelamento_ativo and self.tempo_inicioDebuffCongelamento:
             tempo_decorrido_congelamento = (pygame.time.get_ticks() - self.tempo_inicioDebuffCongelamento) // 1000
@@ -308,6 +336,15 @@ class Player(pygame.sprite.Sprite):
                     segundos_lentidao = int(tempo_restante_lentidao % 60)
                     debuff[2] = segundos_lentidao
 
+        if self.debuff_moedadiv2_ativo and self.tempo_inicioDebuffmoedadiv2:
+            tempo_decorrido_moedadiv2 = (pygame.time.get_ticks() - self.tempo_inicioDebuffmoedadiv2) // 1000
+            tempo_restante_moedadiv2 = max(0, self.tempototalDebuffmoedadiv2 // 1000 - tempo_decorrido_moedadiv2)
+
+
+            for debuff in self.debuffsAtivos:
+                if debuff[0] == 'moedas valem menos':
+                    segundos_moedadiv2 = int(tempo_restante_moedadiv2 % 60)
+                    debuff[2] = segundos_moedadiv2
 
     def colisaoPowerUp(self):
         from tempo import adicionarTempo
