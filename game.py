@@ -135,6 +135,25 @@ def play():
     fundoSorteado = randint(2, 7)
     fundo_atual, cor_score = FuncExternas.funcExternas.escolher_fundo(fundoSorteado)
 
+    #reset dos timers
+    config.tempo_moeda = 1800
+    pygame.time.set_timer(config.moeda_timer, 0)
+    pygame.time.set_timer(config.moeda_timer, config.tempo_moeda)
+
+    config.tempo_inimigo = 3600
+    pygame.time.set_timer(config.inimigo_timer, 0)
+    pygame.time.set_timer(config.inimigo_timer, config.tempo_inimigo)
+
+    config.tempo_powerUp = 8000
+    pygame.time.set_timer(config.powerup_timer, 0)
+    pygame.time.set_timer(config.powerup_timer, config.tempo_powerUp)
+
+    config.tempo_debuff = 8000
+    pygame.time.set_timer(config.debuff_timer, 0)
+    pygame.time.set_timer(config.debuff_timer, config.tempo_debuff)
+
+
+
     config.inimigo_group.empty()
     config.moeda_group.empty()
     config.powerup_group.empty()
@@ -163,7 +182,7 @@ def play():
             if event.type == config.debuff_timer:
                 config.debuff_group.add(Debuff(choice(['congelamento', 'lentidao', 'menostempo', 'moedas valem menos'])))
                 
-            """if event.type == config.dificuldade_timer:
+            if event.type == config.dificuldade_timer:
                 if config.tempo_moeda > 200:
                     config.tempo_moeda = max(config.tempo_moeda - 200, 200)
                     pygame.time.set_timer(config.moeda_timer, config.tempo_moeda)
@@ -185,7 +204,7 @@ def play():
                 print(f"Moeda: {config.tempo_moeda} ms")
                 print(f"Inimigo: {config.tempo_inimigo} ms")
                 print(f"PowerUp: {config.tempo_powerUp} ms")
-                print(f"Debuff: {config.tempo_debuff} ms")"""
+                print(f"Debuff: {config.tempo_debuff} ms")
             if event.type == pygame.KEYDOWN and event.key == pygame.K_w:
                 print("=== STATUS DO Jogador ===")
                 print(f"velocidade: {player.sprite.velocidade}")

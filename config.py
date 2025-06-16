@@ -23,7 +23,7 @@ clock = pygame.time.Clock()
 
 
 # Timers
-tempo_moeda = 400
+"""tempo_moeda = 400
 moeda_timer = pygame.USEREVENT + 1
 pygame.time.set_timer(moeda_timer, tempo_moeda)
 
@@ -38,8 +38,8 @@ pygame.time.set_timer(powerup_timer, tempo_powerUp)
 tempo_debuff = 2000
 debuff_timer = pygame.USEREVENT + 4
 pygame.time.set_timer(debuff_timer, tempo_debuff)
-
-"""#Configurações para o aumento de nível gradual
+"""
+#Configurações para o aumento de nível gradual
 
 tempo_moeda = 1800
 moeda_timer = pygame.USEREVENT + 1
@@ -59,7 +59,7 @@ pygame.time.set_timer(debuff_timer, tempo_debuff)
 
 dificuldade_timer = pygame.USEREVENT + 5
 pygame.time.set_timer(dificuldade_timer, 10000)
-"""
+
 
 #Grupos
 
