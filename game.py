@@ -175,7 +175,7 @@ def play():
                 config.moeda_group.add(Moeda(choice(['ouro', 'prata', 'prata', 'bronze', 'bronze', 'bronze'])))
 
             if event.type == config.inimigo_timer:
-                config.inimigo_group.add(Inimigo(choice(['bomba','flecha'])))
+                config.inimigo_group.add(Inimigo(choice(['bomba','flecha', 'barrilRadioativo'])))
             
             if event.type == config.powerup_timer:
                 config.powerup_group.add(PowerUp(choice(['vida', 'velocidade', 'moeda2x', 'tempo', 'pesoExtra', 'invulnerabilidade', 'escudo'])))
