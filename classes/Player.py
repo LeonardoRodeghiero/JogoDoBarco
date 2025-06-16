@@ -222,8 +222,13 @@ class Player(pygame.sprite.Sprite):
                         self.vidaAtual -= 1
                         audio.tocar_som_flechada()
                 else:
-                    self.escudoAtivo = 0
+                    if inimigo.tipo == 'bomba':
+                        self.escudoAtivo = 0
+                        audio.tocar_som_explosao()
 
+                    if inimigo.tipo == 'flecha':
+                        self.escudoAtivo = 0
+                        audio.tocar_som_flechada()
 
         
 
