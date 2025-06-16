@@ -117,6 +117,22 @@ class PowerUp(pygame.sprite.Sprite):
             for i in range(len(self.frames)):
                 self.frames[i] = pygame.transform.scale(self.frames[i], (13,34))
 
+        if tipo == 'escudo':
+            escudo_1 = pygame.image.load('graficos/powerups/escudo/escudo_1.png')
+            escudo_2 = pygame.image.load('graficos/powerups/escudo/escudo_2.png')
+            escudo_3 = pygame.image.load('graficos/powerups/escudo/escudo_3.png')
+            escudo_4 = pygame.image.load('graficos/powerups/escudo/escudo_4.png')
+            escudo_5 = pygame.image.load('graficos/powerups/escudo/escudo_5.png')
+            escudo_6 = pygame.image.load('graficos/powerups/escudo/escudo_6.png')
+            escudo_7 = pygame.image.load('graficos/powerups/escudo/escudo_7.png')
+            escudo_8 = pygame.image.load('graficos/powerups/escudo/escudo_8.png')
+            escudo_9 = pygame.image.load('graficos/powerups/escudo/escudo_9.png')
+            escudo_10 = pygame.image.load('graficos/powerups/escudo/escudo_10.png')
+
+            self.frames = [escudo_1,escudo_2,escudo_3,escudo_4,escudo_5,escudo_6,escudo_7,escudo_8,escudo_9,escudo_10]
+            for i in range(len(self.frames)):
+                self.frames[i] = pygame.transform.scale(self.frames[i], (28,28))
+
 
         self.gravidade = randint(1, 12)
 

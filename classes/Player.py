@@ -21,6 +21,7 @@ class Player(pygame.sprite.Sprite):
         self.pontuacao = 0
         self.pontos = 0
         self.vidaAtual = 3
+        self.escudoAtivo = 0
         self.PowerUpsAtivos = []
         self.debuffsAtivos = []
         self.pesoExtra = 0
@@ -122,6 +123,13 @@ class Player(pygame.sprite.Sprite):
         coracaoVazio = pygame.transform.scale(coracaoVazio, (45,50))
 
 
+        escudoCheio = pygame.image.load('graficos/powerUps/escudo/escudo_1.png')
+        escudoVazio = pygame.image.load('graficos/powerUps/escudo/escudo_Vazio.xcf')
+
+        escudoCheio = pygame.transform.scale(escudoCheio, (45,50))
+        escudoVazio = pygame.transform.scale(escudoVazio, (45,50))
+
+        
         
 
 
@@ -165,7 +173,13 @@ class Player(pygame.sprite.Sprite):
             config.screen.blit(coracaoVazio, coracaoVazio_rect)
 
 
-
+        pos_x_escudo = pos_x_coracao + 45 + 8
+        if self.escudoAtivo == 1:
+            escudoCheio_rect = escudoCheio.get_rect(topleft=(pos_x_escudo,7))
+            config.screen.blit(escudoCheio, escudoCheio_rect)
+        else:
+            escudoVazio_rect = escudoVazio.get_rect(topleft=(pos_x_escudo,7))
+            config.screen.blit(escudoVazio, escudoVazio_rect)
 
 
 
@@ -199,13 +213,16 @@ class Player(pygame.sprite.Sprite):
         if self.powerUp_invulnerabilidade_ativo == False:
             inimigo_colidido = pygame.sprite.spritecollide(player.sprite, config.inimigo_group, True)
             for inimigo in inimigo_colidido:
-                if inimigo.tipo == 'bomba':
-                    self.vidaAtual -= 1
-                    audio.tocar_som_explosao()
+                if self.escudoAtivo == 0:
+                    if inimigo.tipo == 'bomba':
+                        self.vidaAtual -= 1
+                        audio.tocar_som_explosao()
 
-                if inimigo.tipo == 'flecha':
-                    self.vidaAtual -= 1
-                    audio.tocar_som_flechada()
+                    if inimigo.tipo == 'flecha':
+                        self.vidaAtual -= 1
+                        audio.tocar_som_flechada()
+                else:
+                    self.escudoAtivo = 0
 
 
         
@@ -369,6 +386,9 @@ class Player(pygame.sprite.Sprite):
 
             if powerUp.tipo == 'pesoExtra':
                 self.pesoExtra += 0.5
+
+            if powerUp.tipo == 'escudo':
+                self.escudoAtivo = 1
 
 
     def ativar_power_up(self, powerUpTipo):
