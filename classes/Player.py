@@ -221,6 +221,9 @@ class Player(pygame.sprite.Sprite):
                     if inimigo.tipo == 'flecha':
                         self.vidaAtual -= 1
                         audio.tocar_som_flechada()
+
+                    if inimigo.tipo == 'barrilRadioativo':
+                        self.vidaAtual -= 1
                 else:
                     if inimigo.tipo == 'bomba':
                         self.escudoAtivo = 0
@@ -229,6 +232,9 @@ class Player(pygame.sprite.Sprite):
                     if inimigo.tipo == 'flecha':
                         self.escudoAtivo = 0
                         audio.tocar_som_flechada()
+
+                    if inimigo.tipo == 'barrilRadioativo':
+                        self.escudoAtivo = 0
 
         
 
@@ -303,9 +309,7 @@ class Player(pygame.sprite.Sprite):
 
         if self.debuff_moedadiv2_ativo == False:
             self.divmoeda = 1
-    """def atualizar_velocidade_base(self):
-        self.velocidadeBase = max(1, self.velocidadeNormal - self.peso + self.pesoExtra)"""
-
+    
 
     def verificar_area_congelada(self):
         colisoes = pygame.sprite.spritecollide(self, config.area_congelada_group, False)
@@ -317,10 +321,7 @@ class Player(pygame.sprite.Sprite):
     def verificar_area_radioativa(self):
         colisoes = pygame.sprite.spritecollide(self, config.area_radioativa_group, True)
         if colisoes:
-            if self.escudoAtivo == 1:
-                self.escudoAtivo == 0
-            else:
-                self.vidaAtual -= 1
+            self.vidaAtual -= 1
 
         
     
@@ -565,6 +566,7 @@ class Player(pygame.sprite.Sprite):
         self.verificar_tempo_PowerUp()
         self.mostrarVida()
         self.verificar_area_congelada()
+        self.verificar_area_radioativa()
 
 #Instancia da classe Player
 player = pygame.sprite.GroupSingle()

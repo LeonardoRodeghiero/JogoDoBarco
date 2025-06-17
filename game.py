@@ -177,8 +177,10 @@ def play():
 
             if event.type == config.inimigo_timer:
                 config.inimigo_group.add(Inimigo(choice(['bomba','flecha', 'barrilRadioativo'])))
+                
             if event.type == config.powerup_timer:
                 config.powerup_group.add(PowerUp(choice(['vida', 'velocidade', 'moeda2x', 'tempo', 'pesoExtra', 'invulnerabilidade', 'escudo'])))
+                 
             if event.type == config.debuff_timer:
                 config.debuff_group.add(Debuff(choice(['congelamento', 'lentidao', 'menostempo', 'moedas valem menos'])))
                 
