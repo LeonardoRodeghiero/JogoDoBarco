@@ -7,7 +7,7 @@ import audio
 from classes.Player import player
 from classes.Player import player, Player
 from classes.Moeda import Moeda
-from classes.Inimigo import Inimigo
+from classes.Inimigo import Inimigo, ParticulaRadiacao
 from classes.PowerUp import PowerUp
 from classes.Debuff import Debuff, ParticulaFumaca
 import FuncExternas.funcExternas
@@ -159,6 +159,7 @@ def play():
     config.powerup_group.empty()
     config.debuff_group.empty()
     config.area_congelada_group.empty()
+    config.area_radioativa_group.empty()
     config.grupo_particulas_gelo.empty()
     player.empty()
     player.add(Player())
@@ -176,7 +177,6 @@ def play():
 
             if event.type == config.inimigo_timer:
                 config.inimigo_group.add(Inimigo(choice(['bomba','flecha', 'barrilRadioativo'])))
-            
             if event.type == config.powerup_timer:
                 config.powerup_group.add(PowerUp(choice(['vida', 'velocidade', 'moeda2x', 'tempo', 'pesoExtra', 'invulnerabilidade', 'escudo'])))
             if event.type == config.debuff_timer:
@@ -299,11 +299,39 @@ def play():
                     y = area.rect.top + randint(-5, 5)
                     particula = ParticulaFumaca((x,y))                    
                     config.grupo_particulas_gelo.add(particula)
-
+        
         config.grupo_particulas_gelo.update()
         config.grupo_particulas_gelo.draw(config.screen)
 
+
+
+
+        # Area radioativa
+        
+        for area in config.area_radioativa_group:
+            if pygame.time.get_ticks() - area.tempo_criacao >= area.duracao:
+                area.kill()
+
+        for area in config.area_radioativa_group:
+            # Remove se passou o tempo
+            tempo_area_radioativa = pygame.time.get_ticks()
+            if tempo_area_radioativa - area.tempo_criacao >= area.duracao:
+                area.kill()
+            else:
+                # Cria partícula ocasionalmente
+                if randint(0, 10) == 0:  # 1 em 10 frames (pode ajustar)
+                    x = randint(area.rect.left, area.rect.right)
+                    y = area.rect.top + randint(-5, 5)
+                    particula = ParticulaRadiacao((x,y))                    
+                    config.grupo_particulas_radiacao.add(particula)
+
+        config.grupo_particulas_radiacao.update()
+        config.grupo_particulas_radiacao.draw(config.screen)
+
+
+
         config.area_congelada_group.draw(config.screen)
+        config.area_radioativa_group.draw(config.screen)
         player.draw(config.screen)
         player.update()
 

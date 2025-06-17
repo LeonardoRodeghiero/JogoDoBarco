@@ -74,4 +74,8 @@ debuff_group = pygame.sprite.Group()
 
 area_congelada_group = pygame.sprite.Group()
 
+area_radioativa_group = pygame.sprite.Group()
+
 grupo_particulas_gelo = pygame.sprite.Group()
+
+grupo_particulas_radiacao = pygame.sprite.Group()

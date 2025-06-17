@@ -2,6 +2,25 @@ import pygame
 from random import randint, choice
 import config
 
+radiacao = pygame.image.load('graficos/inimigos/barrilRadioativo/radiacao.png')
+radiacao = pygame.transform.scale(radiacao, (12, 12))
+class ParticulaRadiacao(pygame.sprite.Sprite):
+    def __init__(self, pos):
+        super().__init__()
+        self.image = radiacao.copy()
+        self.rect = self.image.get_rect(center=pos)
+        self.vel_y = -1  # sobe
+        self.alpha = 100
+    
+    def update(self):
+        self.rect.y += self.vel_y
+        self.alpha -= 2  # vai desaparecendo
+        if self.alpha <= 0:
+            self.kill()
+        else:
+            self.image.set_alpha(self.alpha)
+
+
 
 class Inimigo(pygame.sprite.Sprite):
     def __init__(self, tipo):
@@ -75,10 +94,18 @@ class Inimigo(pygame.sprite.Sprite):
                 self.frames[i] = pygame.transform.scale(self.frames[i], (30,35))
 
             self.image = self.frames[self.barril_index]
+            
+            self.virou_area = False
+            self.duracao_area = 5000
+            self.tempo_criacao = None
+            
+
 
             inicio = randint(-100, 0)
             self.rect = self.image.get_rect(midbottom=((randint(9, config.largura-9), inicio)))
             self.gravidade = randint(1, 12)
+
+        
 
 
     def queda(self):
@@ -89,6 +116,22 @@ class Inimigo(pygame.sprite.Sprite):
             self.rect.y += self.gravidade
         if self.tipo == 'barrilRadioativo':
             self.rect.y += self.gravidade
+
+    def transformar_em_area(self):
+        self.virou_area = True
+
+        area = pygame.sprite.Sprite()
+        area.image = pygame.Surface((80, 30), pygame.SRCALPHA)
+        area.image.fill((180,240,255,120))
+        pygame.draw.rect(area.image, (255,255,0), area.image.get_rect(), 2)
+        area.rect = area.image.get_rect(midbottom=(self.rect.midbottom))
+        area.tempo_criacao = pygame.time.get_ticks()
+        area.duracao = 5000
+
+        config.area_radioativa_group.add(area)
+
+        self.kill()
+
 
     def destruir(self):
         if self.rect.y >= config.altura + 50:
@@ -114,6 +157,12 @@ class Inimigo(pygame.sprite.Sprite):
 
 
     def update(self):
+        if self.tipo == 'barrilRadioativo' and not self.virou_area:
+            self.rect.y += self.gravidade
+
+            if self.rect.bottom >= config.altura:
+                self.transformar_em_area()
+
         self.animacao()
         self.queda()
         self.destruir()

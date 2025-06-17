@@ -314,6 +314,15 @@ class Player(pygame.sprite.Sprite):
         elif not self.debuff_congelamento_ativo:
             self.velocidade = self.velocidadeBase
 
+    def verificar_area_radioativa(self):
+        colisoes = pygame.sprite.spritecollide(self, config.area_radioativa_group, True)
+        if colisoes:
+            if self.escudoAtivo == 1:
+                self.escudoAtivo == 0
+            else:
+                self.vidaAtual -= 1
+
+        
     
     def verificar_tempo_Debuff(self):
         if self.debuff_congelamento_ativo and self.tempo_inicioDebuffCongelamento:
