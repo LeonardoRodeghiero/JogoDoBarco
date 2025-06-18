@@ -47,7 +47,7 @@ def escolher_fundo_2Players(fundoSorteado):
         cor_score =  (64,64,64)
 
 
-    return fundo_surf#, cor_score
+    return fundo_surf, cor_score
 
 def escolher_fundo(fundoSorteado):
     cor_score = ()

@@ -363,8 +363,8 @@ def play():
     tempo_colisao_Porto_p2 = 0
 
     fundoSorteado = randint(2, 7)
-    fundo_atual= FuncExternas.funcExternas.escolher_fundo_2Players(fundoSorteado)
-    # , cor_score 
+    fundo_atual, cor_score= FuncExternas.funcExternas.escolher_fundo_2Players(fundoSorteado)
+
     #reset dos timers
     config.tempo_moeda = 1800
     pygame.time.set_timer(config.moeda_timer, 0)
@@ -405,6 +405,21 @@ def play():
     player_group.add(Player(posicao_player_1, config.altura, 1))
     player_group.add(Player(posicao_player_2, config.altura, 2))
     tempo.resetar_tempo()
+
+
+    def barcoCheio():
+        
+        for player in player_group:
+            
+            if player.peso - player.pesoExtra >= 8:
+                if player.id == 1:
+                    mensagem_text = config.mensagem_test_font.render('Barco cheio. Descarregue no porto', False, cor_score_p1)
+                    mensagem_text_rect = mensagem_text.get_rect(midbottom=(player.rect.x + 55, config.altura-50))
+                else:
+                    mensagem_text = config.mensagem_test_font.render('Barco cheio. Descarregue no porto', False, cor_score_p2)
+                    mensagem_text_rect = mensagem_text.get_rect(midbottom=(player.rect.x + 55, config.altura-50))
+                config.screen.blit(mensagem_text,mensagem_text_rect)
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -420,10 +435,10 @@ def play():
                 config.inimigo_group.add(Inimigo(choice(['bomba','flecha', 'barrilRadioativo'])))
                 
             if event.type == config.powerup_timer:
-                config.powerup_group.add(PowerUp(choice(['vida', 'velocidade', 'moeda2x', 'tempo', 'pesoExtra', 'invulnerabilidade', 'escudo'])))
+                config.powerup_group.add(PowerUp(choice(['vida', 'velocidade', 'moeda2x', 'pesoExtra', 'invulnerabilidade', 'escudo'])))
                 
             if event.type == config.debuff_timer:
-                config.debuff_group.add(Debuff(choice(['congelamento', 'lentidao', 'menostempo', 'moedas valem menos'])))
+                config.debuff_group.add(Debuff(choice(['congelamento', 'lentidao', 'moedas valem menos'])))
                 
             if event.type == config.dificuldade_timer:
                 if config.tempo_moeda > 200:
@@ -485,10 +500,8 @@ def play():
         config.screen.blit(p2_text, p2_text_rect)
 
 
-        """mensagem_text = config.mensagem_test_font.render('Barco cheio. Descarregue no porto', False, cor_score)
-        mensagem_text_rect = mensagem_text.get_rect(midbottom=(player.sprite.rect.x + 55, config.altura-50))
-        """
-
+        
+        barcoCheio()
 
 
         porto_surf = pygame.image.load('graficos/porto/porto.png')
@@ -558,7 +571,7 @@ def play():
         config.debuff_group.draw(config.screen)
         config.debuff_group.update()
 
-        estado = tempo.verificar_timer('white', tempo.tempo_total, tempo.tempo_inicio)
+        estado = tempo.verificar_timer(cor_score, tempo.tempo_total, tempo.tempo_inicio)
         if estado == "gameover":
             return "gameover"
 

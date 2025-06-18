@@ -118,40 +118,46 @@ class Player(pygame.sprite.Sprite):
         else:
             if self.id == 1:
                 if self.debuff_congelamento_ativo == False:
-                    if (keys[pygame.K_d]) and self.rect.right <= config.largura:
-                        self.player_index += animacao
-                        if self.player_index >= 9:
-                            self.player_index = 0
-                        self.image = self.frames[int(self.player_index)]
-
-                        self.rect.x += self.velocidade
-                    elif (keys[pygame.K_a]) and self.rect.left >= 0:
-                        self.player_index -= animacao
-                        if self.player_index < 0:
-                            self.player_index = 8
-                        self.image = self.frames[int(self.player_index)]
-
-                        self.rect.x -= self.velocidade
+                    if keys[pygame.K_a] and keys[pygame.K_d]:
+                        pass
                     else:
-                        self.player_index = int(self.player_index)
-            if self.id == 2:
-                if self.debuff_congelamento_ativo == False:
-                    if (keys[pygame.K_RIGHT]) and self.rect.right <= config.largura:
+                        if (keys[pygame.K_d]) and self.rect.right <= config.largura:
                             self.player_index += animacao
                             if self.player_index >= 9:
                                 self.player_index = 0
                             self.image = self.frames[int(self.player_index)]
 
                             self.rect.x += self.velocidade
-                    elif (keys[pygame.K_LEFT]) and self.rect.left >= 0:
-                        self.player_index -= animacao
-                        if self.player_index < 0:
-                            self.player_index = 8
-                        self.image = self.frames[int(self.player_index)]
+                        elif (keys[pygame.K_a]) and self.rect.left >= 0:
+                            self.player_index -= animacao
+                            if self.player_index < 0:
+                                self.player_index = 8
+                            self.image = self.frames[int(self.player_index)]
 
-                        self.rect.x -= self.velocidade
+                            self.rect.x -= self.velocidade
+                        else:
+                            self.player_index = int(self.player_index)
+            if self.id == 2:
+                if self.debuff_congelamento_ativo == False:
+                    if keys[pygame.K_LEFT] and keys[pygame.K_RIGHT]:
+                        pass
                     else:
-                        self.player_index = int(self.player_index)
+                        if (keys[pygame.K_RIGHT]) and self.rect.right <= config.largura:
+                                self.player_index += animacao
+                                if self.player_index >= 9:
+                                    self.player_index = 0
+                                self.image = self.frames[int(self.player_index)]
+
+                                self.rect.x += self.velocidade
+                        elif (keys[pygame.K_LEFT]) and self.rect.left >= 0:
+                            self.player_index -= animacao
+                            if self.player_index < 0:
+                                self.player_index = 8
+                            self.image = self.frames[int(self.player_index)]
+
+                            self.rect.x -= self.velocidade
+                        else:
+                            self.player_index = int(self.player_index)
 
 
 
@@ -675,7 +681,7 @@ class Player(pygame.sprite.Sprite):
         spacing = 32
 
         for i, (nome, cor, segundos) in enumerate(self.PowerUpsAtivos):
-            texto = config.test_font.render(f"{nome} por {segundos} s", False, cor)
+            texto = config.powerUp_debuff_font.render(f"{nome} por {segundos} s", False, cor)
             texto_rect = texto.get_rect(topleft=(5, start_y + i * spacing))  # Ajuste dinâmico
             config.screen.blit(texto, texto_rect)
 
@@ -683,7 +689,7 @@ class Player(pygame.sprite.Sprite):
         spacing_debuff = 32
 
         for i, (nome, cor, segundos) in enumerate(self.debuffsAtivos):
-            texto_debuff = config.test_font.render(f"{nome} por {segundos} s", False, cor)
+            texto_debuff = config.powerUp_debuff_font.render(f"{nome} por {segundos} s", False, cor)
             texto_debuff_rect = texto_debuff.get_rect(topright=(config.largura - 5, start_y_debuff + i * spacing_debuff))  # Ajuste dinâmico
             config.screen.blit(texto_debuff, texto_debuff_rect)
 
