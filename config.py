@@ -4,6 +4,8 @@ pygame.init()
 test_font = pygame.font.Font('fonte/Pixeltype.ttf', 50)
 mensagem_test_font = pygame.font.Font('fonte/Pixeltype.ttf', 15)
 powerUp_debuff_font = pygame.font.Font('fonte/Pixeltype.ttf', 30)
+
+title_font = pygame.font.Font('fonte/Pixeltype.ttf', 120)
 """
 # Obter informações do modo de exibição
 infoObject = pygame.display.Info()
@@ -19,6 +21,8 @@ altura = 600
 screen = pygame.display.set_mode((largura, altura))
 
 clock = pygame.time.Clock()
+
+modo_jogo = 1
 
 
 

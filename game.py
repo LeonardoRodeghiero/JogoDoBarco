@@ -24,7 +24,7 @@ def Jogo():
         menu.menu.blit(menu.menubg, (0, 0))
         mouse_pos = pygame.mouse.get_pos()
 
-        title_text = menu.get_font(80).render("BOAT GAME", True, "#b68f40")
+        title_text = config.title_font.render("BOAT GAME", True, "#b68f40")
         title_rect = title_text.get_rect(center=(config.largura/2, 100))
         menu.menu.blit(title_text, title_rect)
 
@@ -57,7 +57,7 @@ def Jogo():
                     return "jogo"
                 if options_button.checkForInput(mouse_pos):
                     audio.click_menu.play()
-                    menu.options()
+                    return "options"
 
                 if quit_button.checkForInput(mouse_pos):
                     audio.click_menu.play()
@@ -118,16 +118,19 @@ def main():
             estado = Jogo()
         if estado == 'jogo':
             pygame.display.set_caption("Catch The Coin")
-            estado = play(2)
+            estado = play(config.modo_jogo)
 
         elif estado == "gameover":
             pygame.display.set_caption("Game Over")
             estado = gameover()
+        elif estado == 'options':
+            pygame.display.set_caption("Options")
+            estado = menu.options()
         elif estado == "sair":
             break
 
 
-def play(qtdplayers=1):
+def play(qtdplayers):
 
     if qtdplayers == 1:
         import tempo
