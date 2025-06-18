@@ -704,4 +704,3 @@ class Player(pygame.sprite.Sprite):
         self.verificar_area_congelada()
         self.verificar_area_radioativa()
 
-player_group = pygame.sprite.Group()

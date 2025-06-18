@@ -1,5 +1,4 @@
 import pygame, config
-from classes.Player import player_group
 
 
 
@@ -204,9 +203,6 @@ def mostrar_fundo_com_efeito(camada, velocidade, y, player_x):
 
 
 
-"""def barcoCheio(mensagem_text, mensagem_text_rect):
-    if player.sprite.peso - player.sprite.pesoExtra >= 8:
-        config.screen.blit(mensagem_text,mensagem_text_rect)
-"""
+
 
      

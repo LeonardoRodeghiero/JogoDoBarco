@@ -4,7 +4,7 @@ from random import randint, choice
 from time import sleep
 import config
 import audio
-from classes.Player import player_group, Player
+from classes.Player import Player
 from classes.Moeda import Moeda
 from classes.Inimigo import Inimigo, ParticulaRadiacao
 from classes.PowerUp import PowerUp
@@ -107,6 +107,8 @@ def Jogo():
         pygame.display.update()
 """
 
+
+
 def main():
     from gameover import gameover
     estado = "menu"
@@ -160,8 +162,16 @@ def main():
     config.area_congelada_group.empty()
     config.area_radioativa_group.empty()
     config.grupo_particulas_gelo.empty()
+    player = pygame.sprite.GroupSingle()
+
     player.empty()
-    player.add(Player())
+    player.add(Player(config.largura / 2, config.altura))
+
+    def barcoCheio(mensagem_text, mensagem_text_rect):
+        if player.sprite.peso - player.sprite.pesoExtra >= 8:
+            config.screen.blit(mensagem_text,mensagem_text_rect)
+
+
     tempo.resetar_tempo()
     while True:
         for event in pygame.event.get():
@@ -264,7 +274,7 @@ def main():
             tempo_colisao_Porto = 0      
         
 
-        FuncExternas.funcExternas.barcoCheio(mensagem_text, mensagem_text_rect)
+        barcoCheio(mensagem_text, mensagem_text_rect)
         
         
         config.moeda_group.draw(config.screen)
@@ -382,6 +392,9 @@ def play():
     config.area_radioativa_group.empty()
     config.grupo_particulas_gelo.empty()
 
+    player_group = pygame.sprite.Group()
+
+
     posicao_player_1 = config.largura / 2
     posicao_player_1 = posicao_player_1 - posicao_player_1 / 2
 
@@ -448,8 +461,8 @@ def play():
         
         FuncExternas.funcExternas.mostrar_fundo(fundo_atual)
         """for camada in fundo_atual:
-            FuncExternas.funcExternas.mostrar_fundo_com_efeito(camada["imagem"], camada['velocidade'], camada['y'], player.sprite.rect.x)
-"""
+                FuncExternas.funcExternas.mostrar_fundo_com_efeito(camada["imagem"], camada['velocidade'], camada['y'], player.sprite.rect.x)
+        """
 
 
 
@@ -530,8 +543,8 @@ def play():
                 else:
                     tempo_colisao_Porto_p2 = 0
 
-        """FuncExternas.funcExternas.barcoCheio(mensagem_text, mensagem_text_rect)
-        """
+        #barcoCheio(mensagem_text, mensagem_text_rect)
+        
         
         config.moeda_group.draw(config.screen)
         config.moeda_group.update()
