@@ -532,7 +532,7 @@ class Player(pygame.sprite.Sprite):
             if powerUp.tipo == 'velocidade':
                 self.ativar_power_up('velocidade')
 
-            if powerUp.tipo == 'invulnerabilidade':
+            if powerUp.tipo == 'invulnerabilidade':            
                 self.ativar_power_up('invulnerabilidade')
             
             if powerUp.tipo == 'moeda2x':
@@ -676,23 +676,56 @@ class Player(pygame.sprite.Sprite):
             timer_PowerUpTeste_rect = timer_PowerUpTeste.get_rect(topleft=(0, 132))
             screen.blit(timer_PowerUpTeste, timer_PowerUpTeste_rect)
         """
+        if self.id == 0:
+            start_y = 100
+            spacing = 32
 
-        start_y = 100
-        spacing = 32
+            for i, (nome, cor, segundos) in enumerate(self.PowerUpsAtivos):
+                texto = config.test_font.render(f"{nome} por {segundos} s", False, cor)
+                texto_rect = texto.get_rect(topleft=(5, start_y + i * spacing))  # Ajuste dinâmico
+                config.screen.blit(texto, texto_rect)
 
-        for i, (nome, cor, segundos) in enumerate(self.PowerUpsAtivos):
-            texto = config.powerUp_debuff_font.render(f"{nome} por {segundos} s", False, cor)
-            texto_rect = texto.get_rect(topleft=(5, start_y + i * spacing))  # Ajuste dinâmico
-            config.screen.blit(texto, texto_rect)
+            start_y_debuff = 100
+            spacing_debuff = 32
 
-        start_y_debuff = 100
-        spacing_debuff = 32
+            for i, (nome, cor, segundos) in enumerate(self.debuffsAtivos):
+                texto_debuff = config.test_font.render(f"{nome} por {segundos} s", False, cor)
+                texto_debuff_rect = texto_debuff.get_rect(topright=(config.largura - 5, start_y_debuff + i * spacing_debuff))  # Ajuste dinâmico
+                config.screen.blit(texto_debuff, texto_debuff_rect)
+        else:
+            if self.id == 1:
+                start_y = 150
+                spacing = 32
 
-        for i, (nome, cor, segundos) in enumerate(self.debuffsAtivos):
-            texto_debuff = config.powerUp_debuff_font.render(f"{nome} por {segundos} s", False, cor)
-            texto_debuff_rect = texto_debuff.get_rect(topright=(config.largura - 5, start_y_debuff + i * spacing_debuff))  # Ajuste dinâmico
-            config.screen.blit(texto_debuff, texto_debuff_rect)
+                for i, (nome, cor, segundos) in enumerate(self.PowerUpsAtivos):
+                    texto = config.powerUp_debuff_font.render(f"{nome} por {segundos} s", False, cor)
+                    texto_rect = texto.get_rect(topleft=(5, start_y + i * spacing))  # Ajuste dinâmico
+                    config.screen.blit(texto, texto_rect)
 
+                start_y_debuff = 250
+                spacing_debuff = 32
+
+                for i, (nome, cor, segundos) in enumerate(self.debuffsAtivos):
+                    texto_debuff = config.powerUp_debuff_font.render(f"{nome} por {segundos} s", False, cor)
+                    texto_debuff_rect = texto_debuff.get_rect(topleft=(5, start_y_debuff + i * spacing_debuff))  # Ajuste dinâmico
+                    config.screen.blit(texto_debuff, texto_debuff_rect)
+
+            if self.id == 2:
+                start_y = 150
+                spacing = 32
+
+                for i, (nome, cor, segundos) in enumerate(self.PowerUpsAtivos):
+                    texto = config.powerUp_debuff_font.render(f"{nome} por {segundos} s", False, cor)
+                    texto_rect = texto.get_rect(topright=(config.largura - 5, start_y + i * spacing))  # Ajuste dinâmico
+                    config.screen.blit(texto, texto_rect)
+
+                start_y_debuff = 250
+                spacing_debuff = 32
+
+                for i, (nome, cor, segundos) in enumerate(self.debuffsAtivos):
+                    texto_debuff = config.powerUp_debuff_font.render(f"{nome} por {segundos} s", False, cor)
+                    texto_debuff_rect = texto_debuff.get_rect(topright=(config.largura - 5, start_y_debuff + i * spacing_debuff))  # Ajuste dinâmico
+                    config.screen.blit(texto_debuff, texto_debuff_rect)
     def update(self):
         self.atualizar_velocidade_base()
         self.player_input()
