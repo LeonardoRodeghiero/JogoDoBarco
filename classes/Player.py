@@ -4,16 +4,37 @@ import audio
 class Player(pygame.sprite.Sprite):
     def __init__(self, x, y, player_id=0):
         super().__init__()
-        player1 = pygame.image.load('graficos/barco/barco1.png').convert_alpha()
-        player2 = pygame.image.load('graficos/barco/barco2.png').convert_alpha()
-        player3 = pygame.image.load('graficos/barco/barco3.png').convert_alpha()
-        player4 = pygame.image.load('graficos/barco/barco4.png').convert_alpha()
-        player5 = pygame.image.load('graficos/barco/barco5.png').convert_alpha()
-        player6 = pygame.image.load('graficos/barco/barco6.png').convert_alpha()
-        player7 = pygame.image.load('graficos/barco/barco7.png').convert_alpha()
-        player8 = pygame.image.load('graficos/barco/barco8.png').convert_alpha()
-        player9 = pygame.image.load('graficos/barco/barco9.png').convert_alpha()
-        
+        if player_id == 0:
+            player1 = pygame.image.load('graficos/barco/barco1.png').convert_alpha()
+            player2 = pygame.image.load('graficos/barco/barco2.png').convert_alpha()
+            player3 = pygame.image.load('graficos/barco/barco3.png').convert_alpha()
+            player4 = pygame.image.load('graficos/barco/barco4.png').convert_alpha()
+            player5 = pygame.image.load('graficos/barco/barco5.png').convert_alpha()
+            player6 = pygame.image.load('graficos/barco/barco6.png').convert_alpha()
+            player7 = pygame.image.load('graficos/barco/barco7.png').convert_alpha()
+            player8 = pygame.image.load('graficos/barco/barco8.png').convert_alpha()
+            player9 = pygame.image.load('graficos/barco/barco9.png').convert_alpha()
+        else:
+            if player_id == 1:
+                player1 = pygame.image.load('graficos/barco/player1/barco1_p1.png').convert_alpha()
+                player2 = pygame.image.load('graficos/barco/player1/barco2_p1.png').convert_alpha()
+                player3 = pygame.image.load('graficos/barco/player1/barco3_p1.png').convert_alpha()
+                player4 = pygame.image.load('graficos/barco/player1/barco4_p1.png').convert_alpha()
+                player5 = pygame.image.load('graficos/barco/player1/barco5_p1.png').convert_alpha()
+                player6 = pygame.image.load('graficos/barco/player1/barco6_p1.png').convert_alpha()
+                player7 = pygame.image.load('graficos/barco/player1/barco7_p1.png').convert_alpha()
+                player8 = pygame.image.load('graficos/barco/player1/barco8_p1.png').convert_alpha()
+                player9 = pygame.image.load('graficos/barco/player1/barco9_p1.png').convert_alpha() 
+            if player_id == 2:
+                player1 = pygame.image.load('graficos/barco/player2/barco1_p2.png').convert_alpha()
+                player2 = pygame.image.load('graficos/barco/player2/barco2_p2.png').convert_alpha()
+                player3 = pygame.image.load('graficos/barco/player2/barco3_p2.png').convert_alpha()
+                player4 = pygame.image.load('graficos/barco/player2/barco4_p2.png').convert_alpha()
+                player5 = pygame.image.load('graficos/barco/player2/barco5_p2.png').convert_alpha()
+                player6 = pygame.image.load('graficos/barco/player2/barco6_p2.png').convert_alpha()
+                player7 = pygame.image.load('graficos/barco/player2/barco7_p2.png').convert_alpha()
+                player8 = pygame.image.load('graficos/barco/player2/barco8_p2.png').convert_alpha()
+                player9 = pygame.image.load('graficos/barco/player2/barco9_p2.png').convert_alpha() 
         self.frames = [player1, player2, player3, player4, player5, player6, player7, player8, player9]
         self.player_index = 0
 
