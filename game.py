@@ -438,8 +438,8 @@ def play(qtdplayers=1):
                     config.inimigo_group.add(Inimigo(choice(['bomba','flecha', 'barrilRadioativo'])))
                     
                 if event.type == config.powerup_timer:
-                    config.powerup_group.add(PowerUp(choice(['velocidade', 'moeda2x', 'invulnerabilidade'])))
-                    'vida', 'pesoExtra', 'escudo'
+                    config.powerup_group.add(PowerUp(choice(['vida', 'pesoExtra', 'escudo', 'velocidade', 'moeda2x', 'invulnerabilidade'])))
+                    
                 if event.type == config.debuff_timer:
                     config.debuff_group.add(Debuff(choice(['congelamento', 'lentidao', 'moedas valem menos'])))
                     
