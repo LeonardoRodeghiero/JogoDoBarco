@@ -5,11 +5,11 @@ tempo_inicio = pygame.time.get_ticks()
 
 def resetar_tempo():
     global tempo_total, tempo_inicio
-    tempo_total = 2 * 60
+    tempo_total = tempo_total
     tempo_inicio = pygame.time.get_ticks()
 
 
-def verificar_timer(cor_score, tempo_total, tempo_inicio):
+def verificar_timer(cor_score, tempo_total, tempo_inicio, score_p1=0, score_p2=0):
     tempo_decorrido = (pygame.time.get_ticks() - tempo_inicio) // 1000
     tempo_restante = max(0, tempo_total - tempo_decorrido)  # Impede valores negativos
     minutos = tempo_restante // 60
@@ -24,8 +24,21 @@ def verificar_timer(cor_score, tempo_total, tempo_inicio):
     config.screen.blit(timer_surf, timer_rect)
 
 
-    if tempo_restante == 0:
+    if tempo_restante == 0 and config.modo_jogo == 1:
         return 'gameover'
+    
+    if tempo_restante == 0 and config.modo_jogo == 2:
+        if score_p1 > score_p2:
+            config.vencedor = 1
+            return 'vitoria'
+
+        if score_p2 > score_p1:
+            config.vencedor = 2
+            return 'vitoria'
+        
+        if score_p1 == score_p2:
+            config.vencedor = 3
+            return 'vitoria'
 
 
 def adicionarTempo(segundos):

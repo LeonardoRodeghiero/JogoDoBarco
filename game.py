@@ -10,7 +10,7 @@ from classes.Inimigo import Inimigo, ParticulaRadiacao
 from classes.PowerUp import PowerUp
 from classes.Debuff import Debuff, ParticulaFumaca
 import FuncExternas.funcExternas
-
+from vitoria import vitoria
 
 pygame.init()
     
@@ -123,6 +123,9 @@ def main():
         elif estado == "gameover":
             pygame.display.set_caption("Game Over")
             estado = gameover()
+        elif estado == "vitoria":
+            pygame.display.set_caption("Vitoria")
+            estado = vitoria(config.vencedor)
         elif estado == 'options':
             pygame.display.set_caption("Options")
             estado = menu.options()
@@ -474,10 +477,20 @@ def play(qtdplayers):
                     for player in player_group:
                         print(f'Vida Atual player {player.id}:{player.vidaAtual}')
             
-
             for player in player_group:
-                if player.vidaAtual <= 0:
-                    return "gameover"
+                if player.id == 1 and player.vidaAtual == 0:
+                    config.vencedor = 2
+                    return "vitoria"
+                if player.id == 2 and player.vidaAtual == 0:
+                    config.vencedor = 1
+                    return "vitoria"
+                
+
+
+
+
+            
+            
                 
             
             FuncExternas.funcExternas.mostrar_fundo(fundo_atual)
@@ -575,10 +588,10 @@ def play(qtdplayers):
             config.debuff_group.draw(config.screen)
             config.debuff_group.update()
 
-            estado = tempo.verificar_timer(cor_score, tempo.tempo_total, tempo.tempo_inicio)
-            if estado == "gameover":
-                return "gameover"
-
+            estado = tempo.verificar_timer(cor_score, tempo.tempo_total, tempo.tempo_inicio, score_p1, score_p2)
+           
+            if estado == "vitoria":
+                return "vitoria"
 
             for area in config.area_congelada_group:
                 if pygame.time.get_ticks() - area.tempo_criacao >= area.duracao:
@@ -621,6 +634,13 @@ def play(qtdplayers):
                         y = area.rect.top + randint(-5, 5)
                         particula = ParticulaRadiacao((x,y))                    
                         config.grupo_particulas_radiacao.add(particula)
+
+
+            
+
+
+
+
 
             config.grupo_particulas_radiacao.update()
             config.grupo_particulas_radiacao.draw(config.screen)
