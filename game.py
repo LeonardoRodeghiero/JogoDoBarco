@@ -139,7 +139,7 @@ def play(qtdplayers):
         import tempo
         audio.parar_musica_fundo()
         audio.tocar_musica_game()
-        score = 0
+        config.score = 0
         tempo_colisao_Porto = 0
         fundoSorteado = randint(2, 7)
         fundo_atual, cor_score = FuncExternas.funcExternas.escolher_fundo(fundoSorteado)
@@ -243,7 +243,7 @@ def play(qtdplayers):
 
 
 
-            score_text = config.test_font.render(f'Score: {score}', False, cor_score)
+            score_text = config.test_font.render(f'Score: {config.score}', False, cor_score)
             score_text_rect = score_text.get_rect(topright=(config.largura-20, 20))
             config.screen.blit(score_text,score_text_rect)
 
@@ -267,7 +267,7 @@ def play(qtdplayers):
                 if tempo_colisao_Porto == 0:  
                     tempo_colisao_Porto = pygame.time.get_ticks()
                 elif pygame.time.get_ticks() - tempo_colisao_Porto >= tempo_necessario_Porto:
-                    score += player.sprite.pontos
+                    config.score += player.sprite.pontos
                     player.sprite.pontos = 0
                     player.sprite.peso = 0
                 else:
@@ -363,8 +363,8 @@ def play(qtdplayers):
         import tempo
         audio.parar_musica_fundo()
         audio.tocar_musica_game()
-        score_p1 = 0
-        score_p2 = 0
+        config.score_p1 = 0
+        config.score_p2 = 0
 
         cor_score_p1 = 'blue'
         cor_score_p2 = 'red'
@@ -499,7 +499,7 @@ def play(qtdplayers):
 
 
 
-            score_p1_text = config.test_font.render(f'Score: {score_p1}', False, cor_score_p1)
+            score_p1_text = config.test_font.render(f'Score: {config.score_p1}', False, cor_score_p1)
             score_p1_text_rect = score_p1_text.get_rect(topleft=(10, 105))
             config.screen.blit(score_p1_text,score_p1_text_rect)
 
@@ -509,7 +509,7 @@ def play(qtdplayers):
 
 
 
-            score_p2_text = config.test_font.render(f'Score: {score_p2}', False, cor_score_p2)
+            score_p2_text = config.test_font.render(f'Score: {config.score_p2}', False, cor_score_p2)
             score_p2_text_rect = score_p2_text.get_rect(topright=(config.largura - 10, 105))
             config.screen.blit(score_p2_text,score_p2_text_rect)
             p2_text = config.test_font.render(f'Jogador 2', False, cor_score_p2)
@@ -538,7 +538,7 @@ def play(qtdplayers):
                         if tempo_colisao_Porto_p1 == 0:  
                             tempo_colisao_Porto_p1 = pygame.time.get_ticks()
                         elif pygame.time.get_ticks() - tempo_colisao_Porto_p1 >= tempo_necessario_Porto_p1:
-                            score_p1 += player.pontos
+                            config.score_p1 += player.pontos
                             player.pontos = 0
                             player.peso = 0
                         else:
@@ -559,7 +559,7 @@ def play(qtdplayers):
                         if tempo_colisao_Porto_p2 == 0:  
                             tempo_colisao_Porto_p2 = pygame.time.get_ticks()
                         elif pygame.time.get_ticks() - tempo_colisao_Porto_p2 >= tempo_necessario_Porto_p2:
-                            score_p2 += player.pontos
+                            config.score_p2 += player.pontos
                             player.pontos = 0
                             player.peso = 0
                         else:
@@ -588,7 +588,7 @@ def play(qtdplayers):
             config.debuff_group.draw(config.screen)
             config.debuff_group.update()
 
-            estado = tempo.verificar_timer(cor_score, tempo.tempo_total, tempo.tempo_inicio, score_p1, score_p2)
+            estado = tempo.verificar_timer(cor_score, tempo.tempo_total, tempo.tempo_inicio, config.score_p1, config.score_p2)
            
             if estado == "vitoria":
                 return "vitoria"

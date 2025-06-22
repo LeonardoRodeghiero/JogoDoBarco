@@ -26,6 +26,14 @@ def vitoria(vencedor):
         
         config.screen.blit(title_text, title_rect)
 
+
+        score_p1_text = config.score2p_font.render(f"Score jogador 1: {config.score_p1}", False, 'blue')
+        score_p1_rect = score_p1_text.get_rect(center=(config.largura/2 - config.largura/2/2, 200))
+        config.screen.blit(score_p1_text, score_p1_rect)
+
+        score_p2_text = config.score2p_font.render(f"Score jogador 2: {config.score_p2}", False, 'red')
+        score_p2_rect = score_p2_text.get_rect(center=(config.largura/2 + config.largura/2/2, 200))
+        config.screen.blit(score_p2_text, score_p2_rect)
         # Carrega imagens normais e de hover
         restart_default = pygame.transform.scale(pygame.image.load('graficos/botoes/restartblack.png').convert_alpha(), (150, 60))
         restart_hover =pygame.transform.scale(pygame.image.load('graficos/botoes/restartgreen.png').convert_alpha(), (150, 60))

@@ -7,11 +7,18 @@ def gameover():
     audio.tocarMusicaGameOver()
     while True:
         menu.over.blit(menu.overbg, (0, 0))
+        menu.over.blit(menu.filtro_vermelho, (0,0))
         mouse_pos = pygame.mouse.get_pos()
 
-        title_text = menu.get_font(80).render("GAME OVER", True, "#b68f40")
+        title_text = config.title_font.render("GAME OVER", True, "#b68f40")
         title_rect = title_text.get_rect(center=(config.largura/2, 100))
         menu.over.blit(title_text, title_rect)
+
+        score_text = config.score_font.render(f"Score: {config.score}", True, "#b68f40")
+        score_rect = score_text.get_rect(center=(config.largura/2, 200))
+        menu.over.blit(score_text, score_rect)    
+
+
 
         # Carrega imagens normais e de hover
         restart_default = pygame.transform.scale(pygame.image.load('graficos/botoes/restartblack.png').convert_alpha(), (150, 60))

@@ -14,7 +14,12 @@ def get_font(size):
 # Tela principal
 over = pygame.display.set_mode((config.largura, config.altura))
 overbg = pygame.Surface((config.largura, config.altura))
-overbg = pygame.image.load("graficos/fundo/fundogameover.png").convert()
+overbg = pygame.image.load("graficos/fundo/FundosDivididos/fundo7/fundo7.png").convert()
+
+filtro_vermelho = pygame.Surface(overbg.get_size(), pygame.SRCALPHA)
+filtro_vermelho.fill((150, 0, 0, 120))  # RGBA - 100 é a transparência
+
+
 # Classe do botão
 class Button:
     def __init__(self, image_default, image_hover, pos, text_input, font, base_color, hovering_color):
@@ -57,7 +62,12 @@ def options():
     two_p_default = pygame.transform.scale(pygame.image.load('graficos/botoes/2playerswhite.png').convert_alpha(), (150, 60))
     two_p_hover = pygame.transform.scale(pygame.image.load('graficos/botoes/2playersgreen.png').convert_alpha(), (150, 60))
     two_p_button = Button(two_p_default, two_p_hover, (config.largura/2, 170), "", get_font(50), "#d7fcd4", "green")
-    botao_ativo = one_p_button
+    botao_ativo = config.modo_jogo
+    if botao_ativo == 1:
+        botao_ativo = one_p_button
+    if botao_ativo == 2:
+        botao_ativo = two_p_button
+
 
     back_default = pygame.transform.scale(pygame.image.load('graficos/botoes/backwhite.png').convert_alpha(), (150, 60))
     back_hover = pygame.transform.scale(pygame.image.load('graficos/botoes/backgreen.png').convert_alpha(), (150, 60))

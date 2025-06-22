@@ -6,6 +6,8 @@ mensagem_test_font = pygame.font.Font('fonte/Pixeltype.ttf', 15)
 powerUp_debuff_font = pygame.font.Font('fonte/Pixeltype.ttf', 30)
 
 title_font = pygame.font.Font('fonte/Pixeltype.ttf', 120)
+score_font = pygame.font.Font('fonte/Pixeltype.ttf', 80)
+score2p_font = pygame.font.Font('fonte/Pixeltype.ttf', 60)
 """
 # Obter informações do modo de exibição
 infoObject = pygame.display.Info()
@@ -24,7 +26,9 @@ clock = pygame.time.Clock()
 
 modo_jogo = 1
 vencedor = 0
-
+score = 0
+score_p1 = 0
+score_p2 = 0
 
 
 # Timers
