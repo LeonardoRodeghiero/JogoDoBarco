@@ -230,8 +230,7 @@ def play(qtdplayers):
                     print(f"Vida: {player.sprite.vidaAtual}")
                     print(f"Debuffs Ativos: {player.sprite.debuffsAtivos}")
                     
-
-            if player.sprite.vidaAtual <= 0:
+            if len(player) == 0:
                 return "gameover"
             
             
@@ -250,13 +249,21 @@ def play(qtdplayers):
             mensagem_text = config.mensagem_test_font.render('Barco cheio. Descarregue no porto', False, cor_score)
             mensagem_text_rect = mensagem_text.get_rect(midbottom=(player.sprite.rect.x + 55, config.altura-50))
             
-
-
-
+            
+            
             porto_surf = pygame.image.load('graficos/porto/porto.png')
-            porto_rect = porto_surf.get_rect(bottomright=(config.largura, config.altura+38))
-            config.screen.blit(porto_surf, porto_rect)
 
+            porto_mundo_x = config.largura 
+            porto_mundo_y = config.altura + 38
+
+            camera_x = player.sprite.rect.x - config.largura // 2
+
+            x_tela = porto_mundo_x - camera_x
+            y_tela = porto_mundo_y  
+
+            porto_rect = porto_surf.get_rect(bottomright=(x_tela, y_tela))
+
+            config.screen.blit(porto_surf, porto_rect)
             
             
 
@@ -370,6 +377,9 @@ def play(qtdplayers):
         cor_score_p2 = 'red'
         tempo_colisao_Porto_p1 = 0
         tempo_colisao_Porto_p2 = 0
+        ultimo_a_morrer = 0
+        cont_morte = 0
+
 
         fundoSorteado = randint(2, 7)
         fundo_atual, cor_score= FuncExternas.funcExternas.escolher_fundo_2Players(fundoSorteado)
@@ -477,13 +487,31 @@ def play(qtdplayers):
                     for player in player_group:
                         print(f'Vida Atual player {player.id}:{player.vidaAtual}')
             
-            for player in player_group:
-                if player.id == 1 and player.vidaAtual == 0:
-                    config.vencedor = 2
-                    return "vitoria"
-                if player.id == 2 and player.vidaAtual == 0:
+            if len(player_group) == 1 and cont_morte == 0:
+                for player in player_group:
+                    if player.id == 1:
+                        ultimo_a_morrer = 1
+                    if player.id == 2:
+                        ultimo_a_morrer = 2
+                cont_morte = 1
+
+            if len(player_group) == 0:
+                if config.score_p1 > config.score_p2:
                     config.vencedor = 1
                     return "vitoria"
+                if config.score_p2 > config.score_p1:
+                    config.vencedor = 2
+                    return "vitoria"
+                if config.score_p1 == config.score_p2:
+                    if ultimo_a_morrer == 1:
+                        config.vencedor = 1
+                        return "vitoria"
+                    if ultimo_a_morrer == 2:
+                        config.vencedor = 2
+                        return "vitoria"
+                
+                    
+                    
                 
 
 

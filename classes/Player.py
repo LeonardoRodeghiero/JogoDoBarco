@@ -473,6 +473,11 @@ class Player(pygame.sprite.Sprite):
         if self.debuff_moedadiv2_ativo == False:
             self.divmoeda = 1
     
+    def morrer(self):
+        if self.vidaAtual == 0:
+            self.kill()
+
+
 
     def verificar_area_congelada(self):
         colisoes = pygame.sprite.spritecollide(self, config.area_congelada_group, False)
@@ -763,4 +768,4 @@ class Player(pygame.sprite.Sprite):
         self.mostrarVida()
         self.verificar_area_congelada()
         self.verificar_area_radioativa()
-
+        self.morrer()
