@@ -140,7 +140,7 @@ class PowerUp(pygame.sprite.Sprite):
 
         self.image = self.frames[self.powerup_index]
         self.rect = self.image.get_rect(midbottom=(randint(9, config.largura-9), randint(-100, -1)))
-
+        self.mundo_x = self.rect.x
 
     def queda(self):
         self.rect.y += self.gravidade

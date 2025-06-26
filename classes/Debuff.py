@@ -107,15 +107,21 @@ class Debuff(pygame.sprite.Sprite):
         self.debuff_index = 0
         self.image = self.frames[self.debuff_index]
         self.rect = self.image.get_rect(midbottom=(randint(9, config.largura-9), randint(-100, -1)))
-    
-    def transformar_em_area(self):
+        self.mundo_x = self.rect.x
+        
+    def transformar_em_area(self, camera_x):
         self.virou_area = True
+        self.mundo_x = self.rect.x + camera_x
 
         area = pygame.sprite.Sprite()
         area.image = pygame.Surface((80, 30), pygame.SRCALPHA)
         area.image.fill((180,240,255,120))
         pygame.draw.rect(area.image, (200, 255, 255), area.image.get_rect(), 2)
-        area.rect = area.image.get_rect(midbottom=(self.rect.midbottom))
+
+        area.rect = area.image.get_rect(midbottom=(self.mundo_x, config.altura))
+        area.mundo_x = self.mundo_x
+
+
         area.tempo_criacao = pygame.time.get_ticks()
         area.duracao = 5000
 
@@ -137,12 +143,12 @@ class Debuff(pygame.sprite.Sprite):
         if self.rect.y >= config.altura + 50:
             self.kill()
 
-    def update(self):
+    def update(self, camera_x):
         if self.tipo == 'congelamento' and not self.virou_area:
             self.rect.y += self.gravidade
 
             if self.rect.bottom >= config.altura:
-                self.transformar_em_area()
+                self.transformar_em_area(camera_x)
 
 
         self.animacao()

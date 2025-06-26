@@ -193,14 +193,14 @@ def play(qtdplayers):
                     config.moeda_group.add(Moeda(choice(['ouro', 'prata', 'prata', 'bronze', 'bronze', 'bronze'])))
 
                 if event.type == config.inimigo_timer:
-                    config.inimigo_group.add(Inimigo(choice(['bomba','flecha', 'barrilRadioativo'])))
-                    
+                    config.inimigo_group.add(Inimigo(choice(['barrilRadioativo'])))
+                    'bomba','flecha', 
                 if event.type == config.powerup_timer:
                     config.powerup_group.add(PowerUp(choice(['vida', 'velocidade', 'moeda2x', 'tempo', 'pesoExtra', 'invulnerabilidade', 'escudo'])))
                     
                 if event.type == config.debuff_timer:
-                    config.debuff_group.add(Debuff(choice(['congelamento', 'lentidao', 'menostempo', 'moedas valem menos'])))
-                    
+                    config.debuff_group.add(Debuff(choice(['congelamento'])))
+                    'lentidao', 'menostempo', 'moedas valem menos'
                 if event.type == config.dificuldade_timer:
                     if config.tempo_moeda > 200:
                         config.tempo_moeda = max(config.tempo_moeda - 200, 200)
@@ -258,10 +258,10 @@ def play(qtdplayers):
 
             camera_x = player.sprite.rect.x - config.largura // 2
 
-            x_tela = porto_mundo_x - camera_x
-            y_tela = porto_mundo_y  
+            x_tela_porto = porto_mundo_x - camera_x
+            y_tela_porto = porto_mundo_y  
 
-            porto_rect = porto_surf.get_rect(bottomright=(x_tela, y_tela))
+            porto_rect = porto_surf.get_rect(bottomright=(x_tela_porto, y_tela_porto))
 
             config.screen.blit(porto_surf, porto_rect)
             
@@ -291,18 +291,35 @@ def play(qtdplayers):
 
             barcoCheio(mensagem_text, mensagem_text_rect)
             
-            
+            for moeda in config.moeda_group:
+                x_tela_moeda = moeda.mundo_x - camera_x
+                moeda.rect.x = x_tela_moeda
             config.moeda_group.draw(config.screen)
             config.moeda_group.update()
 
+
+            for inimigo in config.inimigo_group:
+                x_tela_inimigo = inimigo.mundo_x - camera_x
+                inimigo.rect.x = x_tela_inimigo
+
             config.inimigo_group.draw(config.screen)
-            config.inimigo_group.update()
+            config.inimigo_group.update(camera_x)
+
+
+            for powerup in config.powerup_group:
+                x_tela_powerup = powerup.mundo_x - camera_x
+                powerup.rect.x = x_tela_powerup
 
             config.powerup_group.draw(config.screen)
             config.powerup_group.update()
 
+            for debuff in config.debuff_group:
+                x_tela_debuff = debuff.mundo_x - camera_x
+                debuff.rect.x = x_tela_debuff
+
+
             config.debuff_group.draw(config.screen)
-            config.debuff_group.update()
+            config.debuff_group.update(camera_x)
 
             estado = tempo.verificar_timer(cor_score, tempo.tempo_total, tempo.tempo_inicio)
             if estado == "gameover":
@@ -356,7 +373,17 @@ def play(qtdplayers):
 
 
 
+            for areaCongelada in config.area_congelada_group:
+                x_tela_areaCongelada = areaCongelada.mundo_x - camera_x
+                areaCongelada.rect.x = x_tela_areaCongelada
+
             config.area_congelada_group.draw(config.screen)
+
+            for areaRadioativa in config.area_radioativa_group:
+                x_tela_areaRadioativa = areaRadioativa.mundo_x - camera_x
+                areaRadioativa.rect.x = x_tela_areaRadioativa
+
+
             config.area_radioativa_group.draw(config.screen)
             player.draw(config.screen)
             player.update()

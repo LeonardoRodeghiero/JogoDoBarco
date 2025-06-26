@@ -51,13 +51,13 @@ class Moeda(pygame.sprite.Sprite):
         self.animacao_index = 0
         self.image = self.frames[self.animacao_index]
         self.rect = self.image.get_rect(midbottom=(randint(9, config.largura-9), randint(-100, 0))) # Pode colocar um numero aleatorio para randomizar a queda das moedas
-
+        self.mundo_x = self.rect.x
 
 
 
     def queda(self):
         self.rect.y += self.gravidade
-
+        
 
     def destruir(self):
         if self.rect.y >= config.altura + 50:

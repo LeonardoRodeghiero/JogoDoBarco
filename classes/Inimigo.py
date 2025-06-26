@@ -27,7 +27,6 @@ class Inimigo(pygame.sprite.Sprite):
         super().__init__()
 
         self.tipo = tipo
-
         if tipo == 'bomba':
             bomb_1 = pygame.image.load('graficos/inimigos/bomba/bomb1.png').convert_alpha()
             bomb_2 = pygame.image.load('graficos/inimigos/bomba/bomb2.png').convert_alpha()
@@ -105,7 +104,7 @@ class Inimigo(pygame.sprite.Sprite):
             self.rect = self.image.get_rect(midbottom=((randint(9, config.largura-9), inicio)))
             self.gravidade = randint(1, 12)
 
-        
+        self.mundo_x = self.rect.x
 
 
     def queda(self):
@@ -117,14 +116,20 @@ class Inimigo(pygame.sprite.Sprite):
         if self.tipo == 'barrilRadioativo':
             self.rect.y += self.gravidade
 
-    def transformar_em_area(self):
+    def transformar_em_area(self, camera_x):
         self.virou_area = True
+        self.mundo_x = self.rect.x + camera_x  # posição real no mundo
 
         area = pygame.sprite.Sprite()
         area.image = pygame.Surface((80, 30), pygame.SRCALPHA)
         area.image.fill((180,240,255,120))
         pygame.draw.rect(area.image, (255,255,0), area.image.get_rect(), 2)
-        area.rect = area.image.get_rect(midbottom=(self.rect.midbottom))
+
+        area.rect = area.image.get_rect(midbottom=(self.mundo_x, config.altura))
+        area.mundo_x = self.mundo_x
+
+        
+
         area.tempo_criacao = pygame.time.get_ticks()
         area.duracao = 5000
 
@@ -156,12 +161,12 @@ class Inimigo(pygame.sprite.Sprite):
             self.image = self.frames[int(self.barril_index)]
 
 
-    def update(self):
+    def update(self, camera_x):
         if self.tipo == 'barrilRadioativo' and not self.virou_area:
             self.rect.y += self.gravidade
 
             if self.rect.bottom >= config.altura:
-                self.transformar_em_area()
+                self.transformar_em_area(camera_x)
 
         self.animacao()
         self.queda()
