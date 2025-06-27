@@ -108,7 +108,7 @@ def play(qtdplayers):
         tempo_colisao_Porto = 0
         fundoSorteado = randint(2, 7)
         fundo_atual, cor_score = FuncExternas.funcExternas.escolher_fundo(fundoSorteado)
-
+        camera_x = 0
         #reset dos timers
         config.tempo_moeda = 1800
         pygame.time.set_timer(config.moeda_timer, 0)
