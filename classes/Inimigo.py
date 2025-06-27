@@ -23,7 +23,7 @@ class ParticulaRadiacao(pygame.sprite.Sprite):
 
 
 class Inimigo(pygame.sprite.Sprite):
-    def __init__(self, tipo):
+    def __init__(self, tipo, camera_x=0):
         super().__init__()
 
         self.tipo = tipo
@@ -45,7 +45,7 @@ class Inimigo(pygame.sprite.Sprite):
             inicioPositivo = inicio * -1
             distanciaApercorrer = inicioPositivo + config.altura - 250
             self.distanciaDeTroca = distanciaApercorrer // 6
-            self.rect = self.image.get_rect(midbottom=((randint(9, config.largura-9), inicio)))
+            self.rect = self.image.get_rect(midbottom=((randint(camera_x + 9, camera_x + config.largura - 9), inicio)))
             self.gravidade = randint(1, 12)
 
 
@@ -72,7 +72,7 @@ class Inimigo(pygame.sprite.Sprite):
             self.image = self.frames[self.flecha_index]
 
             inicio = randint(-100, 0)
-            self.rect = self.image.get_rect(midbottom=((randint(9, config.largura-9), inicio)))
+            self.rect = self.image.get_rect(midbottom=((randint(camera_x + 9, camera_x + config.largura - 9), inicio)))
             self.gravidade = randint(1, 4)
             self.velocidadeFlecha = choice([0.1, 0.2, 0.3, 0.4, 0.5])
 
@@ -101,7 +101,7 @@ class Inimigo(pygame.sprite.Sprite):
 
 
             inicio = randint(-100, 0)
-            self.rect = self.image.get_rect(midbottom=((randint(9, config.largura-9), inicio)))
+            self.rect = self.image.get_rect(midbottom=((randint(camera_x + 9, camera_x + config.largura - 9), inicio)))
             self.gravidade = randint(1, 12)
 
         self.mundo_x = self.rect.x
@@ -116,7 +116,7 @@ class Inimigo(pygame.sprite.Sprite):
         if self.tipo == 'barrilRadioativo':
             self.rect.y += self.gravidade
 
-    def transformar_em_area(self, camera_x):
+    def transformar_em_area(self, camera_x=0):
         self.virou_area = True
         self.mundo_x = self.rect.x + camera_x  # posição real no mundo
 
@@ -161,7 +161,7 @@ class Inimigo(pygame.sprite.Sprite):
             self.image = self.frames[int(self.barril_index)]
 
 
-    def update(self, camera_x):
+    def update(self, camera_x=0):
         if self.tipo == 'barrilRadioativo' and not self.virou_area:
             self.rect.y += self.gravidade
 

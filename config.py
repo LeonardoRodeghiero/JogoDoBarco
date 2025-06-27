@@ -8,19 +8,21 @@ powerUp_debuff_font = pygame.font.Font('fonte/Pixeltype.ttf', 30)
 title_font = pygame.font.Font('fonte/Pixeltype.ttf', 120)
 score_font = pygame.font.Font('fonte/Pixeltype.ttf', 80)
 score2p_font = pygame.font.Font('fonte/Pixeltype.ttf', 60)
-"""
-# Obter informações do modo de exibição
+
+largura = 1000
+altura = 600
+"""# Obter informações do modo de exibição
 infoObject = pygame.display.Info()
 
 # A largura do monitor está em infoObject.current_w
 largura = infoObject.current_w
 
 # A altura do monitor está em infoObject.current_h
-altura = infoObject.current_h
-"""
-largura = 1000
-altura = 600
+altura = infoObject.current_h"""
+
+
 screen = pygame.display.set_mode((largura, altura))
+
 
 clock = pygame.time.Clock()
 

@@ -4,7 +4,7 @@ import config
 import audio
 from time import sleep
 def gameover():
-    audio.tocarMusicaGameOver()
+    audio.musica_atual = audio.tocarMusicaGameOver()
     while True:
         menu.over.blit(menu.overbg, (0, 0))
         menu.over.blit(menu.filtro_vermelho, (0,0))

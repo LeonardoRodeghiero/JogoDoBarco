@@ -13,14 +13,21 @@ import FuncExternas.funcExternas
 from vitoria import vitoria
 
 pygame.init()
-    
+
 
 import menu
 
 def Jogo():
-    audio.escolher_musica_fundo_e_tocar()
+    musica_escolhida = choice(['menu1', 'menu2'])
+    
+    if not pygame.mixer.music.get_busy():
+        audio.musica_atual = audio.escolher_musica_fundo_e_tocar(musica_escolhida)
+    if audio.musica_atual in ['gameover1', 'gameover2', 'gameover3']:
+        audio.musica_atual = audio.escolher_musica_fundo_e_tocar(musica_escolhida)
+    
 
     while True:
+
         menu.menu.blit(menu.menubg, (0, 0))
         mouse_pos = pygame.mouse.get_pos()
 
@@ -66,48 +73,6 @@ def Jogo():
                     exit()
 
         pygame.display.update()
-
-
-
-
-
-
-
-
-"""def Jogo():
-    while True:
-        menu.menu.blit(menu.menubg, (0, 0))
-        mouse_pos = pygame.mouse.get_pos()
-
-        title_text = menu.get_font(80).render("MAIN MENU", True, "#b68f40")
-        title_rect = title_text.get_rect(center=(config.largura/2, 100))
-        menu.menu.blit(title_text, title_rect)
-
-        play_button = menu.Button(None, (config.largura/2, 300), "Play", menu.get_font(50), "#d7fcd4", "green")
-        options_button = menu.Button(None, (config.largura/2, 400), "Options", menu.get_font(50), "#d7fcd4", "green")
-        quit_button = menu.Button(None, (config.largura/2, 500), "Quit", menu.get_font(50), "#d7fcd4", "green")
-
-        for menu.button in [play_button, options_button, quit_button]:
-            menu.button.changeColor(mouse_pos)
-            menu.button.update(menu.menu)
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if play_button.checkForInput(mouse_pos):
-                    play()
-                if options_button.checkForInput(mouse_pos):
-                    menu.options()
-                if quit_button.checkForInput(mouse_pos):
-                    pygame.quit()
-                    exit()
-
-        pygame.display.update()
-"""
-
-
 
 def main():
     from gameover import gameover
@@ -186,21 +151,20 @@ def play(qtdplayers):
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     exit()
-
                 
 
                 if event.type == config.moeda_timer:
-                    config.moeda_group.add(Moeda(choice(['ouro', 'prata', 'prata', 'bronze', 'bronze', 'bronze'])))
+                    config.moeda_group.add(Moeda(choice(['ouro', 'prata', 'prata', 'bronze', 'bronze', 'bronze']), camera_x))
 
                 if event.type == config.inimigo_timer:
-                    config.inimigo_group.add(Inimigo(choice(['barrilRadioativo'])))
-                    'bomba','flecha', 
+                    config.inimigo_group.add(Inimigo(choice(['barrilRadioativo','bomba','flecha']), camera_x))
+                    
                 if event.type == config.powerup_timer:
-                    config.powerup_group.add(PowerUp(choice(['vida', 'velocidade', 'moeda2x', 'tempo', 'pesoExtra', 'invulnerabilidade', 'escudo'])))
+                    config.powerup_group.add(PowerUp(choice(['vida', 'velocidade', 'moeda2x', 'tempo', 'pesoExtra', 'invulnerabilidade', 'escudo']), camera_x))
                     
                 if event.type == config.debuff_timer:
-                    config.debuff_group.add(Debuff(choice(['congelamento'])))
-                    'lentidao', 'menostempo', 'moedas valem menos'
+                    config.debuff_group.add(Debuff(choice(['congelamento', 'lentidao', 'menostempo', 'moedas valem menos']), camera_x))
+                    
                 if event.type == config.dificuldade_timer:
                     if config.tempo_moeda > 200:
                         config.tempo_moeda = max(config.tempo_moeda - 200, 200)
@@ -265,7 +229,6 @@ def play(qtdplayers):
 
             config.screen.blit(porto_surf, porto_rect)
             
-            
 
             tempo_necessario_Porto = int(player.sprite.peso) * 1000 / 2
             
@@ -281,7 +244,7 @@ def play(qtdplayers):
                     tempo_restante = tempo_necessario_Porto - (pygame.time.get_ticks() - tempo_colisao_Porto)
 
                     timer_Porto = config.test_font.render(f'{int(tempo_restante // 1000 + 1)}', False, cor_score)
-                    timer_Porto_rect = score_text.get_rect(bottomright=(config.largura, config.altura-80))
+                    timer_Porto_rect = score_text.get_rect(midbottom=(x_tela_porto - 50, config.altura-80))
                     config.screen.blit(timer_Porto,timer_Porto_rect)
 
             

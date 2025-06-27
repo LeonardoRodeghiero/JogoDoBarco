@@ -3,7 +3,7 @@ from random import randint
 import config
 
 class PowerUp(pygame.sprite.Sprite):
-    def __init__(self, tipo):
+    def __init__(self, tipo, camera_x=0):
         super().__init__()
 
         self.tipo = tipo
@@ -139,7 +139,7 @@ class PowerUp(pygame.sprite.Sprite):
         self.powerup_index = 0
 
         self.image = self.frames[self.powerup_index]
-        self.rect = self.image.get_rect(midbottom=(randint(9, config.largura-9), randint(-100, -1)))
+        self.rect = self.image.get_rect(midbottom=(randint(camera_x + 9, camera_x + config.largura - 9), randint(-100, -1)))
         self.mundo_x = self.rect.x
 
     def queda(self):

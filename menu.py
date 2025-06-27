@@ -1,6 +1,7 @@
 import pygame
 import sys
 import config
+import audio
 pygame.init()
 
 # Função para carregar fontes do sistema
@@ -93,6 +94,7 @@ def options():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if botao_ativo.checkForInput(mouse_pos):
+                    audio.click_menu.play()
                     if botao_ativo == one_p_button:
                         botao_ativo = two_p_button
                         config.modo_jogo = 2
@@ -100,6 +102,8 @@ def options():
                         botao_ativo = one_p_button
                         config.modo_jogo = 1
                 if back_button.checkForInput(mouse_pos):
+                    audio.click_menu.play()
+
                     return "menu"
 
         pygame.display.update()

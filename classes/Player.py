@@ -387,6 +387,7 @@ class Player(pygame.sprite.Sprite):
 
                     if inimigo.tipo == 'barrilRadioativo':
                         self.vidaAtual -= 1
+                        audio.tocar_som_explosao_radiacao()
                 else:
                     if inimigo.tipo == 'bomba':
                         self.escudoAtivo = 0
@@ -398,6 +399,7 @@ class Player(pygame.sprite.Sprite):
 
                     if inimigo.tipo == 'barrilRadioativo':
                         self.escudoAtivo = 0
+                        audio.tocar_som_explosao_radiacao()
 
         
 
@@ -405,6 +407,7 @@ class Player(pygame.sprite.Sprite):
     def colisaoDebuff(self):
         from tempo import retirarTempo
         if self.powerUp_invulnerabilidade_ativo == False:
+
             debuff_colidido = pygame.sprite.spritecollide(self, config.debuff_group, True)
 
             for debuff in debuff_colidido:
@@ -413,10 +416,18 @@ class Player(pygame.sprite.Sprite):
                     audio.tocar_som_congelamento()
                 if debuff.tipo == 'lentidao':
                     self.ativar_debuff('lentidao')
+                    audio.tocar_som_debuff()
+
                 if debuff.tipo == 'menostempo':
                     retirarTempo(10)
+                    audio.tocar_som_debuff()
+
                 if debuff.tipo == 'moedas valem menos':
                     self.ativar_debuff('moedas valem menos')
+                    audio.tocar_som_debuff()
+
+
+
 
     def ativar_debuff(self, debuff_tipo):
         if debuff_tipo == 'congelamento':
@@ -555,24 +566,32 @@ class Player(pygame.sprite.Sprite):
             if powerUp.tipo == 'vida':
                 if self.vidaAtual < 3:
                     self.vidaAtual += 1
+                audio.tocar_som_powerup()
+
             if powerUp.tipo == 'velocidade':
                 self.ativar_power_up('velocidade')
+                audio.tocar_som_powerup()
+
 
             if powerUp.tipo == 'invulnerabilidade':            
                 self.ativar_power_up('invulnerabilidade')
+                audio.tocar_som_powerup()
             
             if powerUp.tipo == 'moeda2x':
                 self.ativar_power_up('moeda2x')
+                audio.tocar_som_powerup()
 
             if powerUp.tipo == 'tempo':
                 adicionarTempo(10)
+                audio.tocar_som_powerup()
 
             if powerUp.tipo == 'pesoExtra':
                 self.pesoExtra += 0.5
+                audio.tocar_som_powerup()
 
             if powerUp.tipo == 'escudo':
                 self.escudoAtivo = 1
-
+                audio.tocar_som_powerup()
 
     def ativar_power_up(self, powerUpTipo):
         """Ativa a habilidade temporária"""
