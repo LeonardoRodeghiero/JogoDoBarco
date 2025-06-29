@@ -12,7 +12,9 @@ musicas = {
     'game': 'bgGame.mp3',
     'gameover1': 'gameover.wav',
     'gameover2': 'gameover2.wav',
-    'gameover3': 'No Hope.mp3'
+    'gameover3': 'No Hope.mp3',
+    'vitoria1': 'vitoria1.ogg',
+    'vitoria2': 'vitoria2.mp3'
 }
 
 musica_atual = None
@@ -150,6 +152,22 @@ def tocarMusicaGameOver():
 
     pygame.mixer.music.set_volume(0.5)
 
+def tocarMusicaVitoria():
+    mus_escolhida = randint(2,2)
+
+    if mus_escolhida == 1:
+        pygame.mixer.music.load('audios/vitoriaMusic/vitoria1.ogg')
+        pygame.mixer.music.play(-1)
+        pygame.mixer.music.set_volume(0.05)
+        return 'vitoria1'
+    elif mus_escolhida == 2:
+        pygame.mixer.music.load('audios/vitoriaMusic/vitoria2.mp3')
+        pygame.mixer.music.play(-1)
+        pygame.mixer.music.set_volume(0.05)
+        return 'vitoria2'
+
+
+    pygame.mixer.music.set_volume(0.5)
 def tocar_som_explosao_radiacao():
     explosao = pygame.mixer.Sound('audios/som_barrilRadioativo/explosao_barril.wav')
     explosao.set_volume(0.2)

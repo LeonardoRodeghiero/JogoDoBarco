@@ -4,6 +4,8 @@ import config
 import audio
 from time import sleep
 def vitoria(vencedor):
+    audio.musica_atual = audio.tocarMusicaVitoria()
+
     while True:
         config.screen.blit(menu.menubg, (0, 0))
 

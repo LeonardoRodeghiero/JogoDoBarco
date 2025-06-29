@@ -22,7 +22,7 @@ def Jogo():
     
     if not pygame.mixer.music.get_busy():
         audio.musica_atual = audio.escolher_musica_fundo_e_tocar(musica_escolhida)
-    if audio.musica_atual in ['gameover1', 'gameover2', 'gameover3']:
+    if audio.musica_atual in ['gameover1', 'gameover2', 'gameover3', 'vitoria1', 'vitoria2']:
         audio.musica_atual = audio.escolher_musica_fundo_e_tocar(musica_escolhida)
     
 
@@ -160,7 +160,7 @@ def play(qtdplayers):
                     config.moeda_group.add(Moeda(choice(['ouro', 'prata', 'prata', 'bronze', 'bronze', 'bronze']), camera_x))
 
                 if event.type == config.inimigo_timer:
-                    config.inimigo_group.add(Inimigo(choice(['barrilRadioativo','bomba','flecha']), camera_x))
+                    config.inimigo_group.add(Inimigo(choice(['barrilRadioativo','bomba','flecha', 'bomba','flecha']), camera_x))
                     
                 if event.type == config.powerup_timer:
                     config.powerup_group.add(PowerUp(choice(['vida', 'velocidade', 'moeda2x', 'tempo', 'pesoExtra', 'invulnerabilidade', 'escudo']), camera_x))
@@ -169,12 +169,12 @@ def play(qtdplayers):
                     config.debuff_group.add(Debuff(choice(['congelamento', 'lentidao', 'menostempo', 'moedas valem menos']), camera_x))
                     
                 if event.type == config.dificuldade_timer:
-                    if config.tempo_moeda > 200:
-                        config.tempo_moeda = max(config.tempo_moeda - 200, 200)
+                    if config.tempo_moeda > 400:
+                        config.tempo_moeda = max(config.tempo_moeda - 200, 400)
                         pygame.time.set_timer(config.moeda_timer, config.tempo_moeda)
 
-                    if config.tempo_inimigo > 500:
-                        config.tempo_inimigo = max(config.tempo_inimigo - 300, 500)
+                    if config.tempo_inimigo > 800:
+                        config.tempo_inimigo = max(config.tempo_inimigo - 300, 800)
                         pygame.time.set_timer(config.inimigo_timer, config.tempo_inimigo)
 
                     if config.tempo_powerUp > 4000:
