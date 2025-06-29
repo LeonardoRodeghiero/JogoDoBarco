@@ -94,6 +94,9 @@ def main():
         elif estado == 'options':
             pygame.display.set_caption("Options")
             estado = menu.options()
+        elif estado == 'info':
+            pygame.display.set_caption("Info")
+            estado = menu.info()
         elif estado == "sair":
             break
 
@@ -218,7 +221,7 @@ def play(qtdplayers):
             porto_surf = pygame.image.load('graficos/porto/porto.png')
 
             porto_mundo_x = config.largura 
-            porto_mundo_y = config.altura + 38
+            porto_mundo_y = config.altura
 
             camera_x = player.sprite.rect.x - config.largura // 2
 
@@ -540,7 +543,7 @@ def play(qtdplayers):
 
 
             porto_surf = pygame.image.load('graficos/porto/porto.png')
-            porto_rect = porto_surf.get_rect(bottomright=(config.largura, config.altura+38))
+            porto_rect = porto_surf.get_rect(bottomright=(config.largura, config.altura))
             config.screen.blit(porto_surf, porto_rect)
 
             
