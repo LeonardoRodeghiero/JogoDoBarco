@@ -48,6 +48,15 @@ class Player(pygame.sprite.Sprite):
         self.PowerUpsAtivos = []
         self.debuffsAtivos = []
         self.pesoExtra = 0
+
+        #Recuperacao
+        self.intervalo = 200  # em milissegundos
+        self.duracao_piscada = 3000  # Tempo total de piscada em milissegundos
+        self.inicio_piscada = 0
+        self.ultimo_tempo = 0  
+        self.visivel = True
+        self.piscando = False
+
         #Velocidade
         self.velocidadeNormal = 10
         self.velocidadeBase = max(1, self.velocidadeNormal - self.peso + self.pesoExtra)
@@ -95,9 +104,17 @@ class Player(pygame.sprite.Sprite):
         self.image = self.frames[self.player_index]
         self.rect = self.image.get_rect(midbottom=(x, y))
     
+    def iniciar_piscada(self):
+        self.piscando = True
+        self.inicio_piscada = pygame.time.get_ticks()
+        self.ultimo_tempo = self.inicio_piscada
+        self.visivel = True  # Começa visível
+        if self.vidaAtual > 0:
+            audio.tocar_som_recuperacao()
+
     def atualizar_velocidade_base(self):
         if self.powerUp_velocidade_ativo == True:
-            base = (self.velocidadeNormal - self.peso + self.pesoExtra) * 2
+            base = (self.velocidadeNormal - self.peso + self.pesoExtra) + 2
             self.velocidadeBase = max(2, base)
 
         if self.debuff_lentidao_ativo == True:
@@ -373,32 +390,38 @@ class Player(pygame.sprite.Sprite):
                     audio.escolher_som_moeda_e_tocar()
         
     def colisaoInimigo(self):
-        if self.powerUp_invulnerabilidade_ativo == False:
+        if self.powerUp_invulnerabilidade_ativo == False and self.piscando == False:
             inimigo_colidido = pygame.sprite.spritecollide(self, config.inimigo_group, True)
             for inimigo in inimigo_colidido:
                 if self.escudoAtivo == 0:
-                    if inimigo.tipo == 'bomba':
+                    if inimigo.tipo == 'bomba' :
                         self.vidaAtual -= 1
+                        self.iniciar_piscada()
                         audio.tocar_som_explosao()
 
                     if inimigo.tipo == 'flecha':
                         self.vidaAtual -= 1
+                        self.iniciar_piscada()
                         audio.tocar_som_flechada()
 
                     if inimigo.tipo == 'barrilRadioativo':
                         self.vidaAtual -= 1
+                        self.iniciar_piscada()
                         audio.tocar_som_explosao_radiacao()
                 else:
                     if inimigo.tipo == 'bomba':
                         self.escudoAtivo = 0
+                        self.iniciar_piscada()
                         audio.tocar_som_explosao()
 
                     if inimigo.tipo == 'flecha':
                         self.escudoAtivo = 0
+                        self.iniciar_piscada()
                         audio.tocar_som_flechada()
 
                     if inimigo.tipo == 'barrilRadioativo':
                         self.escudoAtivo = 0
+                        self.iniciar_piscada()
                         audio.tocar_som_explosao_radiacao()
 
         
@@ -406,7 +429,7 @@ class Player(pygame.sprite.Sprite):
 
     def colisaoDebuff(self):
         from tempo import retirarTempo
-        if self.powerUp_invulnerabilidade_ativo == False:
+        if self.powerUp_invulnerabilidade_ativo == False and self.piscando == False:
 
             debuff_colidido = pygame.sprite.spritecollide(self, config.debuff_group, True)
 
@@ -498,9 +521,13 @@ class Player(pygame.sprite.Sprite):
             self.velocidade = self.velocidadeBase
 
     def verificar_area_radioativa(self):
-        colisoes = pygame.sprite.spritecollide(self, config.area_radioativa_group, True)
-        if colisoes:
-            self.vidaAtual -= 1
+        colisoes = pygame.sprite.spritecollide(self, config.area_radioativa_group, False)
+        if self.piscando == False:
+            colisoes = pygame.sprite.spritecollide(self, config.area_radioativa_group, True)
+            if colisoes:
+                self.vidaAtual -= 1
+                self.iniciar_piscada()
+
 
         
     
@@ -788,3 +815,16 @@ class Player(pygame.sprite.Sprite):
         self.verificar_area_congelada()
         self.verificar_area_radioativa()
         self.morrer()
+        tempo_atual = pygame.time.get_ticks()
+        
+        if self.piscando:
+            if tempo_atual - self.inicio_piscada >= self.duracao_piscada:
+                self.piscando = False
+                self.visivel = True  # Garante que fique visível ao final
+            elif tempo_atual - self.ultimo_tempo >= self.intervalo:
+                self.visivel = not self.visivel
+                self.ultimo_tempo = tempo_atual
+
+    def draw(self, surface):
+        if self.visivel:
+            surface.blit(self.image, self.rect)

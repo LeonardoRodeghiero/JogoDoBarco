@@ -63,7 +63,7 @@ tempo_moeda = 1800
 moeda_timer = pygame.USEREVENT + 1
 pygame.time.set_timer(moeda_timer, tempo_moeda)
 
-tempo_inimigo = 400
+tempo_inimigo = 3600
 inimigo_timer = pygame.USEREVENT + 2
 pygame.time.set_timer(inimigo_timer, tempo_inimigo)
 

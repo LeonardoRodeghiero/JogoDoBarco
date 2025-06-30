@@ -163,7 +163,7 @@ def play(qtdplayers):
                     config.inimigo_group.add(Inimigo(choice(['barrilRadioativo','bomba','flecha', 'bomba','flecha']), camera_x))
                     
                 if event.type == config.powerup_timer:
-                    config.powerup_group.add(PowerUp(choice(['vida', 'velocidade', 'moeda2x', 'tempo', 'pesoExtra', 'invulnerabilidade', 'escudo']), camera_x))
+                    config.powerup_group.add(PowerUp(choice(['velocidade', 'vida', 'moeda2x', 'tempo', 'pesoExtra', 'invulnerabilidade', 'escudo']), camera_x))
                     
                 if event.type == config.debuff_timer:
                     config.debuff_group.add(Debuff(choice(['congelamento', 'lentidao', 'menostempo', 'moedas valem menos']), camera_x))
@@ -351,7 +351,7 @@ def play(qtdplayers):
 
 
             config.area_radioativa_group.draw(config.screen)
-            player.draw(config.screen)
+            player.sprite.draw(config.screen)
             player.update()
 
 
@@ -670,8 +670,10 @@ def play(qtdplayers):
 
             config.area_congelada_group.draw(config.screen)
             config.area_radioativa_group.draw(config.screen)
-            player_group.draw(config.screen)
-            player_group.update()
+
+            for player in player_group:
+                player.draw(config.screen)
+                player.update()
 
 
 

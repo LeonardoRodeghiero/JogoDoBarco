@@ -194,3 +194,8 @@ def tocar_som_powerup():
 
     powerup.set_volume(0.05)
     powerup.play()
+
+def tocar_som_recuperacao():
+    recuperacao = pygame.mixer.Sound('audios/recuperacao/recuperacao.wav')
+    recuperacao.set_volume(0.05)
+    recuperacao.play()
