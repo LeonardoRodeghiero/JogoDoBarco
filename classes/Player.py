@@ -143,7 +143,7 @@ class Player(pygame.sprite.Sprite):
     def player_input(self):
 
         keys = pygame.key.get_pressed()
-        animacao = self.velocidade / 25
+        animacao = self.velocidade / 50
         if self.id == 0:
             if self.debuff_congelamento_ativo == False:
                 if (keys[pygame.K_LEFT] or keys[pygame.K_a]) and (keys[pygame.K_RIGHT] or keys[pygame.K_d]):
@@ -436,6 +436,7 @@ class Player(pygame.sprite.Sprite):
                     if inimigo.tipo == 'barrilRadioativo':
                         self.vidaAtual -= 1
                         self.entoxicar(2)
+                        self.iniciar_piscada()
                         audio.tocar_som_explosao_radiacao()
                 else:
                     if inimigo.tipo == 'bomba':
@@ -531,7 +532,7 @@ class Player(pygame.sprite.Sprite):
             self.divmoeda = 1
     
     def morrer(self):
-        if self.vidaAtual == 0:
+        if self.vidaAtual <= 0:
             self.kill()
 
     def verificar_area_congelada(self):

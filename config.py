@@ -16,6 +16,8 @@ largura = 1000
 altura = 600
 
 info_title = pygame.font.Font('fonte/Pixeltype.ttf', 50)
+info_subtitle = pygame.font.Font('fonte/Pixeltype.ttf', 40)
+
 info_content = pygame.font.Font('fonte/Pixeltype.ttf', 30)
 
 """# Obter informações do modo de exibição

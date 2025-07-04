@@ -130,7 +130,7 @@ def info():
     # Gera superfícies de texto
     
     deslocamento_y = 0
-    altura_total = 1580  # 40 pixels entre linhas
+    altura_total = 1825
     sombra_offset = (4, 4)
     cor_sombra = (50, 50, 50, 180)
 
@@ -156,7 +156,7 @@ def info():
 
         back_default = pygame.transform.scale(pygame.image.load('graficos/botoes/backwhite.png').convert_alpha(), (150, 60))
         back_hover = pygame.transform.scale(pygame.image.load('graficos/botoes/backgreen.png').convert_alpha(), (150, 60))
-        back_button = Button(back_default, back_hover, (config.largura/2, deslocamento_y+140*13), "", get_font(50), "#d7fcd4", "green")
+        back_button = Button(back_default, back_hover, (config.largura/2, deslocamento_y+140*14+85), "", get_font(50), "#d7fcd4", "green")
         
 
         for event in pygame.event.get():
@@ -188,12 +188,11 @@ def info():
 
         pygame.draw.rect(config.screen, (0, 0, 128), retangulo_centro, border_radius=20)
 
-
         # JOGADOR
         jogador_back_rect = pygame.Rect(80, deslocamento_y+140, config.largura-160, 100)  # (x, y, largura, altura)
         pygame.draw.rect(config.screen, (65, 105, 225), jogador_back_rect, border_radius=20)
         jogador_text = config.info_title.render('Jogador', False, 'white')
-        jogador_rect_text = jogador_text.get_rect(center=(retangulo_centro.centerx, retangulo_centro.top + 40))
+        jogador_rect_text = jogador_text.get_rect(center=(jogador_back_rect.centerx, jogador_back_rect.top - 20))
         config.screen.blit(jogador_text, jogador_rect_text)
 
         jogador_surf = pygame.image.load('graficos/barco/barco1.png')
@@ -211,11 +210,112 @@ def info():
             y = jogador_rect_c.top + 40 + i * 30  # espaçamento entre linhas
             config.screen.blit(surface, (jogador_rect_c.left + 20, y))
 
+
+        #CONTROLES
+        controls_back_rect = pygame.Rect(80, deslocamento_y+140*2+20, config.largura-160, 300)  # (x, y, largura, altura)
+        pygame.draw.rect(config.screen, (65, 105, 225), controls_back_rect, border_radius=20)
+        controls_text = config.info_title.render('Controles', False, 'white')
+        controls_rect_text = controls_text.get_rect(center=(controls_back_rect.centerx, controls_back_rect.top - 20)) 
+        config.screen.blit(controls_text,controls_rect_text)
+
+        player1_text = config.info_subtitle.render('1 Jogador', False, 'white')
+        player1_rect_text = player1_text.get_rect(center=(controls_back_rect.centerx, controls_back_rect.top + 15)) 
+        config.screen.blit(player1_text,player1_rect_text)
+
+
+        setinhas_surf = pygame.image.load('graficos/controles/setinhas.png')
+        setinhas_surf = pygame.transform.scale(setinhas_surf, (77.6,37.2))
+        setinhas_rect = setinhas_surf.get_rect(center=(130, controls_back_rect.midleft[1]-90))
+        config.screen.blit(setinhas_surf,setinhas_rect)
+
+        ad_surf = pygame.image.load('graficos/controles/ad.png')
+        ad_surf = pygame.transform.scale(ad_surf, (77.6,37.2))
+        ad_rect = ad_surf.get_rect(center=(230, controls_back_rect.midleft[1]-90))
+        config.screen.blit(ad_surf, ad_rect)
+        
+        movimento_text_c = config.info_content.render('Setas do teclado ou A/D para se movimentar para esquerda ou direita', False, 'white')
+        movimento_rect_c = movimento_text_c.get_rect(topleft=(300, controls_back_rect.midleft[1] - 120))
+
+        texto_movimento = 'Setas do teclado ou A/D para se movimentar para esquerda ou direita'
+        linhas_movimento = quebra_texto(texto_movimento, config.info_content, controls_back_rect.width - 40)
+
+        for i, linha in enumerate(linhas_movimento):
+            surface = config.info_content.render(linha, False, 'white')
+            y = movimento_rect_c.top + 40 + i * 30  # espaçamento entre linhas
+            config.screen.blit(surface, (controls_back_rect.left + 200, y - 20))
+
+        shift_surf = pygame.image.load('graficos/controles/shift.png')
+        shift_surf = pygame.transform.scale(shift_surf, (77.6,37.2))
+        shift_rect = ad_surf.get_rect(center=(180, controls_back_rect.midleft[1]-40))
+        config.screen.blit(shift_surf, shift_rect)
+
+        shift_text_c = config.info_content.render('Pressione shift para diminuir a velocidade para mais controle', False, 'white')
+        shift_rect_c = shift_text_c.get_rect(topleft=(300, controls_back_rect.midleft[1] - 70))
+
+        texto_shift = 'Pressione shift para diminuir a velocidade para mais controle'
+        linhas_shift = quebra_texto(texto_shift, config.info_content, controls_back_rect.width - 40)
+
+        for i, linha in enumerate(linhas_shift):
+            surface = config.info_content.render(linha, False, 'white')
+            y = shift_rect_c.top + 40 + i * 30  # espaçamento entre linhas
+            config.screen.blit(surface, (controls_back_rect.left + 200, y - 20))
+
+
+
+
+        player2_text = config.info_subtitle.render('2 Jogadores', False, 'white')
+        player2_rect_text = player2_text.get_rect(center=(controls_back_rect.centerx, controls_back_rect.top + 170)) 
+        config.screen.blit(player2_text,player2_rect_text)
+
+
+        setinhas_surf = pygame.image.load('graficos/controles/setinhas.png')
+        setinhas_surf = pygame.transform.scale(setinhas_surf, (77.6,37.2))
+        setinhas_rect = setinhas_surf.get_rect(center=(130, controls_back_rect.midleft[1]+50))
+        config.screen.blit(setinhas_surf,setinhas_rect)
+
+        ad_surf = pygame.image.load('graficos/controles/ad.png')
+        ad_surf = pygame.transform.scale(ad_surf, (77.6,37.2))
+        ad_rect = ad_surf.get_rect(center=(230, controls_back_rect.midleft[1]+50))
+        config.screen.blit(ad_surf, ad_rect)
+        
+        movimento_text_c = config.info_content.render('O jogador 1 usa A/D e o jogador 2 usa as setinhas para se movimentar', False, 'white')
+        movimento_rect_c = movimento_text_c.get_rect(topleft=(300, controls_back_rect.midleft[1] +20))
+
+        texto_movimento = 'O jogador 1 usa A/D e o jogador 2 usa as setinhas para se movimentar'
+        linhas_movimento = quebra_texto(texto_movimento, config.info_content, controls_back_rect.width - 20)
+
+        for i, linha in enumerate(linhas_movimento):
+            surface = config.info_content.render(linha, False, 'white')
+            y = movimento_rect_c.top + 40 + i * 30  # espaçamento entre linhas
+            config.screen.blit(surface, (controls_back_rect.left + 200, y - 20))
+
+        shift_surf = pygame.image.load('graficos/controles/shift.png')
+        shift_surf = pygame.transform.scale(shift_surf, (77.6,37.2))
+        shift_rect = ad_surf.get_rect(center=(180, controls_back_rect.midleft[1]+100))
+        config.screen.blit(shift_surf, shift_rect)
+
+        shift_text_c = config.info_content.render('Para velocidade controlada, o jogador 1 usa o shift da esquerda e o jogador 2 usa o shift da direita', False, 'white')
+        shift_rect_c = shift_text_c.get_rect(topleft=(300, controls_back_rect.midleft[1] +70))
+
+        texto_shift = 'Para velocidade controlada, o jogador 1 usa o shift da esquerda e o jogador 2 usa o shift da direita'
+        linhas_shift = quebra_texto(texto_shift, config.info_content, controls_back_rect.width - 200)
+
+        for i, linha in enumerate(linhas_shift):
+            surface = config.info_content.render(linha, False, 'white')
+            y = shift_rect_c.top + 40 + i * 15  # espaçamento entre linhas
+            config.screen.blit(surface, (controls_back_rect.left + 200, y - 20))
+
+
+
+
+
+
+
         #MOEDAS
-        moeda_back_rect = pygame.Rect(80, deslocamento_y+140*2+30, config.largura-160, 180)  # (x, y, largura, altura)
+        moeda_back_rect = pygame.Rect(80, deslocamento_y+140*5-30, config.largura-160, 180)  # (x, y, largura, altura)
         pygame.draw.rect(config.screen, (65, 105, 225), moeda_back_rect, border_radius=20)
         moeda_text = config.info_title.render('Moedas', False, 'white')
-        moeda_rect_text = moeda_text.get_rect(center=(retangulo_centro.centerx, retangulo_centro.top + 220))
+        moeda_rect_text = moeda_text.get_rect(center=(moeda_back_rect.centerx, moeda_back_rect.top - 20))
         config.screen.blit(moeda_text, moeda_rect_text)
 
         moedab_surf = pygame.image.load('graficos/moeda/bronze/moedabronze4.png')
@@ -266,12 +366,12 @@ def info():
             y = moedao_rect_c.top + 40 + i * 30  # espaçamento entre linhas
             config.screen.blit(surface, (moeda_back_rect.left + 100, y))
 
-
+        
         #PORTO
-        porto_back_rect = pygame.Rect(80, deslocamento_y+140*4, config.largura-160, 180)  # (x, y, largura, altura)
+        porto_back_rect = pygame.Rect(80, deslocamento_y+140*7-70, config.largura-160, 180)  # (x, y, largura, altura)
         pygame.draw.rect(config.screen, (65, 105, 225), porto_back_rect, border_radius=20)
         porto_text = config.info_title.render('Porto', False, 'white')
-        porto_rect_text = porto_text.get_rect(center=(retangulo_centro.centerx, retangulo_centro.top + 470))
+        porto_rect_text = porto_text.get_rect(center=(porto_back_rect.centerx, porto_back_rect.top - 20))
         config.screen.blit(porto_text, porto_rect_text)
 
         porto_surf = pygame.image.load('graficos/porto/porto.png')
@@ -290,12 +390,11 @@ def info():
             y = porto_rect_c.top + 40 + i * 30  # espaçamento entre linhas
             config.screen.blit(surface, (porto_back_rect.left + 250, y))
 
-
         #INIMIGOS
-        obstaculo_back_rect = pygame.Rect(80, deslocamento_y+140*6, config.largura-160, 180)  # (x, y, largura, altura)
+        obstaculo_back_rect = pygame.Rect(80, deslocamento_y+140*8+40, config.largura-160, 180)  # (x, y, largura, altura)
         pygame.draw.rect(config.screen, (65, 105, 225), obstaculo_back_rect, border_radius=20)
         obstaculo_text = config.info_title.render('Obstaculos', False, 'white')
-        obstaculo_rect_text = obstaculo_text.get_rect(center=(retangulo_centro.centerx, retangulo_centro.top + 745))
+        obstaculo_rect_text = obstaculo_text.get_rect(center=(obstaculo_back_rect.centerx, obstaculo_back_rect.top - 20))
         config.screen.blit(obstaculo_text, obstaculo_rect_text)
 
         bomba_surf = pygame.image.load('graficos/inimigos/bomba/bomb1.png')
@@ -336,23 +435,23 @@ def info():
             config.screen.blit(surface, (obstaculo_back_rect.left + 120, y))
 
 
-        barril_text_c = config.info_content.render('Um barril Radioativo que quando cai na agua, cria uma area que mata tudo que a toca por 5 segundos', False, 'white')
+        barril_text_c = config.info_content.render('Um barril Radioativo que quando cai na agua, cria uma area por 5 segundos, que tira 1/3 da barra de toxicidade ao toca-la. Quando a barra de toxicidade chega a 3, 1 vida eh perdida', False, 'white')
         barril_rect_c = barril_text_c.get_rect(topleft=(250, obstaculo_back_rect.midleft[1] - 10))
 
-        texto_barril = 'Um barril Radioativo que quando cai na agua, cria uma area por 5 segundos, que tira 1 vida ao toca-la'
+        texto_barril = 'Um barril Radioativo que quando cai na agua, cria uma area por 5 segundos, que tira 1/3 da barra de toxicidade ao toca-la. Quando a barra de toxicidade chega a 3, 1 vida eh perdida'
         linhas_barril = quebra_texto(texto_barril, config.info_content, obstaculo_back_rect.width - 150)
 
         for i, linha in enumerate(linhas_barril):
             surface = config.info_content.render(linha, False, 'white')
-            y = barril_rect_c.top + 40 + i * 30  # espaçamento entre linhas
+            y = barril_rect_c.top + 40 + i * 15  # espaçamento entre linhas
             config.screen.blit(surface, (obstaculo_back_rect.left + 120, y))
 
 
         #POWER UPS
-        powerups_back_rect = pygame.Rect(80, deslocamento_y+140*8, config.largura-160, 300)  # (x, y, largura, altura)
+        powerups_back_rect = pygame.Rect(80, deslocamento_y+140*10, config.largura-160, 300)  # (x, y, largura, altura)
         pygame.draw.rect(config.screen, (65, 105, 225), powerups_back_rect, border_radius=20)
         powerups_text = config.info_title.render('Poderes', False, 'white')
-        powerups_rect_text =    powerups_text.get_rect(center=(retangulo_centro.centerx, retangulo_centro.top + 1020))
+        powerups_rect_text =    powerups_text.get_rect(center=(powerups_back_rect.centerx, powerups_back_rect.top - 20))
         config.screen.blit(powerups_text,powerups_rect_text)
 
         vida_surf = pygame.image.load('graficos/powerups/vida/vida1.png')
@@ -470,10 +569,10 @@ def info():
 
 
         #DEBUFFS
-        debuffs_back_rect = pygame.Rect(80, deslocamento_y+140*11-20, config.largura-160, 200)  # (x, y, largura, altura)
+        debuffs_back_rect = pygame.Rect(80, deslocamento_y+140*13-50, config.largura-160, 200)  # (x, y, largura, altura)
         pygame.draw.rect(config.screen, (65, 105, 225), debuffs_back_rect, border_radius=20)
         debuffs_text = config.info_title.render('Penalidades', False, 'white')
-        debuffs_rect_text = debuffs_text.get_rect(center=(retangulo_centro.centerx, retangulo_centro.top + 1440-20))
+        debuffs_rect_text = debuffs_text.get_rect(center=(debuffs_back_rect.centerx, debuffs_back_rect.top - 20))
         config.screen.blit(debuffs_text,debuffs_rect_text)
 
         lentidao_surf = pygame.image.load('graficos/debuffs/lentidao/lentidao_1.png')
@@ -547,6 +646,13 @@ def info():
         back_button.update(config.screen)
 
         
+        
+
+
+
+
+
+
 
 
         pygame.display.flip()
