@@ -157,8 +157,8 @@ def play(qtdplayers):
                     config.moeda_group.add(Moeda(choice(['ouro', 'prata', 'prata', 'bronze', 'bronze', 'bronze']), camera_x))
 
                 if event.type == config.inimigo_timer:
-                    config.inimigo_group.add(Inimigo(choice(['barrilRadioativo']), camera_x))
-                    'bomba','flecha', 'bomba','flecha'
+                    config.inimigo_group.add(Inimigo(choice(['barrilRadioativo','bomba','flecha', 'bomba','flecha']), camera_x))
+                    
                 if event.type == config.powerup_timer:
                     config.powerup_group.add(PowerUp(choice(['velocidade', 'vida', 'moeda2x', 'tempo', 'pesoExtra', 'invulnerabilidade', 'escudo']), camera_x))
                     
