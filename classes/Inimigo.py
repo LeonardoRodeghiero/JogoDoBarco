@@ -48,11 +48,6 @@ class Inimigo(pygame.sprite.Sprite):
             self.rect = self.image.get_rect(midbottom=((randint(camera_x + 9, camera_x + config.largura - 9), inicio)))
             self.gravidade = randint(1, 12)
 
-
-
-
-
-
         elif tipo == 'flecha':
             flecha_1 = pygame.image.load('graficos/inimigos/flecha/flecha1.png').convert_alpha()
             flecha_2 = pygame.image.load('graficos/inimigos/flecha/flecha2.png').convert_alpha()
@@ -63,7 +58,6 @@ class Inimigo(pygame.sprite.Sprite):
             flecha_2 = pygame.transform.scale2x(flecha_2)
             flecha_3 = pygame.transform.scale2x(flecha_3)
             flecha_4 = pygame.transform.scale2x(flecha_4)
-
 
             self.frames = [flecha_1,flecha_2,flecha_3,flecha_4]
 
@@ -83,11 +77,9 @@ class Inimigo(pygame.sprite.Sprite):
             barril_4 = pygame.image.load('graficos/inimigos/barrilRadioativo/barrilRadioativo_4.png').convert_alpha()
             barril_5 = pygame.image.load('graficos/inimigos/barrilRadioativo/barrilRadioativo_5.png').convert_alpha()
 
-
             self.barril_index = 0
 
             self.frames = [barril_1,barril_2,barril_3,barril_4,barril_5]
-
 
             for i in range(len(self.frames)):
                 self.frames[i] = pygame.transform.scale(self.frames[i], (30,35))
@@ -97,8 +89,6 @@ class Inimigo(pygame.sprite.Sprite):
             self.virou_area = False
             self.duracao_area = 5000
             self.tempo_criacao = None
-            
-
 
             inicio = randint(-100, 0)
             self.rect = self.image.get_rect(midbottom=((randint(camera_x + 9, camera_x + config.largura - 9), inicio)))
@@ -128,8 +118,6 @@ class Inimigo(pygame.sprite.Sprite):
         area.rect = area.image.get_rect(midbottom=(self.mundo_x, config.altura))
         area.mundo_x = self.mundo_x
 
-        
-
         area.tempo_criacao = pygame.time.get_ticks()
         area.duracao = 5000
 
@@ -141,8 +129,6 @@ class Inimigo(pygame.sprite.Sprite):
     def destruir(self):
         if self.rect.y >= config.altura + 50:
             self.kill()
-
-
 
     def animacao(self):
         if self.tipo == 'bomba' and self.rect.y >= self.distanciaDeTroca:
@@ -159,7 +145,6 @@ class Inimigo(pygame.sprite.Sprite):
             self.barril_index += 0.1
             if self.barril_index >= len(self.frames): self.barril_index = 0
             self.image = self.frames[int(self.barril_index)]
-
 
     def update(self, camera_x=0):
         if self.tipo == 'barrilRadioativo' and not self.virou_area:
