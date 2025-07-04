@@ -45,6 +45,7 @@ class Player(pygame.sprite.Sprite):
         self.pontos = 0
         self.vidaAtual = 3
         self.escudoAtivo = 0
+        self.toxicidade = 0
         self.PowerUpsAtivos = []
         self.debuffsAtivos = []
         self.pesoExtra = 0
@@ -62,40 +63,54 @@ class Player(pygame.sprite.Sprite):
         self.velocidadeBase = max(1, self.velocidadeNormal - self.peso + self.pesoExtra)
         self.velocidade = self.velocidadeBase
 
+        # icons
+        self.coracaoCheio = pygame.image.load('graficos/coracao/coracaoCheio.png')
+        self.coracaoVazio = pygame.image.load('graficos/coracao/coracaoVazio.png')
+
+        self.coracaoCheio = pygame.transform.scale(self.coracaoCheio, (45,50))
+        self.coracaoVazio = pygame.transform.scale(self.coracaoVazio, (45,50))
+
+        self.escudoCheio = pygame.image.load('graficos/powerUps/escudo/escudo_1.png')
+        self.escudoVazio = pygame.image.load('graficos/powerUps/escudo/escudo_Vazio.xcf')
+
+        self.escudoCheio = pygame.transform.scale(self.escudoCheio, (45,50))
+        self.escudoVazio = pygame.transform.scale(self.escudoVazio, (45,50))
+
+        self.toxicidade_icon = pygame.image.load('graficos/toxicidade/toxico.png')
+        self.toxicidade_icon = pygame.transform.scale(self.toxicidade_icon, (48,45))
+
         # POWER UPS
 
-        #Atributos PowerUps de velocidade
+        # Atributos PowerUps de velocidade
         self.powerUp_velocidade_ativo = False
         self.tempo_inicioPowerUpVelocidade = None
         self.tempoTotalPowerUpVelocidade = 15000
 
 
-        #Atributos PowerUps de invulnerabilidade
+        # Atributos PowerUps de invulnerabilidade
         self.powerUp_invulnerabilidade_ativo = False
         self.tempo_inicioPowerUpinvulnerabilidade = None
         self.tempoTotalPowerUpinvulnerabilidade = 15000
 
-        #Atributos PowerUps de moeda x2
+        # Atributos PowerUps de moeda x2
         self.powerUp_moeda2x_ativo = False
         self.tempo_inicioPowerUpMoeda2x = None
         self.tempoTotalPowerUpMoeda2x = 15000
         self.multMoeda2x = 1
 
-        
-
         # DEBUFFS
 
-        #Atributos Debuff de congelamento
+        # Atributos Debuff de congelamento
         self.debuff_congelamento_ativo = False
         self.tempo_inicioDebuffCongelamento = None
         self.tempototalDebuffCongelamento = 2000
 
-        #Atributos debuff de lentidao
+        # Atributos debuff de lentidao
         self.debuff_lentidao_ativo = False
         self.tempo_inicioDebuffLentidao = None
         self.tempototalDebuffLentidao = 15000
 
-        #atirbutos debuff de moedas divididas por 2
+        # atirbutos debuff de moedas divididas por 2
         self.debuff_moedadiv2_ativo = False
         self.tempo_inicioDebuffmoedadiv2 = None
         self.tempototalDebuffmoedadiv2 = 15000
@@ -125,13 +140,10 @@ class Player(pygame.sprite.Sprite):
             base = self.velocidadeNormal - self.peso + self.pesoExtra
             self.velocidadeBase = max(2, base)  # Garante um mínimo pra base ficar funcional
 
-
-
     def player_input(self):
 
         keys = pygame.key.get_pressed()
-
-        animacao = self.velocidade / 100
+        animacao = self.velocidade / 25
         if self.id == 0:
             if self.debuff_congelamento_ativo == False:
                 if (keys[pygame.K_LEFT] or keys[pygame.K_a]) and (keys[pygame.K_RIGHT] or keys[pygame.K_d]):
@@ -143,14 +155,17 @@ class Player(pygame.sprite.Sprite):
                             self.player_index = 0
                         self.image = self.frames[int(self.player_index)]
 
-                        self.rect.x += self.velocidade
+                        if(keys[pygame.K_LSHIFT]): self.rect.x += self.velocidade * 0.5
+                        else: self.rect.x += self.velocidade
+
                     elif (keys[pygame.K_LEFT] or keys[pygame.K_a]) and self.rect.left >= 0:
                         self.player_index -= animacao
                         if self.player_index < 0:
                             self.player_index = 8
                         self.image = self.frames[int(self.player_index)]
 
-                        self.rect.x -= self.velocidade
+                        if(keys[pygame.K_LSHIFT]): self.rect.x -= self.velocidade * 0.5
+                        else: self.rect.x -= self.velocidade
                     else:
                         self.player_index = int(self.player_index)
         else:
@@ -165,14 +180,16 @@ class Player(pygame.sprite.Sprite):
                                 self.player_index = 0
                             self.image = self.frames[int(self.player_index)]
 
-                            self.rect.x += self.velocidade
+                            if(keys[pygame.K_LSHIFT]): self.rect.x += self.velocidade * 0.5
+                            else: self.rect.x += self.velocidade
                         elif (keys[pygame.K_a]) and self.rect.left >= 0:
                             self.player_index -= animacao
                             if self.player_index < 0:
                                 self.player_index = 8
                             self.image = self.frames[int(self.player_index)]
 
-                            self.rect.x -= self.velocidade
+                            if(keys[pygame.K_LSHIFT]): self.rect.x -= self.velocidade * 0.5
+                            else: self.rect.x -= self.velocidade
                         else:
                             self.player_index = int(self.player_index)
             if self.id == 2:
@@ -186,185 +203,197 @@ class Player(pygame.sprite.Sprite):
                                     self.player_index = 0
                                 self.image = self.frames[int(self.player_index)]
 
-                                self.rect.x += self.velocidade
+                                if(keys[pygame.K_RSHIFT]): self.rect.x += self.velocidade * 0.5
+                                else: self.rect.x += self.velocidade
                         elif (keys[pygame.K_LEFT]) and self.rect.left >= 0:
                             self.player_index -= animacao
                             if self.player_index < 0:
                                 self.player_index = 8
                             self.image = self.frames[int(self.player_index)]
 
-                            self.rect.x -= self.velocidade
+                            if(keys[pygame.K_RSHIFT]): self.rect.x -= self.velocidade * 0.5
+                            else: self.rect.x -= self.velocidade
                         else:
                             self.player_index = int(self.player_index)
 
-
-
+    def entoxicar(self, lvl_toxico = 1):
+        self.toxicidade += lvl_toxico
+        audio.entoxicar()
+        if self.toxicidade >= 3:
+            self.toxicidade = 0
+            self.vidaAtual -= 1
+            self.iniciar_piscada()
 
     def mostrarVida(self):
-        coracaoCheio = pygame.image.load('graficos/coracao/coracaoCheio.png')
-        coracaoVazio = pygame.image.load('graficos/coracao/coracaoVazio.png')
-
-        coracaoCheio = pygame.transform.scale(coracaoCheio, (45,50))
-        coracaoVazio = pygame.transform.scale(coracaoVazio, (45,50))
-
-
-        escudoCheio = pygame.image.load('graficos/powerUps/escudo/escudo_1.png')
-        escudoVazio = pygame.image.load('graficos/powerUps/escudo/escudo_Vazio.xcf')
-
-        escudoCheio = pygame.transform.scale(escudoCheio, (45,50))
-        escudoVazio = pygame.transform.scale(escudoVazio, (45,50))
-
-        
-        
-
         if self.id == 0:
             pos_x_coracao = 5
             if self.vidaAtual == 3:
-                coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,7))
-                config.screen.blit(coracaoCheio, coracaoCheio_rect)
+                self.coracaoCheio_rect = self.coracaoCheio.get_rect(topleft=(pos_x_coracao,7))
+                config.screen.blit(self.coracaoCheio, self.coracaoCheio_rect)
 
                 pos_x_coracao += 45 + 8
-                coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,7))
-                config.screen.blit(coracaoCheio, coracaoCheio_rect)
+                self.coracaoCheio_rect = self.coracaoCheio.get_rect(topleft=(pos_x_coracao,7))
+                config.screen.blit(self.coracaoCheio, self.coracaoCheio_rect)
                 pos_x_coracao += 45 + 8
 
-                coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,7))
-                config.screen.blit(coracaoCheio, coracaoCheio_rect)
+                self.coracaoCheio_rect = self.coracaoCheio.get_rect(topleft=(pos_x_coracao,7))
+                config.screen.blit(self.coracaoCheio, self.coracaoCheio_rect)
             elif self.vidaAtual == 2:
                 pos_x_coracao = 0
-                coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,7))
-                config.screen.blit(coracaoCheio, coracaoCheio_rect)
+                self.coracaoCheio_rect = self.coracaoCheio.get_rect(topleft=(pos_x_coracao,7))
+                config.screen.blit(self.coracaoCheio, self.coracaoCheio_rect)
                 pos_x_coracao += 45 + 8
 
-                coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,7))
-                config.screen.blit(coracaoCheio, coracaoCheio_rect)
+                self.coracaoCheio_rect = self.coracaoCheio.get_rect(topleft=(pos_x_coracao,7))
+                config.screen.blit(self.coracaoCheio, self.coracaoCheio_rect)
 
                 pos_x_coracao += 45 + 8
 
-                coracaoVazio_rect = coracaoVazio.get_rect(topleft=(pos_x_coracao,7))
-                config.screen.blit(coracaoVazio, coracaoVazio_rect)
+                self.coracaoVazio_rect = self.coracaoVazio.get_rect(topleft=(pos_x_coracao,7))
+                config.screen.blit(self.coracaoVazio, self.coracaoVazio_rect)
             elif self.vidaAtual == 1:
                 pos_x_coracao = 0
-                coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,7))
-                config.screen.blit(coracaoCheio, coracaoCheio_rect)
+                self.coracaoCheio_rect = self.coracaoCheio.get_rect(topleft=(pos_x_coracao,7))
+                config.screen.blit(self.coracaoCheio, self.coracaoCheio_rect)
                 pos_x_coracao += 45 + 8
 
-                coracaoVazio_rect = coracaoVazio.get_rect(topleft=(pos_x_coracao,7))
-                config.screen.blit(coracaoVazio, coracaoVazio_rect)
+                self.coracaoVazio_rect = self.coracaoVazio.get_rect(topleft=(pos_x_coracao,7))
+                config.screen.blit(self.coracaoVazio, self.coracaoVazio_rect)
 
                 pos_x_coracao += 45 + 8
 
-                coracaoVazio_rect = coracaoVazio.get_rect(topleft=(pos_x_coracao,7))
-                config.screen.blit(coracaoVazio, coracaoVazio_rect)
-
+                self.coracaoVazio_rect = self.coracaoVazio.get_rect(topleft=(pos_x_coracao,7))
+                config.screen.blit(self.coracaoVazio, self.coracaoVazio_rect)
 
             pos_x_escudo = pos_x_coracao + 45 + 8
             if self.escudoAtivo == 1:
-                escudoCheio_rect = escudoCheio.get_rect(topleft=(pos_x_escudo,7))
-                config.screen.blit(escudoCheio, escudoCheio_rect)
+                self.escudoCheio_rect = self.escudoCheio.get_rect(topleft=(pos_x_escudo,7))
+                config.screen.blit(self.escudoCheio, self.escudoCheio_rect)
             else:
-                escudoVazio_rect = escudoVazio.get_rect(topleft=(pos_x_escudo,7))
-                config.screen.blit(escudoVazio, escudoVazio_rect)
+                self.escudoVazio_rect = self.escudoVazio.get_rect(topleft=(pos_x_escudo,7))
+                config.screen.blit(self.escudoVazio, self.escudoVazio_rect)
         else:
             if self.id == 1:
                 pos_x_coracao = 5
                 if self.vidaAtual == 3:
-                    coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,45))
-                    config.screen.blit(coracaoCheio, coracaoCheio_rect)
+                    self.coracaoCheio_rect = self.coracaoCheio.get_rect(topleft=(pos_x_coracao,45))
+                    config.screen.blit(self.coracaoCheio, self.coracaoCheio_rect)
 
                     pos_x_coracao += 45 + 8
-                    coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,45))
-                    config.screen.blit(coracaoCheio, coracaoCheio_rect)
+                    self.coracaoCheio_rect = self.coracaoCheio.get_rect(topleft=(pos_x_coracao,45))
+                    config.screen.blit(self.coracaoCheio, self.coracaoCheio_rect)
                     pos_x_coracao += 45 + 8
 
-                    coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,45))
-                    config.screen.blit(coracaoCheio, coracaoCheio_rect)
+                    self.coracaoCheio_rect = self.coracaoCheio.get_rect(topleft=(pos_x_coracao,45))
+                    config.screen.blit(self.coracaoCheio, self.coracaoCheio_rect)
                 elif self.vidaAtual == 2:
                     pos_x_coracao = 0
-                    coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,45))
-                    config.screen.blit(coracaoCheio, coracaoCheio_rect)
+                    self.coracaoCheio_rect = self.coracaoCheio.get_rect(topleft=(pos_x_coracao,45))
+                    config.screen.blit(self.coracaoCheio, self.coracaoCheio_rect)
                     pos_x_coracao += 45 + 8
 
-                    coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,45))
-                    config.screen.blit(coracaoCheio, coracaoCheio_rect)
+                    self.coracaoCheio_rect = self.coracaoCheio.get_rect(topleft=(pos_x_coracao,45))
+                    config.screen.blit(self.coracaoCheio, self.coracaoCheio_rect)
 
                     pos_x_coracao += 45 + 8
 
-                    coracaoVazio_rect = coracaoVazio.get_rect(topleft=(pos_x_coracao,45))
-                    config.screen.blit(coracaoVazio, coracaoVazio_rect)
+                    self.coracaoVazio_rect = self.coracaoVazio.get_rect(topleft=(pos_x_coracao,45))
+                    config.screen.blit(self.coracaoVazio, self.coracaoVazio_rect)
                 elif self.vidaAtual == 1:
                     pos_x_coracao = 0
-                    coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,45))
-                    config.screen.blit(coracaoCheio, coracaoCheio_rect)
+                    self.coracaoCheio_rect = self.coracaoCheio.get_rect(topleft=(pos_x_coracao,45))
+                    config.screen.blit(self.coracaoCheio, self.coracaoCheio_rect)
                     pos_x_coracao += 45 + 8
 
-                    coracaoVazio_rect = coracaoVazio.get_rect(topleft=(pos_x_coracao,45))
-                    config.screen.blit(coracaoVazio, coracaoVazio_rect)
+                    self.coracaoVazio_rect = self.coracaoVazio.get_rect(topleft=(pos_x_coracao,45))
+                    config.screen.blit(self.coracaoVazio, self.coracaoVazio_rect)
 
                     pos_x_coracao += 45 + 8
 
-                    coracaoVazio_rect = coracaoVazio.get_rect(topleft=(pos_x_coracao,45))
-                    config.screen.blit(coracaoVazio, coracaoVazio_rect)
+                    self.coracaoVazio_rect = self.coracaoVazio.get_rect(topleft=(pos_x_coracao,45))
+                    config.screen.blit(self.coracaoVazio, self.coracaoVazio_rect)
 
 
                 pos_x_escudo = pos_x_coracao + 45 + 8
                 if self.escudoAtivo == 1:
-                    escudoCheio_rect = escudoCheio.get_rect(topleft=(pos_x_escudo,45))
-                    config.screen.blit(escudoCheio, escudoCheio_rect)
+                    self.escudoCheio_rect = self.escudoCheio.get_rect(topleft=(pos_x_escudo,45))
+                    config.screen.blit(self.escudoCheio, self.escudoCheio_rect)
                 else:
-                    escudoVazio_rect = escudoVazio.get_rect(topleft=(pos_x_escudo,45))
-                    config.screen.blit(escudoVazio, escudoVazio_rect)
+                    self.escudoVazio_rect = self.escudoVazio.get_rect(topleft=(pos_x_escudo,45))
+                    config.screen.blit(self.escudoVazio, self.escudoVazio_rect)
 
             if self.id == 2:
                 pos_x_coracao = config.largura - 217 - 5
                 if self.vidaAtual == 3:
-                    coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,45))
-                    config.screen.blit(coracaoCheio, coracaoCheio_rect)
+                    self.coracaoCheio_rect = self.coracaoCheio.get_rect(topleft=(pos_x_coracao,45))
+                    config.screen.blit(self.coracaoCheio, self.coracaoCheio_rect)
 
                     pos_x_coracao += 45 + 8
-                    coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,45))
-                    config.screen.blit(coracaoCheio, coracaoCheio_rect)
+                    self.coracaoCheio_rect = self.coracaoCheio.get_rect(topleft=(pos_x_coracao,45))
+                    config.screen.blit(self.coracaoCheio, self.coracaoCheio_rect)
                     pos_x_coracao += 45 + 8
 
-                    coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,45))
-                    config.screen.blit(coracaoCheio, coracaoCheio_rect)
+                    self.coracaoCheio_rect = self.coracaoCheio.get_rect(topleft=(pos_x_coracao,45))
+                    config.screen.blit(self.coracaoCheio, self.coracaoCheio_rect)
                 elif self.vidaAtual == 2:
                     #pos_x_coracao = 0
-                    coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,45))
-                    config.screen.blit(coracaoCheio, coracaoCheio_rect)
+                    self.coracaoCheio_rect = self.coracaoCheio.get_rect(topleft=(pos_x_coracao,45))
+                    config.screen.blit(self.coracaoCheio, self.coracaoCheio_rect)
                     pos_x_coracao += 45 + 8
 
-                    coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,45))
-                    config.screen.blit(coracaoCheio, coracaoCheio_rect)
+                    self.coracaoCheio_rect = self.coracaoCheio.get_rect(topleft=(pos_x_coracao,45))
+                    config.screen.blit(self.coracaoCheio, self.coracaoCheio_rect)
 
                     pos_x_coracao += 45 + 8
 
-                    coracaoVazio_rect = coracaoVazio.get_rect(topleft=(pos_x_coracao,45))
-                    config.screen.blit(coracaoVazio, coracaoVazio_rect)
+                    self.coracaoVazio_rect = self.coracaoVazio.get_rect(topleft=(pos_x_coracao,45))
+                    config.screen.blit(self.coracaoVazio, self.coracaoVazio_rect)
                 elif self.vidaAtual == 1:
                     #pos_x_coracao = 0
-                    coracaoCheio_rect = coracaoCheio.get_rect(topleft=(pos_x_coracao,45))
-                    config.screen.blit(coracaoCheio, coracaoCheio_rect)
+                    self.coracaoCheio_rect = self.coracaoCheio.get_rect(topleft=(pos_x_coracao,45))
+                    config.screen.blit(self.coracaoCheio, self.coracaoCheio_rect)
                     pos_x_coracao += 45 + 8
 
-                    coracaoVazio_rect = coracaoVazio.get_rect(topleft=(pos_x_coracao,45))
-                    config.screen.blit(coracaoVazio, coracaoVazio_rect)
+                    self.coracaoVazio_rect = self.coracaoVazio.get_rect(topleft=(pos_x_coracao,45))
+                    config.screen.blit(self.coracaoVazio, self.coracaoVazio_rect)
 
                     pos_x_coracao += 45 + 8
 
-                    coracaoVazio_rect = coracaoVazio.get_rect(topleft=(pos_x_coracao,45))
-                    config.screen.blit(coracaoVazio, coracaoVazio_rect)
+                    self.coracaoVazio_rect = self.coracaoVazio.get_rect(topleft=(pos_x_coracao,45))
+                    config.screen.blit(self.coracaoVazio, self.coracaoVazio_rect)
 
 
                 pos_x_escudo = pos_x_coracao + 45 + 8
                 if self.escudoAtivo == 1:
-                    escudoCheio_rect = escudoCheio.get_rect(topleft=(pos_x_escudo,45))
-                    config.screen.blit(escudoCheio, escudoCheio_rect)
+                    self.escudoCheio_rect = self.escudoCheio.get_rect(topleft=(pos_x_escudo,45))
+                    config.screen.blit(self.escudoCheio, self.escudoCheio_rect)
                 else:
-                    escudoVazio_rect = escudoVazio.get_rect(topleft=(pos_x_escudo,45))
-                    config.screen.blit(escudoVazio, escudoVazio_rect)
+                    self.escudoVazio_rect = self.escudoVazio.get_rect(topleft=(pos_x_escudo,45))
+                    config.screen.blit(self.escudoVazio, self.escudoVazio_rect)
 
+    def desenhaToxicidade(self, barra_x, barra_y):
+        slot_width = 20
+        slot_height = 10
+        espacamento = 2
 
+        for i in range(3):
+            rect = pygame.Rect(barra_x + i * (slot_width + espacamento), barra_y, slot_width, slot_height)
+            if i < self.toxicidade:
+                pygame.draw.rect(config.screen, (255, 255, 0), rect)  # amarelo
+            else:
+                pygame.draw.rect(config.screen, (180, 180, 180), rect)  # cinza claro
+            pygame.draw.rect(config.screen, (0, 0, 0), rect, 2)  # contorno
+
+            icon_x = barra_x - 3 * (slot_width + espacamento) + 10
+            config.screen.blit(self.toxicidade_icon, (icon_x, barra_y - 20))
+
+    def mostrarToxicidade(self):
+        if self.id == 0:
+            self.desenhaToxicidade(60, 80)
+        elif self.id == 1:
+            self.desenhaToxicidade(60, 110)
+        else:
+            self.desenhaToxicidade(920, 110)
 
     def colisaoMoeda(self):
 
@@ -406,7 +435,7 @@ class Player(pygame.sprite.Sprite):
 
                     if inimigo.tipo == 'barrilRadioativo':
                         self.vidaAtual -= 1
-                        self.iniciar_piscada()
+                        self.entoxicar(2)
                         audio.tocar_som_explosao_radiacao()
                 else:
                     if inimigo.tipo == 'bomba':
@@ -421,10 +450,9 @@ class Player(pygame.sprite.Sprite):
 
                     if inimigo.tipo == 'barrilRadioativo':
                         self.escudoAtivo = 0
+                        self.entoxicar(2)
                         self.iniciar_piscada()
                         audio.tocar_som_explosao_radiacao()
-
-        
 
 
     def colisaoDebuff(self):
@@ -448,9 +476,6 @@ class Player(pygame.sprite.Sprite):
                 if debuff.tipo == 'moedas valem menos':
                     self.ativar_debuff('moedas valem menos')
                     audio.tocar_som_debuff()
-
-
-
 
     def ativar_debuff(self, debuff_tipo):
         if debuff_tipo == 'congelamento':
@@ -497,8 +522,6 @@ class Player(pygame.sprite.Sprite):
 
             if debuff[0] == 'moedas valem menos':
                 self.divmoeda = 2
-
-
             
         if self.debuff_congelamento_ativo == False:
             #Voltar ao normal AQUI
@@ -510,8 +533,6 @@ class Player(pygame.sprite.Sprite):
     def morrer(self):
         if self.vidaAtual == 0:
             self.kill()
-
-
 
     def verificar_area_congelada(self):
         colisoes = pygame.sprite.spritecollide(self, config.area_congelada_group, False)
@@ -525,11 +546,7 @@ class Player(pygame.sprite.Sprite):
         if self.piscando == False:
             colisoes = pygame.sprite.spritecollide(self, config.area_radioativa_group, True)
             if colisoes:
-                self.vidaAtual -= 1
-                self.iniciar_piscada()
-
-
-        
+                self.entoxicar()        
     
     def verificar_tempo_Debuff(self):
         if self.debuff_congelamento_ativo and self.tempo_inicioDebuffCongelamento:
@@ -724,15 +741,7 @@ class Player(pygame.sprite.Sprite):
                     segundos_moeda2x = int(tempo_restante_moeda2x % 60)
                     powerUp[2] = segundos_moeda2x
 
-    
-
-
-
-
         # Código para mostrar o timer de cada PowerUP de forma Dinâmica
-
-
-
 
         """
         Código Backup caso dê merda com o outro jeito abaixo
@@ -812,6 +821,7 @@ class Player(pygame.sprite.Sprite):
         self.poderPowerUp()
         self.verificar_tempo_PowerUp()
         self.mostrarVida()
+        self.mostrarToxicidade()
         self.verificar_area_congelada()
         self.verificar_area_radioativa()
         self.morrer()

@@ -78,9 +78,7 @@ pygame.time.set_timer(debuff_timer, tempo_debuff)
 dificuldade_timer = pygame.USEREVENT + 5
 pygame.time.set_timer(dificuldade_timer, 10000)
 
-
 #Grupos
-
 
 moeda_group = pygame.sprite.Group()
 

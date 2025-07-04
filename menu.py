@@ -101,7 +101,7 @@ def options():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 if botao_ativo.checkForInput(mouse_pos):
                     audio.click_menu.play()
                     if botao_ativo == one_p_button:
@@ -166,7 +166,7 @@ def info():
             if event.type == pygame.MOUSEWHEEL:
                 deslocamento_y += event.y * 30
                 deslocamento_y = max(min(deslocamento_y, 0), -(altura_total - 300))
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 if back_button.checkForInput(mouse_pos):
                     audio.click_menu.play()
                     return "options"

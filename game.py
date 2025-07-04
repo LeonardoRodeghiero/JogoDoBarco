@@ -14,7 +14,6 @@ from vitoria import vitoria
 
 pygame.init()
 
-
 import menu
 
 def Jogo():
@@ -25,9 +24,7 @@ def Jogo():
     if audio.musica_atual in ['gameover1', 'gameover2', 'gameover3', 'vitoria1', 'vitoria2']:
         audio.musica_atual = audio.escolher_musica_fundo_e_tocar(musica_escolhida)
     
-
     while True:
-
         menu.menu.blit(menu.menubg, (0, 0))
         mouse_pos = pygame.mouse.get_pos()
 
@@ -58,7 +55,7 @@ def Jogo():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 if play_button.checkForInput(mouse_pos):
                     audio.click_menu.play()
                     return "jogo"
@@ -205,18 +202,12 @@ def play(qtdplayers):
             for camada in fundo_atual:
                 FuncExternas.funcExternas.mostrar_fundo_com_efeito(camada["imagem"], camada['velocidade'], camada['y'], player.sprite.rect.x)
 
-
-
-
-
             score_text = config.test_font.render(f'Score: {config.score}', False, cor_score)
             score_text_rect = score_text.get_rect(topright=(config.largura-20, 20))
             config.screen.blit(score_text,score_text_rect)
 
             mensagem_text = config.mensagem_test_font.render('Barco cheio. Descarregue no porto', False, cor_score)
             mensagem_text_rect = mensagem_text.get_rect(midbottom=(player.sprite.rect.x + 55, config.altura-50))
-            
-            
             
             porto_surf = pygame.image.load('graficos/porto/porto.png')
 
@@ -252,8 +243,7 @@ def play(qtdplayers):
 
             
             else:
-                tempo_colisao_Porto = 0      
-            
+                tempo_colisao_Porto = 0
 
             barcoCheio(mensagem_text, mensagem_text_rect)
             
@@ -270,7 +260,6 @@ def play(qtdplayers):
 
             config.inimigo_group.draw(config.screen)
             config.inimigo_group.update(camera_x)
-
 
             for powerup in config.powerup_group:
                 x_tela_powerup = powerup.mundo_x - camera_x
@@ -312,11 +301,8 @@ def play(qtdplayers):
             config.grupo_particulas_gelo.update()
             config.grupo_particulas_gelo.draw(config.screen)
 
-
-
-
             # Area radioativa
-            
+           
             for area in config.area_radioativa_group:
                 if pygame.time.get_ticks() - area.tempo_criacao >= area.duracao:
                     area.kill()
@@ -337,8 +323,6 @@ def play(qtdplayers):
             config.grupo_particulas_radiacao.update()
             config.grupo_particulas_radiacao.draw(config.screen)
 
-
-
             for areaCongelada in config.area_congelada_group:
                 x_tela_areaCongelada = areaCongelada.mundo_x - camera_x
                 areaCongelada.rect.x = x_tela_areaCongelada
@@ -349,12 +333,9 @@ def play(qtdplayers):
                 x_tela_areaRadioativa = areaRadioativa.mundo_x - camera_x
                 areaRadioativa.rect.x = x_tela_areaRadioativa
 
-
             config.area_radioativa_group.draw(config.screen)
             player.sprite.draw(config.screen)
             player.update()
-
-
 
             pygame.display.update()
             config.clock.tick(60)
@@ -394,8 +375,6 @@ def play(qtdplayers):
         pygame.time.set_timer(config.debuff_timer, 0)
         pygame.time.set_timer(config.debuff_timer, config.tempo_debuff)
 
-
-
         config.inimigo_group.empty()
         config.moeda_group.empty()
         config.powerup_group.empty()
@@ -405,7 +384,6 @@ def play(qtdplayers):
         config.grupo_particulas_gelo.empty()
 
         player_group = pygame.sprite.Group()
-
 
         posicao_player_1 = config.largura / 2
         posicao_player_1 = posicao_player_1 - posicao_player_1 / 2
@@ -417,7 +395,6 @@ def play(qtdplayers):
         player_group.add(Player(posicao_player_1, config.altura, 1))
         player_group.add(Player(posicao_player_2, config.altura, 2))
         tempo.resetar_tempo()
-
 
         def barcoCheio():
             
@@ -436,9 +413,7 @@ def play(qtdplayers):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
-                    exit()
-
-                
+                    exit()          
 
                 if event.type == config.moeda_timer:
                     config.moeda_group.add(Moeda(choice(['ouro', 'prata', 'prata', 'bronze', 'bronze', 'bronze'])))
@@ -502,54 +477,30 @@ def play(qtdplayers):
                     if ultimo_a_morrer == 2:
                         config.vencedor = 2
                         return "vitoria"
-                
-                    
-                    
-                
-
-
-
-
-            
-            
-                
-            
+     
             FuncExternas.funcExternas.mostrar_fundo(fundo_atual)
-            
-
-
-
 
             score_p1_text = config.test_font.render(f'Score: {config.score_p1}', False, cor_score_p1)
-            score_p1_text_rect = score_p1_text.get_rect(topleft=(10, 105))
+            score_p1_text_rect = score_p1_text.get_rect(topleft=(10, 135))
             config.screen.blit(score_p1_text,score_p1_text_rect)
 
             p1_text = config.test_font.render(f'Jogador 1', False, cor_score_p1)
             p1_text_rect = p1_text.get_rect(topleft=(10, 10))
             config.screen.blit(p1_text, p1_text_rect)
 
-
-
             score_p2_text = config.test_font.render(f'Score: {config.score_p2}', False, cor_score_p2)
-            score_p2_text_rect = score_p2_text.get_rect(topright=(config.largura - 10, 105))
+            score_p2_text_rect = score_p2_text.get_rect(topright=(config.largura - 10, 135))
             config.screen.blit(score_p2_text,score_p2_text_rect)
             p2_text = config.test_font.render(f'Jogador 2', False, cor_score_p2)
             p2_text_rect = p2_text.get_rect(topright=(config.largura-10, 10))
             config.screen.blit(p2_text, p2_text_rect)
 
-
-            
             barcoCheio()
-
 
             porto_surf = pygame.image.load('graficos/porto/porto.png')
             porto_rect = porto_surf.get_rect(bottomright=(config.largura, config.altura))
             config.screen.blit(porto_surf, porto_rect)
 
-            
-            
-
-            
             for player in player_group:
                 if player.id == 1:
                     tempo_necessario_Porto_p1 = int(player.peso) * 1000 / 2
@@ -568,7 +519,6 @@ def play(qtdplayers):
                             timer_Porto_p1 = config.test_font.render(f'{int(tempo_restante_p1 // 1000 + 1)}', False, cor_score_p1)
                             timer_Porto_rect_p1 = score_p1_text.get_rect(bottomright=(config.largura - 20, config.altura-80))
                             config.screen.blit(timer_Porto_p1,timer_Porto_rect_p1)
-
                     
                     else:
                         tempo_colisao_Porto_p1 = 0

@@ -86,6 +86,11 @@ def tocar_som_explosao():
     explosao.set_volume(0.3)
     explosao.play()
 
+def entoxicar():
+    toxico = pygame.mixer.Sound('audios/som_toxico/entoxicando.mp3')
+    toxico.set_volume(0.3)
+    toxico.play()
+
 """def tocar_som_queda_bomba(inimigo):
     som_queda = pygame.mixer.Sound('audios/sons_bombas/dropbomb-4seconds.mp3')
     som_queda.set_volume(0.005)

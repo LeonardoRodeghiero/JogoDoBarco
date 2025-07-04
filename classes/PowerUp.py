@@ -91,7 +91,6 @@ class PowerUp(pygame.sprite.Sprite):
             for i in range(len(self.frames)):
                 self.frames[i] = pygame.transform.scale(self.frames[i], (28,28))
 
-
         if tipo == 'pesoExtra':
             mochila_1 = pygame.image.load('graficos/powerups/mochila/mochila_1.png')
             mochila_2 = pygame.image.load('graficos/powerups/mochila/mochila_2.png')
@@ -132,7 +131,6 @@ class PowerUp(pygame.sprite.Sprite):
             self.frames = [escudo_1,escudo_2,escudo_3,escudo_4,escudo_5,escudo_6,escudo_7,escudo_8,escudo_9,escudo_10]
             for i in range(len(self.frames)):
                 self.frames[i] = pygame.transform.scale(self.frames[i], (28,28))
-
 
         self.gravidade = randint(1, 12)
 
